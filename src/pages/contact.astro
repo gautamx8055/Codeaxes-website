@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import Section from '../components/ui/Section.astro';
+import ContactForm from '../components/islands/ContactForm.astro';
+import { site } from '../data/site';
+---
+
+<BaseLayout
+  title="Contact Us"
+  description="Start a Codeaxes project. Send an enquiry for web, mobile, cloud, data, blockchain, games, animation, or QA work."
+  path="/contact"
+>
+  <PageHero eyebrow="Contact" title="Let’s make the difficult thing possible." body="Tell us the constraint. We reply with a discovery conversation, not a brochure." layout="split">
+    <div class="p-6">
+      <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-pulse">Direct</p>
+      <ul class="mt-4 space-y-2 text-mist">
+        <li><a class="text-paper hover:text-pulse" href={`mailto:${site.email}`}>{site.email}</a></li>
+        <li>{site.phone}</li>
+        <li>
+          {site.address.line1}<br />
+          {site.address.city}, {site.address.region} {site.address.postal}
+        </li>
+        <li>{site.hours}</li>
+      </ul>
+      <a
+        class="mt-6 inline-flex rounded-full bg-paper px-4 py-2 text-[13px] font-medium tracking-[0.04em] text-void"
+        href={`mailto:${site.email}?subject=Codeaxes%20meeting`}
+      >
+        Book a meeting
+      </a>
+    </div>
+  </PageHero>
+  <Section eyebrow="Enquiry" title="Project form.">
+    <div class="grid gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.8fr)]">
+      <ContactForm />
+      <aside class="space-y-8">
+        <div class="border border-line p-6">
+          <h2 class="font-display text-xl text-paper">After you send it</h2>
+          <ol class="mt-4 space-y-3 text-sm text-mist">
+            <li>01 · We confirm receipt within one business day.</li>
+            <li>02 · A short discovery call maps constraints and success criteria.</li>
+            <li>03 · You receive a scoped approach, team shape, and timeline range.</li>
+          </ol>
+        </div>
+        <div class="border border-line p-6">
+          <h2 class="font-display text-xl text-paper">Privacy</h2>
+          <p class="mt-3 text-sm text-mist">
+            Enquiry data is used to respond to this conversation. Do not include passwords, payment card data, or patient-identifiable information.
+          </p>
+        </div>
+        <div class="grid aspect-[4/3] place-items-center border border-dashed border-line text-sm text-mist">
+          Map placeholder · {site.address.city}
+        </div>
+      </aside>
+    </div>
+  </Section>
+</BaseLayout>

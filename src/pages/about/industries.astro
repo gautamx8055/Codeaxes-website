@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import Section from '../../components/ui/Section.astro';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import { industries } from '../../data/industries';
+import { site } from '../../data/site';
+---
+
+<BaseLayout
+  title="Industries"
+  description="How Codeaxes builds digital products for SaaS, healthcare, fintech, ecommerce, logistics, education, real estate, media, and manufacturing."
+  path="/about/industries"
+>
+  <PageHero
+    eyebrow="Industries"
+    title="The same engineering standard, different constraints."
+    body="Each chapter covers the operational problems we see, the products that tend to work, automation opportunities, and the compliance load that cannot be ignored."
+    layout="rail"
+  />
+  <div class="mx-auto flex max-w-6xl flex-wrap gap-2 px-5 pt-10 md:px-8">
+    {
+      industries.map((industry) => (
+        <a href={`#${industry.slug}`} class="border border-line px-3 py-1 font-mono text-[11px] uppercase tracking-[0.12em] text-mist hover:text-pulse">
+          {industry.name}
+        </a>
+      ))
+    }
+  </div>
+  {
+    industries.map((industry) => (
+      <Section id={industry.slug} eyebrow={industry.name} title={industry.summary}>
+        <div class="grid gap-10 lg:grid-cols-2">
+          <div>
+            <h3 class="font-mono mb-3 text-[11px] uppercase tracking-[0.16em] text-pulse">Challenges</h3>
+            <ul class="space-y-2 text-mist">{industry.challenges.map((item) => <li>{item}</li>)}</ul>
+            <h3 class="font-mono mb-3 mt-8 text-[11px] uppercase tracking-[0.16em] text-pulse">Products we build</h3>
+            <ul class="space-y-2 text-mist">{industry.solutions.map((item) => <li>{item}</li>)}</ul>
+          </div>
+          <div>
+            <h3 class="font-mono mb-3 text-[11px] uppercase tracking-[0.16em] text-pulse">AI automation</h3>
+            <ul class="space-y-2 text-mist">{industry.automation.map((item) => <li>{item}</li>)}</ul>
+            {industry.compliance && (
+              <>
+                <h3 class="font-mono mb-3 mt-8 text-[11px] uppercase tracking-[0.16em] text-pulse">Compliance & security</h3>
+                <p class="text-mist">{industry.compliance}</p>
+              </>
+            )}
+            <h3 class="font-mono mb-3 mt-8 text-[11px] uppercase tracking-[0.16em] text-pulse">Technology approach</h3>
+            <ul class="space-y-2 text-mist">{industry.techApproaches.map((item) => <li>{item}</li>)}</ul>
+            <h3 class="font-mono mb-3 mt-8 text-[11px] uppercase tracking-[0.16em] text-pulse">Outcomes to aim for</h3>
+            <ul class="space-y-2 text-paper">{industry.outcomes.map((item) => <li>{item}</li>)}</ul>
+          </div>
+        </div>
+      </Section>
+    ))
+  }
+  <CtaBand title="Bring the constraint from your industry." primary={site.cta.primary} />
+</BaseLayout>

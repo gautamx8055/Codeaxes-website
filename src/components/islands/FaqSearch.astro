@@ -1,0 +1,107 @@
+---
+import { faqCategories } from '../../data/faqs';
+---
+
+<div data-faq-search>
+  <div class="mb-10 grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
+    <div>
+      <label class="mb-2 block text-sm text-paper" for="faq-query">Search questions</label>
+      <input
+        id="faq-query"
+        type="search"
+        data-faq-query
+        placeholder="Timelines, ownership, AI, mobile…"
+        class="w-full border border-line px-4 py-3 text-paper"
+      />
+    </div>
+    <p class="font-mono text-[11px] text-mist" data-faq-count aria-live="polite"></p>
+  </div>
+  <div class="mb-8 flex flex-wrap gap-2" role="tablist" aria-label="FAQ categories">
+    <a href="#all" class="faq-chip border border-pulse px-3 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-pulse" data-faq-chip data-id="all">All</a>
+    {
+      faqCategories.map((category) => (
+        <a
+          href={`#${category.id}`}
+          class="faq-chip border border-line px-3 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-mist hover:text-paper"
+          data-faq-chip
+          data-id={category.id}
+        >
+          {category.title}
+        </a>
+      ))
+    }
+  </div>
+  {
+    faqCategories.map((category) => (
+      <section id={category.id} class="mb-12" data-faq-section data-id={category.id}>
+        <h2 class="font-display mb-4 text-2xl text-paper">{category.title}</h2>
+        <div class="divide-y divide-line border-y border-line">
+          {category.items.map((item) => (
+            <details class="group" data-faq-item data-text={`${item.question} ${item.answer}`.toLowerCase()}>
+              <summary class="cursor-pointer list-none py-5 text-lg text-paper [&::-webkit-details-marker]:hidden">
+                <span class="flex justify-between gap-4">
+                  {item.question}
+                  <span class="text-pulse">+</span>
+                </span>
+              </summary>
+              <p class="pb-5 text-mist">{item.answer}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+    ))
+  }
+  <p class="hidden text-mist" data-faq-empty>No matching questions. Ask Codeaxes AI or start a project from Contact.</p>
+</div>
+
+<script>
+  const root = document.querySelector('[data-faq-search]');
+  if (root) {
+    const query = root.querySelector<HTMLInputElement>('[data-faq-query]');
+    const sections = [...root.querySelectorAll<HTMLElement>('[data-faq-section]')];
+    const empty = root.querySelector('[data-faq-empty]');
+    const count = root.querySelector('[data-faq-count]');
+    const chips = [...root.querySelectorAll<HTMLAnchorElement>('[data-faq-chip]')];
+    let category = location.hash.replace('#', '') || 'all';
+
+    const apply = () => {
+      const q = query?.value.trim().toLowerCase() ?? '';
+      let visible = 0;
+      sections.forEach((section) => {
+        const matchCat = category === 'all' || section.dataset.id === category;
+        let sectionVisible = 0;
+        section.querySelectorAll<HTMLElement>('[data-faq-item]').forEach((item) => {
+          const matchText = !q || (item.dataset.text ?? '').includes(q);
+          const show = matchCat && matchText;
+          item.hidden = !show;
+          if (show) {
+            visible += 1;
+            sectionVisible += 1;
+          }
+        });
+        section.hidden = sectionVisible === 0;
+      });
+      empty?.classList.toggle('hidden', visible !== 0);
+      if (count) count.textContent = `${visible} questions`;
+      chips.forEach((chip) => {
+        chip.classList.toggle('border-pulse', chip.dataset.id === category);
+        chip.classList.toggle('text-pulse', chip.dataset.id === category);
+      });
+    };
+
+    query?.addEventListener('input', apply);
+    chips.forEach((chip) => {
+      chip.addEventListener('click', (event) => {
+        event.preventDefault();
+        category = chip.dataset.id ?? 'all';
+        history.replaceState(null, '', category === 'all' ? '#all' : `#${category}`);
+        apply();
+      });
+    });
+    window.addEventListener('hashchange', () => {
+      category = location.hash.replace('#', '') || 'all';
+      apply();
+    });
+    apply();
+  }
+</script>

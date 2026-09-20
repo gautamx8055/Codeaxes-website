@@ -1,0 +1,26 @@
+---
+import AxesMesh from './AxesMesh.astro';
+import DashboardFrame from './DashboardFrame.astro';
+import DeviceStack from './DeviceStack.astro';
+import ArchitectureLayers from './ArchitectureLayers.astro';
+import QaPipeline from './QaPipeline.astro';
+import LifecycleOrbit from './LifecycleOrbit.astro';
+import WorkflowDiagram from './WorkflowDiagram.astro';
+
+type Props = {
+  kind: 'workflow' | 'devices' | 'dashboard' | 'architecture' | 'pipeline' | 'systems' | 'lifecycle';
+  class?: string;
+};
+
+const { kind } = Astro.props;
+---
+
+<div class:list={['p-3 md:p-4', Astro.props.class]}>
+  {kind === 'workflow' && <WorkflowDiagram />}
+  {kind === 'devices' && <DeviceStack />}
+  {kind === 'dashboard' && <DashboardFrame />}
+  {kind === 'architecture' && <ArchitectureLayers />}
+  {kind === 'pipeline' && <QaPipeline />}
+  {kind === 'systems' && <AxesMesh caption="systems.axis" />}
+  {kind === 'lifecycle' && <LifecycleOrbit />}
+</div>

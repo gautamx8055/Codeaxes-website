@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import Section from '../../components/ui/Section.astro';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import { testimonials } from '../../data/testimonials';
+import { site } from '../../data/site';
+---
+
+<BaseLayout
+  title="Testimonials"
+  description="Detailed testimonials from product, engineering, and operations leaders who worked with Codeaxes."
+  path="/about/testimonials"
+>
+  <PageHero
+    eyebrow="Testimonials"
+    title="What it felt like to ship with us."
+    body="Quotes are illustrative placeholders until live client permissions are in place. Structure, roles, and project types are production-ready."
+    layout="rail"
+  />
+  <Section>
+    <div class="grid gap-8">
+      {
+        testimonials.map((item) => (
+          <article class="grid gap-6 border border-line p-8 lg:grid-cols-[1.4fr_0.6fr]">
+            <blockquote>
+              <p class="font-display text-2xl leading-snug text-paper md:text-3xl">“{item.quote}”</p>
+              <footer class="mt-6">
+                <p class="text-paper">{item.name}</p>
+                <p class="text-sm text-mist">
+                  {item.role}, {item.company}
+                </p>
+              </footer>
+            </blockquote>
+            <div class="border-t border-line pt-4 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
+              <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-pulse">{item.projectType}</p>
+              {item.metric && (
+                <p class="mt-4">
+                  <span class="font-display text-3xl text-paper">{item.metric}</span>
+                  <span class="mt-1 block text-sm text-mist">{item.metricLabel}</span>
+                </p>
+              )}
+              {item.videoPlaceholder && (
+                <div class="mt-6 grid aspect-video place-items-center border border-dashed border-line text-sm text-mist">
+                  Video testimonial placeholder
+                </div>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </Section>
+  <CtaBand title="Ask for a reference once we are in conversation." primary={site.cta.primary} />
+</BaseLayout>

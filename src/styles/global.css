@@ -1,0 +1,471 @@
+@import '@fontsource-variable/sora/wght.css';
+@import '@fontsource-variable/figtree/wght.css';
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Sora', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+
+  --color-void: #07090d;
+  --color-ink: #0e1218;
+  --color-slate: #151a22;
+  --color-line: #252b36;
+  --color-mist: #8b95a7;
+  --color-paper: #f3f6fa;
+  --color-axis: #7dd3fc;
+  --color-signal: #93a4ff;
+  --color-pulse: #7dd3fc;
+  --color-warn: #f0c674;
+  --color-danger: #f07178;
+
+  --shadow-glow: 0 24px 80px color-mix(in oklab, var(--color-axis) 18%, transparent);
+}
+
+html {
+  scroll-padding-top: 5.75rem;
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-void);
+  color: var(--color-paper);
+  min-height: 100vh;
+  letter-spacing: 0.01em;
+  line-height: 1.65;
+  font-weight: 400;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--color-axis) 36%, transparent);
+  color: var(--color-paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-axis);
+  outline-offset: 3px;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-mono {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+
+.headline-beam {
+  background: linear-gradient(180deg, #ffffff 10%, #dbeafe 48%, #7dd3fc 120%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.atmosphere {
+  background-color: var(--color-void);
+  isolation: isolate;
+}
+
+.atmosphere::before {
+  content: '';
+  position: fixed;
+  inset: -20% -12%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 48% 36% at 8% 0%, color-mix(in oklab, var(--color-axis) 22%, transparent), transparent 58%),
+    radial-gradient(ellipse 42% 32% at 92% 8%, color-mix(in oklab, var(--color-signal) 18%, transparent), transparent 55%),
+    radial-gradient(ellipse 50% 40% at 70% 100%, color-mix(in oklab, var(--color-axis) 10%, transparent), transparent 60%);
+  animation: orb-drift 36s ease-in-out infinite alternate;
+}
+
+.atmosphere::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to right, color-mix(in oklab, white 3.5%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, white 3.5%, transparent) 1px, transparent 1px),
+    radial-gradient(1100px 720px at 50% -10%, transparent 16%, color-mix(in oklab, var(--color-void) 78%, transparent) 76%);
+  background-size: 140px 140px, 140px 140px, auto;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.28), transparent 38%, transparent 72%, rgba(0, 0, 0, 0.16));
+}
+
+.axis-rail {
+  position: fixed;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.axis-rail-y {
+  top: 0;
+  bottom: 0;
+  left: 14px;
+  width: 1px;
+  background: linear-gradient(180deg, transparent 4%, color-mix(in oklab, var(--color-axis) 38%, transparent), transparent 96%);
+}
+
+.axis-rail-x {
+  left: 0;
+  right: 0;
+  bottom: 14px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 6%, color-mix(in oklab, var(--color-signal) 32%, transparent), transparent 94%);
+}
+
+.axis-rail-y::before,
+.axis-rail-y::after,
+.axis-rail-x::before,
+.axis-rail-x::after {
+  content: '';
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border: 1px solid color-mix(in oklab, var(--color-axis) 65%, transparent);
+  transform: rotate(45deg);
+}
+
+.axis-rail-y::before {
+  top: 18%;
+  left: -3px;
+}
+
+.axis-rail-y::after {
+  bottom: 16%;
+  left: -3px;
+}
+
+.axis-rail-x::before {
+  left: 12%;
+  top: -3px;
+}
+
+.axis-rail-x::after {
+  right: 10%;
+  top: -3px;
+}
+
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid color-mix(in oklab, white 12%, transparent);
+  background: color-mix(in oklab, white 4%, transparent);
+  color: var(--color-mist);
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.live-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: var(--color-axis);
+  box-shadow: 0 0 12px var(--color-axis);
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+
+header,
+main,
+footer {
+  position: relative;
+  z-index: 1;
+}
+
+header.glass {
+  z-index: 40;
+}
+
+.grid-axes {
+  background:
+    radial-gradient(800px 420px at 88% 12%, color-mix(in oklab, var(--color-axis) 16%, transparent), transparent 62%),
+    radial-gradient(640px 360px at 8% 80%, color-mix(in oklab, var(--color-signal) 12%, transparent), transparent 58%);
+}
+
+.glass {
+  background: color-mix(in oklab, var(--color-ink) 55%, transparent);
+  backdrop-filter: blur(24px) saturate(1.35);
+  -webkit-backdrop-filter: blur(24px) saturate(1.35);
+  border-bottom: 1px solid color-mix(in oklab, white 10%, transparent);
+  transition:
+    background 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.glass.is-scrolled {
+  background: color-mix(in oklab, var(--color-void) 78%, transparent);
+  box-shadow: 0 18px 50px color-mix(in oklab, black 40%, transparent);
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 80;
+  background: var(--color-paper);
+  color: var(--color-void);
+  padding: 0.5rem 0.85rem;
+  font-weight: 600;
+  border-radius: 999px;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 70;
+  height: 2px;
+  background: transparent;
+  pointer-events: none;
+}
+
+.scroll-progress > span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--color-signal), var(--color-axis));
+}
+
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 36px, 0);
+  filter: blur(8px);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-reveal].is-inview {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+[data-reveal-stagger] > * {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-reveal-stagger].is-inview > *:nth-child(1) {
+  transition-delay: 0.04s;
+}
+[data-reveal-stagger].is-inview > *:nth-child(2) {
+  transition-delay: 0.1s;
+}
+[data-reveal-stagger].is-inview > *:nth-child(3) {
+  transition-delay: 0.16s;
+}
+[data-reveal-stagger].is-inview > *:nth-child(4) {
+  transition-delay: 0.22s;
+}
+[data-reveal-stagger].is-inview > *:nth-child(5) {
+  transition-delay: 0.28s;
+}
+[data-reveal-stagger].is-inview > *:nth-child(6) {
+  transition-delay: 0.34s;
+}
+[data-reveal-stagger].is-inview > *:nth-child(7) {
+  transition-delay: 0.4s;
+}
+
+[data-reveal-stagger].is-inview > * {
+  opacity: 1;
+  transform: none;
+}
+
+main a.border.border-line,
+main article.border,
+main figure.border,
+main input,
+main select,
+main textarea,
+.nav-sub,
+[data-chat-panel] {
+  border-radius: 1.25rem;
+}
+
+main a.border.border-line,
+main article.border,
+main figure.border {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.018));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(10px);
+  border-color: color-mix(in oklab, white 10%, transparent);
+}
+
+main a.border.border-line,
+main article.border {
+  transition:
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+main a.border.border-line:hover {
+  transform: translateY(-6px);
+  border-color: color-mix(in oklab, var(--color-axis) 45%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    var(--shadow-glow);
+}
+
+main input,
+main select,
+main textarea {
+  background: color-mix(in oklab, var(--color-void) 70%, transparent);
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+main input:focus,
+main select:focus,
+main textarea:focus {
+  border-color: var(--color-axis);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-axis) 18%, transparent);
+}
+
+.tech-frame {
+  position: relative;
+  border-radius: 1.5rem;
+  padding: 1px;
+  background: linear-gradient(180deg, rgba(125, 211, 252, 0.5), rgba(147, 164, 255, 0.1) 42%, rgba(255, 255, 255, 0.05));
+  box-shadow: var(--shadow-glow);
+}
+
+.tech-frame::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: calc(1.5rem - 1px);
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 36%, color-mix(in oklab, white 18%, transparent) 50%, transparent 64%);
+  background-size: 220% 100%;
+  animation: frame-sheen 8s ease-in-out infinite;
+  opacity: 0.35;
+}
+
+.tech-frame > * {
+  position: relative;
+  z-index: 1;
+  border-radius: calc(1.5rem - 1px);
+  overflow: hidden;
+  background: color-mix(in oklab, var(--color-ink) 88%, transparent);
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes orb-drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(-3%, 3%, 0) scale(1.05);
+  }
+}
+
+@keyframes frame-sheen {
+  0%,
+  100% {
+    background-position: 120% 0;
+  }
+  50% {
+    background-position: -20% 0;
+  }
+}
+
+.mesh-dot {
+  animation: pulse-dot 4.5s ease-in-out infinite;
+}
+
+.mesh-dot:nth-child(2n) {
+  animation-delay: 0.8s;
+}
+
+.mesh-dot:nth-child(3n) {
+  animation-delay: 1.6s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .atmosphere::before,
+  .tech-frame::after {
+    animation: none;
+  }
+
+  .axis-rail {
+    display: none;
+  }
+
+  [data-reveal],
+  [data-reveal-stagger] > * {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .mesh-dot {
+    animation: none;
+    opacity: 0.9;
+  }
+
+  main a.border.border-line:hover {
+    transform: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .axis-rail {
+    display: none;
+  }
+}

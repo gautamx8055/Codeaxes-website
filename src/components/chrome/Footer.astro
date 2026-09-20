@@ -1,0 +1,99 @@
+---
+import Logo from './Logo.astro';
+import { footerNav } from '../../data/navigation';
+import { site } from '../../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-white/10 bg-ink/60 backdrop-blur-xl">
+  <div class="mx-auto grid max-w-6xl gap-12 px-5 py-16 md:grid-cols-2 md:px-8 lg:grid-cols-4">
+    <div>
+      <Logo />
+      <p class="mt-4 max-w-xs text-sm text-mist">{site.tagline}</p>
+      <p class="mt-6 text-sm text-mist">
+        <a class="hover:text-paper" href={`mailto:${site.email}`}>{site.email}</a>
+        <br />
+        {site.phone}
+      </p>
+    </div>
+    {
+      [
+        { title: 'Company', links: footerNav.company },
+        { title: 'Services', links: footerNav.services },
+        { title: 'Resources', links: footerNav.resources },
+      ].map((column) => (
+        <div>
+          <p class="font-mono mb-4 text-[11px] uppercase tracking-[0.18em] text-pulse">{column.title}</p>
+          <ul class="space-y-2">
+            {column.links.map((link) => (
+              <li>
+                {'external' in link && link.external ? (
+                  <a href={link.href} class="text-sm text-mist hover:text-paper" target="_blank" rel="noopener noreferrer">
+                    {link.label}
+                  </a>
+                ) : (
+                  <a href={link.href} class="text-sm text-mist hover:text-paper">
+                    {link.label}
+                  </a>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+  <div class="border-t border-line">
+    <div class="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-8 md:flex-row md:items-center md:justify-between md:px-8">
+      <form class="flex w-full max-w-md gap-2" data-newsletter>
+        <label class="sr-only" for="newsletter-email">Work email for product notes</label>
+        <input
+          id="newsletter-email"
+          name="email"
+          type="email"
+          required
+          placeholder="Work email"
+          class="w-full rounded-full border border-line bg-void px-4 py-2 text-sm text-paper placeholder:text-mist"
+        />
+        <button type="submit" class="cursor-pointer rounded-full bg-paper px-4 py-2 text-[13px] font-medium tracking-[0.04em] text-void">
+          Notes
+        </button>
+        <p class="sr-only" data-newsletter-status aria-live="polite"></p>
+      </form>
+      <div class="flex flex-wrap gap-4 text-sm text-mist">
+        {
+          Object.entries(site.social).map(([name, href]) => (
+            <a href={href} class="hover:text-paper" target="_blank" rel="noopener noreferrer">
+              {name}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-line">
+    <div class="mx-auto flex max-w-6xl flex-col gap-3 px-5 py-6 text-xs text-mist md:flex-row md:items-center md:justify-between md:px-8">
+      <p>© {year} {site.legalName}. All rights reserved.</p>
+      <p>
+        <a href={site.kuroaxe.url} class="text-paper hover:text-pulse" target="_blank" rel="noopener noreferrer">
+          {site.kuroaxe.name}
+        </a>
+        <span class="text-mist">. {site.kuroaxe.label}</span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-newsletter]');
+  const status = document.querySelector('[data-newsletter-status]');
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const email = new FormData(form).get('email');
+    if (typeof email === 'string' && email.includes('@')) {
+      status && (status.textContent = 'Saved locally for this session. Production wiring goes in later.');
+      form.reset();
+    }
+  });
+</script>

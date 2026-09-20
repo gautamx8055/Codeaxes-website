@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import Section from '../../components/ui/Section.astro';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import Button from '../../components/ui/Button.astro';
+import JobCard from '../../components/ui/JobCard.astro';
+import { listJobs } from '../../lib/jobs';
+import { site } from '../../data/site';
+import type { Job, JobBrand } from '../../types';
+
+export const prerender = false;
+
+const jobs = await listJobs();
+const boards: {
+  id: JobBrand;
+  eyebrow: string;
+  title: string;
+  kicker: string;
+  empty: string;
+  jobs: Job[];
+}[] = [
+  {
+    id: 'codeaxes',
+    eyebrow: 'Codeaxes',
+    title: 'Product engineering roles.',
+    kicker: 'Seats on Codeaxes delivery squads: product, engineering, design, and operations.',
+    empty: 'No Codeaxes roles are open right now. Send a note through Contact if you think you should be here anyway.',
+    jobs: jobs.filter((job) => job.brand === 'codeaxes'),
+  },
+  {
+    id: 'kuroaxe',
+    eyebrow: 'Kuroaxe',
+    title: 'Marketing roles at our partner brand.',
+    kicker: 'Kuroaxe is the marketing services brand. Open seats are listed here, on this careers page.',
+    empty: 'No Kuroaxe roles are open right now. Check back, or visit the Kuroaxe site for the brand.',
+    jobs: jobs.filter((job) => job.brand === 'kuroaxe'),
+  },
+];
+---
+
+<BaseLayout
+  title="Careers"
+  description="Open roles at Codeaxes and Kuroaxe. Product engineering seats and marketing seats, published from the hiring workspace."
+  path="/careers"
+>
+  <PageHero
+    eyebrow="Careers"
+    title="Two brands. Two hiring tracks."
+    body="Codeaxes hires for product engineering. Kuroaxe hires for marketing. Each posting is published from the hiring workspace and lists the team, location, and how to apply."
+    layout="rail"
+  >
+    <Button slot="actions" href="#codeaxes">Codeaxes roles</Button>
+    <Button slot="actions" href="#kuroaxe" variant="secondary">Kuroaxe roles</Button>
+  </PageHero>
+
+  {
+    boards.map((board) => (
+      <Section
+        id={board.id}
+        eyebrow={board.eyebrow}
+        title={board.title}
+        kicker={board.kicker}
+        class={board.id === 'kuroaxe' ? 'border-t border-line' : undefined}
+      >
+        {board.jobs.length > 0 ? (
+          <div class="grid gap-4 md:grid-cols-2" data-reveal-stagger>
+            {board.jobs.map((job) => (
+              <JobCard job={job} />
+            ))}
+          </div>
+        ) : (
+          <div class="border border-line p-8">
+            <p class="font-display text-2xl text-paper">No live {board.eyebrow} roles.</p>
+            <p class="mt-3 max-w-xl text-mist">{board.empty}</p>
+            <div class="mt-6 flex flex-wrap gap-3">
+              {board.id === 'kuroaxe' ? (
+                <Button href={site.kuroaxe.url} external>
+                  {site.kuroaxe.name}
+                </Button>
+              ) : (
+                <Button href="/contact">Contact Codeaxes</Button>
+              )}
+            </div>
+          </div>
+        )}
+      </Section>
+    ))
+  }
+
+  <CtaBand
+    eyebrow="Hiring"
+    title="Roles are published from the hiring workspace."
+    body="Apply from the role page. Codeaxes and Kuroaxe postings are listed separately above. Email us if the seat is not listed yet."
+    primary={{ label: 'Email us', href: `mailto:${site.email}?subject=Careers` }}
+    secondary={{ label: 'Start a project', href: '/contact' }}
+  />
+</BaseLayout>

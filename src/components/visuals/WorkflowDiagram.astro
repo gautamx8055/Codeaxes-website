@@ -1,0 +1,29 @@
+---
+const nodes = [
+  { x: 8, y: 38, label: 'CRM' },
+  { x: 8, y: 68, label: 'Docs' },
+  { x: 42, y: 22, label: 'Queue' },
+  { x: 42, y: 52, label: 'Model' },
+  { x: 42, y: 82, label: 'Search' },
+  { x: 76, y: 38, label: 'Agent' },
+  { x: 76, y: 68, label: 'Human' },
+];
+---
+
+<figure class="relative min-h-[260px] border border-line" aria-label="AI workflow diagram">
+  <svg class="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M16 42 L42 26 L76 42" fill="none" stroke="#7dd3fc" stroke-width="0.6" />
+    <path d="M16 72 L42 56 L76 42" fill="none" stroke="#93a4ff" stroke-width="0.6" />
+    <path d="M16 72 L42 86 L76 72" fill="none" stroke="#7dd3fc" stroke-width="0.6" />
+  </svg>
+  {
+    nodes.map((node) => (
+      <div
+        class="absolute -translate-x-1/2 -translate-y-1/2 border border-line bg-slate px-3 py-2"
+        style={`left:${node.x}%;top:${node.y}%`}
+      >
+        <p class="font-mono text-[10px] uppercase tracking-[0.14em] text-paper">{node.label}</p>
+      </div>
+    ))
+  }
+</figure>

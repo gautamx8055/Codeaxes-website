@@ -1,0 +1,20 @@
+---
+const stages = ['Plan', 'Build', 'Gate', 'Stage', 'Prod'];
+---
+
+<figure class="border border-line p-5" aria-label="QA pipeline">
+  <div class="flex flex-wrap items-center gap-2">
+    {
+      stages.map((stage, index) => (
+        <>
+          <div class="border border-line px-3 py-2">
+            <p class="font-mono text-[10px] uppercase tracking-[0.16em] text-mist">stage {index}</p>
+            <p class="text-paper">{stage}</p>
+          </div>
+          {index < stages.length - 1 && <span class="font-mono text-pulse" aria-hidden="true">→</span>}
+        </>
+      ))
+    }
+  </div>
+  <p class="font-mono mt-4 text-[11px] text-mist">quality.gate · coverage · a11y · load · security</p>
+</figure>

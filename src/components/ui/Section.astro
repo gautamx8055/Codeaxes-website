@@ -1,0 +1,32 @@
+---
+type Props = {
+  id?: string;
+  eyebrow?: string;
+  title?: string;
+  kicker?: string;
+  class?: string;
+};
+
+const { id, eyebrow, title, kicker } = Astro.props;
+---
+
+<section id={id} data-reveal class:list={['relative px-5 py-20 md:px-8 md:py-28 lg:py-32', Astro.props.class]}>
+  <div class="mx-auto w-full max-w-6xl">
+    {
+      (eyebrow || title) && (
+        <header class="mb-12 max-w-3xl md:mb-16">
+          {eyebrow && (
+            <p class="mb-3 flex items-center gap-3 text-sm font-medium tracking-[0.08em] text-axis">
+              {eyebrow}
+            </p>
+          )}
+          {title && (
+            <h2 class="font-display text-3xl leading-[1.2] text-paper md:text-5xl">{title}</h2>
+          )}
+          {kicker && <p class="mt-5 max-w-2xl text-base leading-relaxed text-mist md:text-lg">{kicker}</p>}
+        </header>
+      )
+    }
+    <slot />
+  </div>
+</section>

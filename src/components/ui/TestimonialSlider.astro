@@ -1,0 +1,56 @@
+---
+import type { Testimonial } from '../../types';
+
+type Props = {
+  items: Testimonial[];
+};
+
+const { items } = Astro.props;
+---
+
+<div class="relative" data-slider>
+  <div class="overflow-hidden border border-line" data-slides>
+    {
+      items.map((item, index) => (
+        <blockquote class="slider-pane p-8 md:p-12" data-pane hidden={index !== 0} data-index={index}>
+          <p class="font-display text-2xl leading-snug text-paper md:text-4xl">“{item.quote}”</p>
+          <footer class="mt-8">
+            <p class="text-paper">{item.name}</p>
+            <p class="text-sm text-mist">
+              {item.role}, {item.company}
+            </p>
+            <p class="font-mono mt-2 text-[11px] uppercase tracking-[0.16em] text-pulse">{item.projectType}</p>
+          </footer>
+        </blockquote>
+      ))
+    }
+  </div>
+  <div class="mt-4 flex items-center gap-3">
+    <button type="button" class="h-11 cursor-pointer rounded-full border border-line px-4 text-sm text-paper" data-prev>
+      Previous
+    </button>
+    <button type="button" class="h-11 cursor-pointer rounded-full border border-line px-4 text-sm text-paper" data-next>
+      Next
+    </button>
+    <p class="font-mono text-[11px] text-mist" data-status aria-live="polite"></p>
+  </div>
+</div>
+
+<script>
+  const root = document.querySelector('[data-slider]');
+  if (root) {
+    const panes = [...root.querySelectorAll<HTMLElement>('[data-pane]')];
+    let index = 0;
+    const status = root.querySelector('[data-status]');
+    const show = (next: number) => {
+      index = (next + panes.length) % panes.length;
+      panes.forEach((pane, i) => {
+        pane.hidden = i !== index;
+      });
+      if (status) status.textContent = `${index + 1} of ${panes.length}`;
+    };
+    root.querySelector('[data-prev]')?.addEventListener('click', () => show(index - 1));
+    root.querySelector('[data-next]')?.addEventListener('click', () => show(index + 1));
+    show(0);
+  }
+</script>

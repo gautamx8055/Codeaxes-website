@@ -1,0 +1,44 @@
+---
+import type { CaseStudy } from '../../types';
+import ServiceVisual from '../visuals/ServiceVisual.astro';
+
+type Props = {
+  study: CaseStudy;
+};
+
+const { study } = Astro.props;
+const visual =
+  study.visual === 'dashboard'
+    ? 'dashboard'
+    : study.visual === 'devices'
+      ? 'devices'
+      : study.visual === 'architecture'
+        ? 'architecture'
+        : 'workflow';
+---
+
+<a
+  href={`/about/case-studies/${study.slug}`}
+  class="group grid overflow-hidden border border-line md:grid-cols-2"
+  data-industry={study.industry}
+  data-services={study.services.join(',')}
+>
+  <div class="border-b border-line p-4 md:border-b-0 md:border-r">
+    <ServiceVisual kind={visual} />
+  </div>
+  <div class="flex flex-col p-6">
+    <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-pulse">{study.industry}</p>
+    <h3 class="font-display mt-3 text-2xl tracking-tight text-paper group-hover:text-pulse">{study.client}</h3>
+    <p class="mt-3 text-sm text-mist">{study.summary}</p>
+    <ul class="mt-4 flex flex-wrap gap-2">
+      {study.stack.slice(0, 4).map((item) => (
+        <li class="font-mono border border-line px-2 py-1 text-[10px] uppercase tracking-[0.12em] text-mist">{item}</li>
+      ))}
+    </ul>
+    {study.outcomes[0] && (
+      <p class="mt-auto pt-5 text-sm text-paper">
+        <span class="text-mist">{study.outcomes[0].label}:</span> {study.outcomes[0].value}
+      </p>
+    )}
+  </div>
+</a>

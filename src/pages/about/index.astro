@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import Section from '../../components/ui/Section.astro';
+import Button from '../../components/ui/Button.astro';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import { aboutStory } from '../../data/about';
+import { whyCodeaxes } from '../../data/why';
+import { site } from '../../data/site';
+---
+
+<BaseLayout
+  title="About"
+  description="Codeaxes combines product strategy, design, engineering, QA, and AI to turn complex ideas into reliable digital products."
+  path="/about"
+>
+  <PageHero eyebrow={aboutStory.eyebrow} title={aboutStory.title} body={aboutStory.lede} layout="rail">
+    <Button slot="actions" href="/contact">Start a project</Button>
+    <Button slot="actions" href="/about/case-studies" variant="secondary">See the work</Button>
+  </PageHero>
+  <Section>
+    <div class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+      <div class="space-y-5 text-lg leading-relaxed text-mist">
+        {aboutStory.body.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+      <ul class="space-y-6 border border-line p-6">
+        {
+          aboutStory.stats.map((stat) => (
+            <li>
+              <p class="font-display text-4xl text-pulse">{stat.value}</p>
+              <p class="mt-1 text-sm text-mist">{stat.label}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </Section>
+  <Section eyebrow="How we work" title="Six operating commitments." class="border-y border-line">
+    <div class="grid gap-8 md:grid-cols-2">
+      {
+        whyCodeaxes.map((item) => (
+          <article>
+            <h3 class="font-display text-xl text-paper">{item.title}</h3>
+            <p class="mt-2 text-mist">{item.body}</p>
+          </article>
+        ))
+      }
+    </div>
+  </Section>
+  <Section eyebrow="Explore" title="Company pages.">
+    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {
+        [
+          ['Our clients', '/about/clients', 'Logos, sectors, engagement types'],
+          ['Testimonials', '/about/testimonials', 'Quotes, roles, project types'],
+          ['Case studies', '/about/case-studies', 'Challenge through outcome'],
+          ['Industries', '/about/industries', 'Problems and product patterns'],
+          ['Technologies', '/about/technologies', 'The documented stack'],
+          ['Careers', '/careers', 'Codeaxes and Kuroaxe open roles'],
+        ].map(([label, href, body]) => (
+          <a href={href} class="border border-line p-5 hover:border-axis">
+            <h3 class="font-display text-xl text-paper">{label}</h3>
+            <p class="mt-2 text-sm text-mist">{body}</p>
+          </a>
+        ))
+      }
+    </div>
+  </Section>
+  <CtaBand title="Work with a team that stays after launch." primary={site.cta.primary} />
+</BaseLayout>

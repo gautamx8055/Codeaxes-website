@@ -1,0 +1,40 @@
+---
+import Button from './Button.astro';
+
+type Props = {
+  eyebrow?: string;
+  title: string;
+  body?: string;
+  primary?: { label: string; href: string };
+  secondary?: { label: string; href: string };
+};
+
+const { eyebrow, title, body, primary, secondary } = Astro.props;
+---
+
+<section data-reveal class="relative overflow-hidden border-t border-white/10">
+  <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,color-mix(in_oklab,var(--color-axis)_16%,transparent),transparent_42%)]"></div>
+  <div class="mx-auto flex max-w-6xl flex-col gap-8 px-5 py-16 md:flex-row md:items-end md:justify-between md:px-8 md:py-20">
+    <div class="max-w-2xl">
+      {eyebrow && (
+        <p class="mb-3 flex items-center gap-3 text-sm font-medium tracking-[0.08em] text-axis">
+          {eyebrow}
+        </p>
+      )}
+      <h2 class="font-display text-3xl tracking-tight text-paper md:text-4xl">{title}</h2>
+      {body && <p class="mt-4 text-mist">{body}</p>}
+    </div>
+    <div class="flex flex-wrap gap-3">
+      {primary && (
+        <Button href={primary.href} external={primary.href.startsWith('http')}>
+          {primary.label}
+        </Button>
+      )}
+      {secondary && (
+        <Button href={secondary.href} variant="secondary" external={secondary.href.startsWith('http')}>
+          {secondary.label}
+        </Button>
+      )}
+    </div>
+  </div>
+</section>

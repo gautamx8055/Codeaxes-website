@@ -1,0 +1,183 @@
+---
+import Logo from './Logo.astro';
+import Button from '../ui/Button.astro';
+import { primaryNav } from '../../data/navigation';
+import { site } from '../../data/site';
+
+const path = Astro.url.pathname;
+---
+
+<header class="glass sticky top-0 z-40 border-b border-line">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3 md:px-8">
+    <Logo />
+    <nav class="hidden items-center lg:flex" aria-label="Primary">
+      {
+        primaryNav.map((item) =>
+          item.children ? (
+            <div class="group/nav relative" data-nav-item>
+              <a
+                href={item.href}
+                class:list={[
+                  'inline-flex items-center gap-1 px-3 py-2 text-sm text-mist hover:text-paper',
+                  path.startsWith(item.href ?? '///') && 'text-paper',
+                ]}
+                aria-haspopup="true"
+                aria-expanded="false"
+                data-nav-trigger
+              >
+                {item.label}
+                <span aria-hidden="true" class="text-axis">
+                  ▾
+                </span>
+              </a>
+              <div
+                class:list={[
+                  'nav-sub absolute left-0 top-full z-50 -mt-1 pt-4',
+                  (item.children?.length ?? 0) > 7 ? 'min-w-[44rem]' : 'min-w-[22rem]',
+                ]}
+                data-submenu
+              >
+                <div class="rounded-2xl border border-white/10 bg-ink/80 p-3 shadow-glow backdrop-blur-xl">
+                  <ul class:list={['grid gap-1', (item.children?.length ?? 0) > 7 && 'sm:grid-cols-2']}>
+                    {item.children.map((child) => (
+                      <li>
+                        <a href={child.href} class="block rounded-xl px-3 py-2 hover:bg-slate">
+                          <span class="block text-sm text-paper">{child.label}</span>
+                          {child.description && <span class="block text-xs text-mist">{child.description}</span>}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          ) : item.external ? (
+            <a
+              href={item.href}
+              class="inline-flex items-center gap-1 px-3 py-2 text-sm text-mist hover:text-pulse"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {item.label}
+              <span class="font-mono text-[10px] text-axis">↗</span>
+            </a>
+          ) : (
+            <a
+              href={item.href}
+              class:list={[
+                'px-3 py-2 text-sm text-mist hover:text-paper',
+                (item.href === '/' ? path === '/' : path.startsWith(item.href ?? '///')) && 'text-paper',
+              ]}
+            >
+              {item.label}
+            </a>
+          ),
+        )
+      }
+    </nav>
+    <div class="flex items-center gap-2">
+      <Button href={site.cta.primary.href} class="hidden sm:inline-flex">{site.cta.primary.label}</Button>
+      <button
+        type="button"
+        class="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-line text-paper lg:hidden"
+        data-nav-toggle
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+      >
+        <span class="sr-only">Open menu</span>
+        <span aria-hidden="true">☰</span>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-nav" class="hidden border-t border-white/10 bg-void/95 backdrop-blur-xl lg:hidden" data-mobile-nav>
+    <nav class="mx-auto max-w-6xl px-5 py-4" aria-label="Mobile">
+      {
+        primaryNav.map((item) => (
+          <div class="border-b border-line py-3">
+            {item.external ? (
+              <a href={item.href} class="text-paper" target="_blank" rel="noopener noreferrer">
+                {item.label} ↗
+              </a>
+            ) : (
+              <a href={item.href} class="text-paper">
+                {item.label}
+              </a>
+            )}
+            {item.note && <p class="mt-1 text-xs text-mist">{item.note}</p>}
+            {item.children && (
+              <ul class="mt-2 grid gap-2 pl-3">
+                {item.children.map((child) => (
+                  <li>
+                    <a href={child.href} class="text-sm text-mist hover:text-paper">
+                      {child.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        ))
+      }
+      <Button href={site.cta.primary.href} class="mt-4 w-full">{site.cta.primary.label}</Button>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav-sub {
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 140ms ease,
+      visibility 0s linear 180ms,
+      pointer-events 0s linear 180ms;
+  }
+
+  .nav-sub::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    height: 1.25rem;
+  }
+
+  .group\/nav:hover .nav-sub,
+  .group\/nav:focus-within .nav-sub {
+    visibility: visible;
+    pointer-events: auto;
+    opacity: 1;
+    transition-delay: 0s;
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+  const panel = document.querySelector<HTMLElement>('[data-mobile-nav]');
+  toggle?.addEventListener('click', () => {
+    const open = panel?.classList.toggle('hidden') === false;
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+
+  document.querySelectorAll<HTMLElement>('[data-nav-item]').forEach((item) => {
+    const trigger = item.querySelector<HTMLElement>('[data-nav-trigger]');
+    const sync = () => {
+      const open = item.matches(':hover, :focus-within');
+      trigger?.setAttribute('aria-expanded', String(open));
+    };
+    item.addEventListener('mouseenter', sync);
+    item.addEventListener('mouseleave', sync);
+    item.addEventListener('focusin', sync);
+    item.addEventListener('focusout', () => window.setTimeout(sync, 0));
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      panel?.classList.add('hidden');
+      toggle?.setAttribute('aria-expanded', 'false');
+      const active = document.activeElement;
+      if (active instanceof HTMLElement && active.closest('[data-nav-item]')) active.blur();
+    }
+  });
+</script>

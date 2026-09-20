@@ -1,0 +1,101 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import Section from '../../components/ui/Section.astro';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import Button from '../../components/ui/Button.astro';
+import { brandLabels, employmentLabels, getJob, jobJsonLd, workplaceLabels } from '../../lib/jobs';
+import { site } from '../../data/site';
+
+export const prerender = false;
+
+const slug = Astro.params.slug ?? '';
+const job = await getJob(slug);
+
+if (!job) {
+  return Astro.redirect('/careers');
+}
+
+const applyHref =
+  job.applyUrl ??
+  `mailto:${job.applyEmail ?? site.email}?subject=${encodeURIComponent(`Application: ${job.title}`)}`;
+const applyExternal = Boolean(job.applyUrl);
+const backHref = job.brand === 'kuroaxe' ? '/careers#kuroaxe' : '/careers#codeaxes';
+const orgName = job.brand === 'kuroaxe' ? site.kuroaxe.name : site.name;
+const orgUrl = job.brand === 'kuroaxe' ? site.kuroaxe.url : site.url;
+const paragraphs = job.description
+  .split(/\n{2,}/)
+  .map((item) => item.trim())
+  .filter(Boolean);
+---
+
+<BaseLayout
+  title={job.title}
+  description={job.summary}
+  path={`/careers/${job.slug}`}
+  type="article"
+  jsonLd={jobJsonLd(job, site.url, orgName, orgUrl)}
+>
+  <PageHero eyebrow={`${brandLabels[job.brand]} · ${job.department}`} title={job.title} body={job.summary} layout="rail">
+    <Button slot="actions" href={applyHref} external={applyExternal}>
+      Apply
+    </Button>
+    <Button slot="actions" href={backHref} variant="secondary">
+      All roles
+    </Button>
+  </PageHero>
+
+  <Section>
+    <ul class="flex flex-wrap gap-2">
+      <li class="border border-line px-3 py-1 text-sm text-paper">{brandLabels[job.brand]}</li>
+      <li class="border border-line px-3 py-1 text-sm text-paper">{job.location}</li>
+      <li class="border border-line px-3 py-1 text-sm text-paper">{employmentLabels[job.employmentType]}</li>
+      <li class="border border-line px-3 py-1 text-sm text-paper">{workplaceLabels[job.workplace]}</li>
+      {job.compensation && <li class="border border-line px-3 py-1 text-sm text-paper">{job.compensation}</li>}
+    </ul>
+  </Section>
+
+  {
+    paragraphs.length > 0 && (
+      <Section eyebrow="The role" title="What this seat is for." class="border-y border-line">
+        <div class="max-w-3xl space-y-5 text-lg leading-relaxed text-mist">
+          {paragraphs.map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
+        </div>
+      </Section>
+    )
+  }
+
+  {
+    job.responsibilities.length > 0 && (
+      <Section eyebrow="Work" title="What you will own.">
+        <ul class="grid gap-3 md:grid-cols-2">
+          {job.responsibilities.map((item) => (
+            <li class="border border-line px-4 py-3 text-paper">{item}</li>
+          ))}
+        </ul>
+      </Section>
+    )
+  }
+
+  {
+    job.requirements.length > 0 && (
+      <Section eyebrow="Fit" title="What you bring." class="border-y border-line">
+        <ul class="grid gap-3 md:grid-cols-2">
+          {job.requirements.map((item) => (
+            <li class="border-l border-pulse pl-4 text-paper">{item}</li>
+          ))}
+        </ul>
+      </Section>
+    )
+  }
+
+  <CtaBand
+    eyebrow="Apply"
+    title={`Apply for ${job.title}.`}
+    body="Send a short note on the work you have shipped and the constraint you want to take on next."
+    primary={{ label: 'Apply', href: applyHref }}
+    secondary={{ label: 'All roles', href: backHref }}
+  />
+</BaseLayout>

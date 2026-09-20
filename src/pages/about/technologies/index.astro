@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/ui/PageHero.astro';
+import Section from '../../../components/ui/Section.astro';
+import { techCategories, getTechnologiesByCategory } from '../../../data/technologies';
+---
+
+<BaseLayout
+  title="Technologies"
+  description="The Codeaxes technology ecosystem: frontend, backend, mobile, cloud, data and AI, and testing."
+  path="/about/technologies"
+>
+  <PageHero
+    eyebrow="Technologies"
+    title="A stack we can defend in a design review."
+    body="Every technology has its own page: why we use it, where it fits, and where it does not."
+    layout="rail"
+  />
+  {
+    techCategories.map((category) => (
+      <Section id={category.id} eyebrow={category.id} title={category.name} kicker={category.summary}>
+        <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+          {getTechnologiesByCategory(category.id).map((tech) => (
+            <a href={`/about/technologies/${tech.slug}`} class="border border-line p-5 hover:border-axis">
+              <h3 class="font-display text-xl text-paper">{tech.name}</h3>
+              <p class="mt-2 text-sm text-mist">{tech.summary}</p>
+            </a>
+          ))}
+        </div>
+      </Section>
+    ))
+  }
+</BaseLayout>

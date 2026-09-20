@@ -1,0 +1,40 @@
+---
+type Variant = 'primary' | 'secondary' | 'ghost';
+
+type Props = {
+  href?: string;
+  variant?: Variant;
+  class?: string;
+  type?: 'button' | 'submit';
+  external?: boolean;
+};
+
+const { href, variant = 'primary', type = 'button', external = false } = Astro.props;
+
+const classes = {
+  primary:
+    'bg-paper text-void hover:bg-white hover:shadow-[0_0_36px_color-mix(in_oklab,var(--color-axis)_28%,transparent)]',
+  secondary:
+    'border border-white/15 bg-white/5 text-paper backdrop-blur-md hover:border-axis hover:text-axis',
+  ghost: 'text-paper hover:text-axis',
+}[variant];
+
+const shared =
+  'inline-flex cursor-pointer items-center justify-center gap-2 rounded-full px-6 py-2.5 text-[13px] font-medium tracking-[0.04em] transition-all duration-500 ease-out';
+---
+
+{
+  href ? (
+    <a
+      href={href}
+      class:list={[shared, classes, Astro.props.class]}
+      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+    >
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class:list={[shared, classes, Astro.props.class]}>
+      <slot />
+    </button>
+  )
+}

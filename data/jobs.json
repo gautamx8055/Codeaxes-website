@@ -1,0 +1,51 @@
+[
+  {
+    "id": "da513be4-6872-4b3e-ac28-006ef2f7b0f7",
+    "slug": "senior-product-engineer",
+    "title": "Senior Product Engineer",
+    "brand": "codeaxes",
+    "department": "Engineering",
+    "location": "Remote, US",
+    "employmentType": "full-time",
+    "workplace": "remote",
+    "summary": "Own delivery of product-critical web platforms with Codeaxes squads.",
+    "description": "You will work across discovery, architecture, and production operations.\n\nThis seat sits inside a delivery squad and stays accountable after launch.",
+    "responsibilities": [
+      "Ship production features with quality gates",
+      "Review architecture and operational risk"
+    ],
+    "requirements": [
+      "Shipped multi-tenant or regulated software",
+      "Clear written communication"
+    ],
+    "compensation": "Competitive, role-dependent",
+    "applyEmail": "hello@codeaxes.com",
+    "status": "open",
+    "createdAt": "2026-09-20T08:54:34.011Z",
+    "updatedAt": "2026-09-20T08:54:34.011Z"
+  },
+  {
+    "id": "b3c91e2a-4f5d-4a8e-9c11-6e2f8a1d0c44",
+    "slug": "growth-marketing-lead",
+    "title": "Growth Marketing Lead",
+    "brand": "kuroaxe",
+    "department": "Growth",
+    "location": "Remote",
+    "employmentType": "full-time",
+    "workplace": "remote",
+    "summary": "Build demand programs for Kuroaxe marketing services without turning the brand into a generic agency.",
+    "description": "You will own pipeline-quality campaigns, partner narratives, and measurement that sales can trust.\n\nThis seat sits with the Kuroaxe brand, listed on the shared Codeaxes careers page.",
+    "responsibilities": [
+      "Plan and ship campaigns across the Kuroaxe channels",
+      "Keep positioning specific to marketing services, not product engineering"
+    ],
+    "requirements": [
+      "Shipped B2B marketing programs with measurable pipeline",
+      "Clear writing and comfort working beside an engineering brand"
+    ],
+    "applyEmail": "hello@codeaxes.com",
+    "status": "open",
+    "createdAt": "2026-09-20T08:57:00.000Z",
+    "updatedAt": "2026-09-20T08:57:00.000Z"
+  }
+]

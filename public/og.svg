@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#07090D"/>
+  <circle cx="160" cy="40" r="280" fill="#7DD3FC" opacity="0.18"/>
+  <circle cx="1080" cy="80" r="260" fill="#93A4FF" opacity="0.16"/>
+  <line x1="120" y1="500" x2="1080" y2="140" stroke="#7DD3FC" stroke-width="3"/>
+  <line x1="140" y1="120" x2="140" y2="540" stroke="#93A4FF" stroke-width="3"/>
+  <circle cx="620" cy="320" r="10" fill="#F3F6FA"/>
+  <text x="180" y="250" fill="#F3F6FA" font-size="72" font-family="Sora, sans-serif" font-weight="600">Codeaxes</text>
+  <text x="180" y="310" fill="#8B95A7" font-size="28" font-family="Figtree, sans-serif">Engineering ambitious digital products.</text>
+</svg>

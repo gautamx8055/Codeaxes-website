@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/ui/PageHero.astro';
+import Section from '../../../components/ui/Section.astro';
+import CtaBand from '../../../components/ui/CtaBand.astro';
+import Button from '../../../components/ui/Button.astro';
+import { getTechnology, technologies } from '../../../data/technologies';
+import { site } from '../../../data/site';
+
+export function getStaticPaths() {
+  return technologies.map((tech) => ({ params: { slug: tech.slug } }));
+}
+
+const tech = getTechnology(Astro.params.slug ?? '');
+if (!tech) throw new Error('Unknown technology');
+---
+
+<BaseLayout title={tech.name} description={tech.summary} path={`/about/technologies/${tech.slug}`}>
+  <PageHero eyebrow={tech.category} title={tech.name} body={tech.summary} layout="rail">
+    <Button slot="actions" href="/contact">Discuss a project</Button>
+    <Button slot="actions" href="/about/technologies" variant="secondary">Full ecosystem</Button>
+  </PageHero>
+  <Section eyebrow="What it is" title="In production terms.">
+    <p class="max-w-3xl text-lg text-mist">{tech.what}</p>
+  </Section>
+  <Section eyebrow="Why Codeaxes" title="When we reach for it." class="border-y border-line">
+    <p class="max-w-3xl text-lg text-mist">{tech.why}</p>
+  </Section>
+  <Section eyebrow="Fit" title="Best-fit use cases.">
+    <ul class="grid gap-3 md:grid-cols-2">
+      {tech.useCases.map((item) => <li class="border border-line px-4 py-3 text-paper">{item}</li>)}
+    </ul>
+  </Section>
+  <Section eyebrow="Trade-offs" title="Benefits and limits.">
+    <div class="grid gap-10 md:grid-cols-2">
+      <div>
+        <h3 class="font-mono mb-3 text-[11px] uppercase tracking-[0.16em] text-pulse">Benefits</h3>
+        <ul class="space-y-2 text-mist">{tech.benefits.map((item) => <li>{item}</li>)}</ul>
+      </div>
+      <div>
+        <h3 class="font-mono mb-3 text-[11px] uppercase tracking-[0.16em] text-pulse">Limitations</h3>
+        <ul class="space-y-2 text-mist">{tech.limitations.map((item) => <li>{item}</li>)}</ul>
+      </div>
+    </div>
+  </Section>
+  <Section eyebrow="Ecosystem" title="Compatible technologies.">
+    <ul class="flex flex-wrap gap-2">
+      {tech.compatible.map((item) => <li class="border border-line px-3 py-1 text-sm text-mist">{item}</li>)}
+    </ul>
+  </Section>
+  <Section eyebrow="In the field" title="Example applications." class="border-y border-line">
+    <ul class="space-y-3 text-paper">{tech.applications.map((item) => <li>{item}</li>)}</ul>
+  </Section>
+  <Section eyebrow="Services" title="Where this stack shows up.">
+    <ul class="flex flex-wrap gap-2">
+      {
+        tech.relatedServices.map((slug) => (
+          <li>
+            <a href={`/services/${slug}`} class="border border-line px-3 py-2 text-sm text-paper hover:border-pulse">
+              {slug.replaceAll('-', ' ')}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+  <CtaBand title={`Use ${tech.name} on a Codeaxes engagement.`} primary={site.cta.primary} />
+</BaseLayout>

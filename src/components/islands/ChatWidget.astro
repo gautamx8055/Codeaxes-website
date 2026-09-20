@@ -1,0 +1,164 @@
+---
+import { suggestedPrompts } from '../../lib/search';
+---
+
+<div class="pointer-events-none fixed bottom-4 right-4 z-50 flex flex-col items-end gap-3">
+  <section
+    id="codeaxes-ai"
+    class="pointer-events-auto hidden w-[min(100vw-2rem,24rem)] overflow-hidden rounded-3xl border border-white/10 bg-ink/90 shadow-glow backdrop-blur-xl"
+    data-chat-panel
+    role="dialog"
+    aria-labelledby="chat-title"
+    aria-modal="true"
+    hidden
+  >
+    <header class="flex items-center justify-between border-b border-line px-4 py-3">
+      <div>
+        <h2 id="chat-title" class="font-display text-base text-paper">Codeaxes AI</h2>
+        <p class="font-mono text-[10px] uppercase tracking-[0.16em] text-mist">Site search assistant</p>
+      </div>
+      <div class="flex gap-2">
+        <button type="button" class="h-10 cursor-pointer px-2 text-xs text-mist hover:text-paper" data-chat-clear>
+          Clear
+        </button>
+        <button type="button" class="h-10 w-10 cursor-pointer text-paper" data-chat-close aria-label="Close chat">
+          ×
+        </button>
+      </div>
+    </header>
+    <div class="max-h-[min(60vh,28rem)] space-y-3 overflow-y-auto p-4" data-chat-log tabindex="0">
+      <p class="rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-paper" data-welcome>
+        Hi, I’m Codeaxes AI. Ask me about our services, technologies, industries, case studies, or how we can help.
+      </p>
+    </div>
+    <div class="flex flex-wrap gap-2 px-4 pb-3" data-prompts>
+      {
+        suggestedPrompts.map((prompt) => (
+          <button type="button" class="cursor-pointer rounded-full border border-white/10 px-2 py-1 text-left text-xs text-mist hover:text-paper" data-prompt>
+            {prompt}
+          </button>
+        ))
+      }
+    </div>
+    <form class="flex gap-2 border-t border-line p-3" data-chat-form>
+      <label class="sr-only" for="chat-input">Message Codeaxes AI</label>
+      <input
+        id="chat-input"
+        name="message"
+        autocomplete="off"
+        class="w-full border border-line bg-void px-3 py-2 text-sm text-paper"
+        placeholder="Ask about services, stack, or work"
+      />
+      <button type="submit" class="cursor-pointer rounded-full bg-paper px-4 text-[13px] font-medium tracking-[0.04em] text-void">
+        Send
+      </button>
+    </form>
+    <p class="px-4 pb-3 text-xs text-mist" data-chat-status aria-live="polite"></p>
+  </section>
+  <button
+    type="button"
+    class="pointer-events-auto inline-flex h-12 cursor-pointer items-center gap-2 rounded-full bg-paper px-5 text-[13px] font-medium tracking-[0.04em] text-void shadow-glow"
+    data-chat-open
+    aria-expanded="false"
+    aria-controls="codeaxes-ai"
+  >
+    Codeaxes AI
+  </button>
+</div>
+
+<script>
+  import { knowledge } from '../../data/knowledge';
+  import { formatLocalAnswer, searchKnowledge } from '../../lib/search';
+
+  type ChatMessage = { role: 'user' | 'assistant'; content: string };
+
+  const panel = document.querySelector<HTMLElement>('[data-chat-panel]');
+  const log = document.querySelector('[data-chat-log]');
+  const form = document.querySelector<HTMLFormElement>('[data-chat-form]');
+  const openBtn = document.querySelector<HTMLButtonElement>('[data-chat-open]');
+  const closeBtn = document.querySelector('[data-chat-close]');
+  const clearBtn = document.querySelector('[data-chat-clear]');
+  const status = document.querySelector('[data-chat-status]');
+  const input = document.querySelector<HTMLInputElement>('#chat-input');
+  let messages: ChatMessage[] = [];
+  let lastFocused: HTMLElement | null = null;
+
+  const linkify = (text: string) => {
+    const escape = text.replace(/[&<>]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[char] ?? char);
+    return escape.replace(/(\/[a-z0-9\-/#]+)/g, (path) => `<a class="text-pulse underline" href="${path}">${path}</a>`);
+  };
+
+  const addBubble = (role: ChatMessage['role'], content: string) => {
+    const node = document.createElement('div');
+    node.className =
+      role === 'user'
+        ? 'ml-8 rounded-2xl rounded-tr-md border border-axis/35 bg-axis/10 px-3 py-2 text-sm text-paper'
+        : 'mr-4 rounded-2xl rounded-tl-md border border-white/10 bg-white/5 px-3 py-2 text-sm text-paper';
+    node.innerHTML = linkify(content).replace(/\n/g, '<br />');
+    log?.appendChild(node);
+    log && (log.scrollTop = log.scrollHeight);
+  };
+
+  const setOpen = (open: boolean) => {
+    if (!panel) return;
+    panel.hidden = !open;
+    panel.classList.toggle('hidden', !open);
+    openBtn?.setAttribute('aria-expanded', String(open));
+    if (open) {
+      lastFocused = document.activeElement as HTMLElement;
+      input?.focus();
+    } else {
+      lastFocused?.focus();
+    }
+  };
+
+  const localAnswer = (query: string) => {
+    const hits = searchKnowledge(query, knowledge, 5);
+    const answer = formatLocalAnswer(query, hits);
+    return { answer, sources: hits.map((hit) => ({ title: hit.doc.title, url: hit.doc.url })) };
+  };
+
+  const ask = async (query: string) => {
+    messages.push({ role: 'user', content: query });
+    addBubble('user', query);
+    status && (status.textContent = 'Searching the Codeaxes site…');
+    let answer = localAnswer(query).answer;
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages }),
+      });
+      if (response.ok) {
+        const payload = await response.json();
+        if (typeof payload.answer === 'string' && payload.answer.trim()) answer = payload.answer;
+      }
+    } catch {
+      status && (status.textContent = 'Using on-site search.');
+    }
+    messages.push({ role: 'assistant', content: answer });
+    addBubble('assistant', answer);
+    status && (status.textContent = '');
+  };
+
+  openBtn?.addEventListener('click', () => setOpen(true));
+  closeBtn?.addEventListener('click', () => setOpen(false));
+  clearBtn?.addEventListener('click', () => {
+    messages = [];
+    log?.querySelectorAll('div').forEach((node) => node.remove());
+    status && (status.textContent = 'Conversation cleared.');
+  });
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const value = input?.value.trim();
+    if (!value) return;
+    if (input) input.value = '';
+    void ask(value);
+  });
+  document.querySelectorAll<HTMLButtonElement>('[data-prompt]').forEach((button) => {
+    button.addEventListener('click', () => void ask(button.textContent?.trim() ?? ''));
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && panel && !panel.hidden) setOpen(false);
+  });
+</script>

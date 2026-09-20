@@ -1,0 +1,36 @@
+---
+import { site, organizationJsonLd } from '../../data/site';
+import { absoluteUrl, titleTemplate } from '../../lib/seo';
+
+type Props = {
+  title: string;
+  description: string;
+  path: string;
+  type?: 'website' | 'article';
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+};
+
+const { title, description, path, type = 'website', jsonLd } = Astro.props;
+const canonical = absoluteUrl(path);
+const pageTitle = titleTemplate(title);
+const graph = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];
+---
+
+<title>{pageTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={absoluteUrl('/og.svg')} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={description} />
+<script type="application/ld+json" set:html={JSON.stringify(organizationJsonLd)} />
+{
+  graph.map((node) => (
+    <script type="application/ld+json" set:html={JSON.stringify(node)} />
+  ))
+}

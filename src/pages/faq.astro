@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import Section from '../components/ui/Section.astro';
+import CtaBand from '../components/ui/CtaBand.astro';
+import FaqSearch from '../components/islands/FaqSearch.astro';
+import { faqCategories } from '../data/faqs';
+import { site } from '../data/site';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqCategories.flatMap((category) =>
+    category.items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
+  ),
+};
+---
+
+<BaseLayout
+  title="FAQ"
+  description="Answers about working with Codeaxes, timelines, engagement models, AI automation, blockchain, data, games, cloud, DevOps, QA, and ownership."
+  path="/faq"
+  jsonLd={jsonLd}
+>
+  <PageHero
+    eyebrow="FAQ"
+    title="Straight answers, searchable."
+    body="If the question is not here, Codeaxes AI can search the rest of the site, or start a project and ask us directly."
+    layout="rail"
+  />
+  <Section>
+    <FaqSearch />
+  </Section>
+  <CtaBand title="Still unanswered?" body="Send the question with your constraint. We would rather be precise than fast and wrong." primary={site.cta.primary} />
+</BaseLayout>

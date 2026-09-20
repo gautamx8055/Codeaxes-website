@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/ui/PageHero.astro';
+import Section from '../../../components/ui/Section.astro';
+import CaseStudyCard from '../../../components/ui/CaseStudyCard.astro';
+import CaseStudyFilters from '../../../components/islands/CaseStudyFilters.astro';
+import { caseStudies } from '../../../data/case-studies';
+---
+
+<BaseLayout
+  title="Case Studies"
+  description="Searchable Codeaxes case studies across SaaS, healthcare, fintech, ecommerce, logistics, education, and operations."
+  path="/about/case-studies"
+>
+  <PageHero
+    eyebrow="Case studies"
+    title="Problems, systems, and the operating change."
+    body="Filter by industry or service. Each study is a full page: challenge, strategy, solution, stack, and outcomes."
+    layout="rail"
+  />
+  <Section>
+    <CaseStudyFilters>
+      {caseStudies.map((study) => <CaseStudyCard study={study} />)}
+    </CaseStudyFilters>
+  </Section>
+</BaseLayout>

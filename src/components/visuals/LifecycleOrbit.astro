@@ -1,0 +1,26 @@
+---
+const nodes = ['Idea', 'Validate', 'Prototype', 'MVP', 'Launch', 'Learn'];
+---
+
+<figure class="relative mx-auto aspect-square max-w-md" aria-label="Product lifecycle">
+  <div class="absolute inset-8 rounded-full border border-line"></div>
+  <div class="absolute inset-16 rounded-full border border-axis/40"></div>
+  <div class="absolute inset-0 grid place-items-center">
+    <span class="font-mono text-[11px] uppercase tracking-[0.18em] text-pulse">lifecycle</span>
+  </div>
+  {
+    nodes.map((node, index) => {
+      const angle = (index / nodes.length) * Math.PI * 2 - Math.PI / 2;
+      const x = 50 + Math.cos(angle) * 42;
+      const y = 50 + Math.sin(angle) * 42;
+      return (
+        <span
+          class="absolute -translate-x-1/2 -translate-y-1/2 border border-line bg-slate/80 px-2 py-1 text-xs text-paper backdrop-blur"
+          style={`left:${x}%;top:${y}%`}
+        >
+          {node}
+        </span>
+      );
+    })
+  }
+</figure>

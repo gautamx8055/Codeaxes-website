@@ -1,0 +1,125 @@
+---
+import { services } from '../../data/services';
+---
+
+<form class="grid gap-5" data-contact-form novalidate>
+  <div class="grid gap-5 md:grid-cols-2">
+    <div>
+      <label class="mb-2 block text-sm text-paper" for="name">Name</label>
+      <input id="name" name="name" autocomplete="name" required class="w-full border border-line bg-void px-3 py-3 text-paper" />
+      <p class="mt-1 hidden text-sm text-danger" data-error-for="name"></p>
+    </div>
+    <div>
+      <label class="mb-2 block text-sm text-paper" for="email">Business email</label>
+      <input id="email" name="email" type="email" autocomplete="email" required class="w-full border border-line bg-void px-3 py-3 text-paper" />
+      <p class="mt-1 hidden text-sm text-danger" data-error-for="email"></p>
+    </div>
+    <div>
+      <label class="mb-2 block text-sm text-paper" for="company">Company</label>
+      <input id="company" name="company" autocomplete="organization" required class="w-full border border-line bg-void px-3 py-3 text-paper" />
+      <p class="mt-1 hidden text-sm text-danger" data-error-for="company"></p>
+    </div>
+    <div>
+      <label class="mb-2 block text-sm text-paper" for="phone">Phone</label>
+      <input id="phone" name="phone" type="tel" autocomplete="tel" class="w-full border border-line bg-void px-3 py-3 text-paper" />
+      <p class="mt-1 hidden text-sm text-danger" data-error-for="phone"></p>
+    </div>
+    <div>
+      <label class="mb-2 block text-sm text-paper" for="service">Service interest</label>
+      <select id="service" name="service" required class="w-full border border-line bg-void px-3 py-3 text-paper">
+        <option value="">Select a service</option>
+        {services.map((service) => <option value={service.slug}>{service.name}</option>)}
+        <option value="not-sure">Not sure yet</option>
+      </select>
+      <p class="mt-1 hidden text-sm text-danger" data-error-for="service"></p>
+    </div>
+    <div>
+      <label class="mb-2 block text-sm text-paper" for="budget">Estimated budget</label>
+      <select id="budget" name="budget" required class="w-full border border-line bg-void px-3 py-3 text-paper">
+        <option value="">Select a range</option>
+        <option value="under-50k">Under 50k</option>
+        <option value="50-150k">50k-150k</option>
+        <option value="150-400k">150k-400k</option>
+        <option value="400k-plus">400k+</option>
+        <option value="undecided">To be scoped</option>
+      </select>
+      <p class="mt-1 hidden text-sm text-danger" data-error-for="budget"></p>
+    </div>
+  </div>
+  <div>
+    <label class="mb-2 block text-sm text-paper" for="timeline">Timeline</label>
+    <select id="timeline" name="timeline" required class="w-full border border-line bg-void px-3 py-3 text-paper">
+      <option value="">Select timing</option>
+      <option value="asap">As soon as we can staff it</option>
+      <option value="quarter">This quarter</option>
+      <option value="half">In the next six months</option>
+      <option value="exploring">Exploring</option>
+    </select>
+    <p class="mt-1 hidden text-sm text-danger" data-error-for="timeline"></p>
+  </div>
+  <div>
+    <label class="mb-2 block text-sm text-paper" for="details">Project details</label>
+    <textarea id="details" name="details" required minlength="20" rows="6" class="w-full border border-line bg-void px-3 py-3 text-paper"></textarea>
+    <p class="mt-1 hidden text-sm text-danger" data-error-for="details"></p>
+  </div>
+  <p class="text-sm text-mist">We use this enquiry to prepare a discovery conversation. Do not send secrets or personal health information.</p>
+  <button type="submit" class="inline-flex h-12 cursor-pointer items-center justify-center rounded-full bg-paper px-6 text-[13px] font-medium tracking-[0.04em] text-void">
+    Send enquiry
+  </button>
+  <p class="text-sm text-mist" data-form-status aria-live="polite"></p>
+</form>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  const status = document.querySelector('[data-form-status]');
+
+  const validate = (data: FormData) => {
+    const errors: Record<string, string> = {};
+    const name = String(data.get('name') ?? '').trim();
+    const email = String(data.get('email') ?? '').trim();
+    const company = String(data.get('company') ?? '').trim();
+    const phone = String(data.get('phone') ?? '').trim();
+    const service = String(data.get('service') ?? '');
+    const budget = String(data.get('budget') ?? '');
+    const timeline = String(data.get('timeline') ?? '');
+    const details = String(data.get('details') ?? '').trim();
+    if (name.length < 2) errors.name = 'Enter your name.';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = 'Enter a valid business email.';
+    if (company.length < 2) errors.company = 'Enter your company.';
+    if (phone && phone.replace(/\D/g, '').length < 7) errors.phone = 'Enter a reachable phone number or leave this blank.';
+    if (!service) errors.service = 'Choose a service, or “Not sure yet”.';
+    if (!budget) errors.budget = 'Choose a budget range or “To be scoped”.';
+    if (!timeline) errors.timeline = 'Choose a timeline.';
+    if (details.length < 20) errors.details = 'Add enough detail for a useful first conversation.';
+    return errors;
+  };
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const data = new FormData(form);
+    const errors = validate(data);
+    form.querySelectorAll('[data-error-for]').forEach((node) => {
+      const field = node.getAttribute('data-error-for') ?? '';
+      const message = errors[field];
+      node.textContent = message ?? '';
+      node.classList.toggle('hidden', !message);
+    });
+    if (Object.keys(errors).length) {
+      status && (status.textContent = 'Fix the highlighted fields and send again.');
+      return;
+    }
+    status && (status.textContent = 'Sending…');
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.fromEntries(data.entries())),
+      });
+      if (!response.ok) throw new Error('fail');
+      form.reset();
+      status && (status.textContent = 'Received. We will reply with a discovery slot. If you need us sooner, email hello@codeaxes.com.');
+    } catch {
+      status && (status.textContent = 'The form endpoint is unavailable in this environment. Email hello@codeaxes.com with the same details.');
+    }
+  });
+</script>

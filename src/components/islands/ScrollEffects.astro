@@ -1,0 +1,63 @@
+---
+---
+
+<div class="scroll-progress" aria-hidden="true" data-scroll-progress>
+  <span></span>
+</div>
+
+<script>
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const bar = document.querySelector<HTMLElement>('[data-scroll-progress] span');
+  const header = document.querySelector('header.glass');
+
+  const onScroll = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+    if (bar) bar.style.width = `${progress * 100}%`;
+    header?.classList.toggle('is-scrolled', window.scrollY > 16);
+  };
+
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  if (!reduce) {
+    const reveal = document.querySelectorAll('[data-reveal], [data-reveal-stagger]');
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-inview');
+            io.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
+    );
+    reveal.forEach((node) => io.observe(node));
+    window.setTimeout(() => {
+      reveal.forEach((node) => node.classList.add('is-inview'));
+    }, 1600);
+
+    let ticking = false;
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          const y = window.scrollY;
+          document.querySelectorAll<HTMLElement>('[data-parallax]').forEach((node) => {
+            const factor = Number(node.dataset.parallax ?? 0.12);
+            node.style.transform = `translate3d(0, ${y * factor * 0.15}px, 0)`;
+          });
+          ticking = false;
+        });
+      },
+      { passive: true },
+    );
+  } else {
+    document.querySelectorAll('[data-reveal], [data-reveal-stagger]').forEach((node) => {
+      node.classList.add('is-inview');
+    });
+  }
+</script>

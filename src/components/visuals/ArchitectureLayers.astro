@@ -1,0 +1,18 @@
+---
+const layers = ['Edge / CDN', 'API gateway', 'Tenant runtime', 'Data plane', 'Observability'];
+---
+
+<figure class="space-y-2" aria-label="Platform architecture layers">
+  {
+    layers.map((layer, index) => (
+      <div
+        class="flex items-center justify-between border border-line px-4 py-3"
+        style={`margin-inline: ${index * 8}px`}
+      >
+        <span class="font-mono text-[11px] uppercase tracking-[0.16em] text-mist">L{index}</span>
+        <span class="text-paper">{layer}</span>
+        <span class="h-2 w-2 rounded-full bg-pulse"></span>
+      </div>
+    ))
+  }
+</figure>

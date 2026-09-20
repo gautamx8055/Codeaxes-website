@@ -1,0 +1,34 @@
+---
+type Props = {
+  class?: string;
+  caption?: string;
+};
+
+const vLines = Array.from({ length: 13 }, (_, i) => 40 + i * 48);
+const hLines = Array.from({ length: 9 }, (_, i) => 28 + i * 48);
+---
+
+<figure class:list={['relative', Astro.props.class]}>
+  <svg viewBox="0 0 640 420" class="h-auto w-full text-line" role="img" aria-label="Product axes system diagram">
+    <rect width="640" height="420" fill="#0e1218" rx="24" />
+    <g stroke="currentColor" stroke-width="1" opacity="0.22">
+      {vLines.map((x) => <line x1={x} y1="24" x2={x} y2="396" />)}
+      {hLines.map((y) => <line x1="24" y1={y} x2="616" y2={y} />)}
+    </g>
+    <line x1="48" y1="360" x2="600" y2="360" stroke="#7dd3fc" stroke-width="1.5" />
+    <line x1="80" y1="40" x2="80" y2="380" stroke="#93a4ff" stroke-width="1.5" />
+    <line x1="120" y1="320" x2="560" y2="80" stroke="#7dd3fc" stroke-width="1.2" opacity="0.85" />
+    <circle class="mesh-dot" cx="80" cy="360" r="5" fill="#7dd3fc" />
+    <circle class="mesh-dot" cx="220" cy="270" r="4" fill="#93a4ff" />
+    <circle class="mesh-dot" cx="340" cy="200" r="5" fill="#7dd3fc" />
+    <circle class="mesh-dot" cx="470" cy="130" r="4" fill="#93a4ff" />
+    <circle class="mesh-dot" cx="560" cy="80" r="5" fill="#7dd3fc" />
+    <text x="96" y="56" fill="#8b95a7" font-size="11" font-family="Figtree, sans-serif">AXIS.STRATEGY</text>
+    <text x="430" y="392" fill="#8b95a7" font-size="11" font-family="Figtree, sans-serif">AXIS.DELIVERY</text>
+    <text x="390" y="72" fill="#f3f6fa" font-size="12" font-family="Figtree, sans-serif">product.mesh</text>
+    <rect x="300" y="176" width="132" height="48" fill="#151a22" stroke="#252b36" rx="10" />
+    <text x="312" y="196" fill="#7dd3fc" font-size="10" font-family="Figtree, sans-serif">NODE.LIVE</text>
+    <text x="312" y="212" fill="#f3f6fa" font-size="11" font-family="Figtree, sans-serif">quality gate</text>
+  </svg>
+  {Astro.props.caption && <figcaption class="font-mono mt-3 text-[11px] uppercase tracking-[0.16em] text-mist">{Astro.props.caption}</figcaption>}
+</figure>

@@ -1,0 +1,24 @@
+---
+import type { Job } from '../../types';
+import { brandLabels, employmentLabels, workplaceLabels } from '../../lib/jobs';
+
+type Props = {
+  job: Job;
+};
+
+const { job } = Astro.props;
+---
+
+<a href={`/careers/${job.slug}`} class="group flex h-full flex-col border border-line p-6">
+  <p class="font-mono mb-4 text-[11px] uppercase tracking-[0.16em] text-pulse">
+    {brandLabels[job.brand]} · {job.department}
+  </p>
+  <h3 class="font-display text-2xl tracking-tight text-paper group-hover:text-pulse">{job.title}</h3>
+  <p class="mt-3 flex-1 text-sm leading-relaxed text-mist">{job.summary}</p>
+  <ul class="mt-5 flex flex-wrap gap-2">
+    <li class="border border-line px-2 py-1 text-[11px] uppercase tracking-[0.12em] text-mist">{job.location}</li>
+    <li class="border border-line px-2 py-1 text-[11px] uppercase tracking-[0.12em] text-mist">{employmentLabels[job.employmentType]}</li>
+    <li class="border border-line px-2 py-1 text-[11px] uppercase tracking-[0.12em] text-mist">{workplaceLabels[job.workplace]}</li>
+  </ul>
+  <p class="font-mono mt-6 text-[11px] uppercase tracking-[0.16em] text-axis">Open role →</p>
+</a>

@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/ui/PageHero.astro';
+import Section from '../../../components/ui/Section.astro';
+import CtaBand from '../../../components/ui/CtaBand.astro';
+import Button from '../../../components/ui/Button.astro';
+import ServiceVisual from '../../../components/visuals/ServiceVisual.astro';
+import { caseStudies, getCaseStudy, getCaseStudiesBySlug } from '../../../data/case-studies';
+import { site } from '../../../data/site';
+
+export function getStaticPaths() {
+  return caseStudies.map((study) => ({ params: { slug: study.slug } }));
+}
+
+const study = getCaseStudy(Astro.params.slug ?? '');
+if (!study) throw new Error('Unknown case study');
+const related = getCaseStudiesBySlug(study.related);
+const visual =
+  study.visual === 'dashboard'
+    ? 'dashboard'
+    : study.visual === 'devices'
+      ? 'devices'
+      : study.visual === 'architecture'
+        ? 'architecture'
+        : 'workflow';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: study.title,
+  description: study.summary,
+  author: { '@type': 'Organization', name: site.name },
+  about: study.industry,
+};
+---
+
+<BaseLayout title={study.title} description={study.summary} path={`/about/case-studies/${study.slug}`} type="article" jsonLd={jsonLd}>
+  <PageHero eyebrow={study.industry} title={study.title} body={study.summary}>
+    <ServiceVisual kind={visual} />
+    <Button slot="actions" href="/contact">Start a similar project</Button>
+  </PageHero>
+
+  <Section eyebrow="Challenge" title="What was in the way.">
+    <p class="max-w-3xl text-lg text-mist">{study.challenge}</p>
+  </Section>
+  <Section eyebrow="Strategy" title="How we chose to proceed." class="border-y border-line">
+    <p class="max-w-3xl text-lg text-mist">{study.strategy}</p>
+  </Section>
+  <Section eyebrow="Solution" title="What shipped.">
+    <p class="max-w-3xl text-lg text-mist">{study.solution}</p>
+    <ul class="mt-8 grid gap-3 md:grid-cols-2">
+      {study.features.map((feature) => <li class="border border-line px-4 py-3 text-paper">{feature}</li>)}
+    </ul>
+  </Section>
+  <Section eyebrow="Stack" title="Technologies on the critical path.">
+    <ul class="flex flex-wrap gap-2">
+      {study.stack.map((item) => <li class="border border-line px-3 py-1 text-sm text-mist">{item}</li>)}
+    </ul>
+  </Section>
+  <Section eyebrow="Outcomes" title="Operating change the work targeted." class="border-y border-line">
+    <div class="grid gap-6 md:grid-cols-3">
+      {
+        study.outcomes.map((item) => (
+          <div class="border-t border-pulse pt-4">
+            <p class="font-mono text-[11px] uppercase tracking-[0.14em] text-mist">{item.label}</p>
+            <p class="mt-2 text-paper">{item.value}</p>
+          </div>
+        ))
+      }
+    </div>
+    <blockquote class="mt-12 max-w-3xl">
+      <p class="font-display text-2xl text-paper">“{study.quote}”</p>
+      <footer class="mt-4 text-sm text-mist">
+        {study.quoteName}, {study.quoteRole}
+      </footer>
+    </blockquote>
+  </Section>
+  {
+    related.length > 0 && (
+      <Section eyebrow="Related" title="More of the same caliber.">
+        <ul class="grid gap-3 md:grid-cols-2">
+          {related.map((item) => (
+            <li>
+              <a href={`/about/case-studies/${item.slug}`} class="block border border-line p-5 hover:border-axis">
+                <p class="font-mono text-[11px] text-pulse">{item.industry}</p>
+                <p class="mt-2 text-paper">{item.title}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </Section>
+    )
+  }
+  <CtaBand title="If this resembles your constraint, start a project." primary={site.cta.primary} secondary={{ label: 'All studies', href: '/about/case-studies' }} />
+</BaseLayout>
