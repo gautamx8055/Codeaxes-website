@@ -1,3 +1,4 @@
+# Publish the Astro static build. Pages source must be GitHub Actions, not Jekyll.
 name: Deploy to GitHub Pages
 
 on:
