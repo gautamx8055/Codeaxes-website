@@ -1,4 +1,6 @@
 ---
+import { withBase } from '../../lib/seo';
+
 type Variant = 'primary' | 'secondary' | 'ghost';
 
 type Props = {
@@ -10,6 +12,7 @@ type Props = {
 };
 
 const { href, variant = 'primary', type = 'button', external = false } = Astro.props;
+const resolvedHref = href ? withBase(href) : undefined;
 
 const classes = {
   primary:
@@ -24,9 +27,9 @@ const shared =
 ---
 
 {
-  href ? (
+  resolvedHref ? (
     <a
-      href={href}
+      href={resolvedHref}
       class:list={[shared, classes, Astro.props.class]}
       {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
     >

@@ -2,6 +2,7 @@
 import Logo from './Logo.astro';
 import { footerNav } from '../../data/navigation';
 import { site } from '../../data/site';
+import { withBase } from '../../lib/seo';
 
 const year = new Date().getFullYear();
 ---
@@ -33,7 +34,7 @@ const year = new Date().getFullYear();
                     {link.label}
                   </a>
                 ) : (
-                  <a href={link.href} class="text-sm text-mist hover:text-paper">
+                  <a href={withBase(link.href)} class="text-sm text-mist hover:text-paper">
                     {link.label}
                   </a>
                 )}

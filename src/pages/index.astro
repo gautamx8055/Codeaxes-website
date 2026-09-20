@@ -16,6 +16,7 @@ import { featuredCaseStudies } from '../data/case-studies';
 import { testimonials } from '../data/testimonials';
 import { whyCodeaxes } from '../data/why';
 import { techCategories } from '../data/technologies';
+import { withBase } from '../lib/seo';
 ---
 
 <BaseLayout
@@ -91,7 +92,7 @@ import { techCategories } from '../data/technologies';
     <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3" data-reveal-stagger>
       {
         techCategories.map((category) => (
-          <a href={`/about/technologies#${category.id}`} class="border border-line p-5 hover:border-axis">
+          <a href={withBase(`/about/technologies#${category.id}`)} class="border border-line p-5 hover:border-axis">
             <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-pulse">{category.id}</p>
             <h3 class="font-display mt-2 text-2xl text-paper">{category.name}</h3>
             <p class="mt-2 text-sm text-mist">{category.summary}</p>

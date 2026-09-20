@@ -6,6 +6,7 @@ import CtaBand from '../../../components/ui/CtaBand.astro';
 import Button from '../../../components/ui/Button.astro';
 import { getTechnology, technologies } from '../../../data/technologies';
 import { site } from '../../../data/site';
+import { withBase } from '../../../lib/seo';
 
 export function getStaticPaths() {
   return technologies.map((tech) => ({ params: { slug: tech.slug } }));
@@ -56,7 +57,7 @@ if (!tech) throw new Error('Unknown technology');
       {
         tech.relatedServices.map((slug) => (
           <li>
-            <a href={`/services/${slug}`} class="border border-line px-3 py-2 text-sm text-paper hover:border-pulse">
+            <a href={withBase(`/services/${slug}`)} class="border border-line px-3 py-2 text-sm text-paper hover:border-pulse">
               {slug.replaceAll('-', ' ')}
             </a>
           </li>

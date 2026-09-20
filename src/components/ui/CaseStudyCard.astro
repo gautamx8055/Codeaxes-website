@@ -1,6 +1,7 @@
 ---
 import type { CaseStudy } from '../../types';
 import ServiceVisual from '../visuals/ServiceVisual.astro';
+import { withBase } from '../../lib/seo';
 
 type Props = {
   study: CaseStudy;
@@ -18,7 +19,7 @@ const visual =
 ---
 
 <a
-  href={`/about/case-studies/${study.slug}`}
+  href={withBase(`/about/case-studies/${study.slug}`)}
   class="group grid overflow-hidden border border-line md:grid-cols-2"
   data-industry={study.industry}
   data-services={study.services.join(',')}

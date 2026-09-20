@@ -3,8 +3,9 @@ import Logo from './Logo.astro';
 import Button from '../ui/Button.astro';
 import { primaryNav } from '../../data/navigation';
 import { site } from '../../data/site';
+import { withBase, withoutBase } from '../../lib/seo';
 
-const path = Astro.url.pathname;
+const path = withoutBase(Astro.url.pathname);
 ---
 
 <header class="glass sticky top-0 z-40 border-b border-line">
@@ -16,7 +17,7 @@ const path = Astro.url.pathname;
           item.children ? (
             <div class="group/nav relative" data-nav-item>
               <a
-                href={item.href}
+                href={item.href ? withBase(item.href) : undefined}
                 class:list={[
                   'inline-flex items-center gap-1 px-3 py-2 text-sm text-mist hover:text-paper',
                   path.startsWith(item.href ?? '///') && 'text-paper',
@@ -41,7 +42,7 @@ const path = Astro.url.pathname;
                   <ul class:list={['grid gap-1', (item.children?.length ?? 0) > 7 && 'sm:grid-cols-2']}>
                     {item.children.map((child) => (
                       <li>
-                        <a href={child.href} class="block rounded-xl px-3 py-2 hover:bg-slate">
+                        <a href={withBase(child.href)} class="block rounded-xl px-3 py-2 hover:bg-slate">
                           <span class="block text-sm text-paper">{child.label}</span>
                           {child.description && <span class="block text-xs text-mist">{child.description}</span>}
                         </a>
@@ -63,7 +64,7 @@ const path = Astro.url.pathname;
             </a>
           ) : (
             <a
-              href={item.href}
+              href={item.href ? withBase(item.href) : undefined}
               class:list={[
                 'px-3 py-2 text-sm text-mist hover:text-paper',
                 (item.href === '/' ? path === '/' : path.startsWith(item.href ?? '///')) && 'text-paper',
@@ -99,7 +100,7 @@ const path = Astro.url.pathname;
                 {item.label} ↗
               </a>
             ) : (
-              <a href={item.href} class="text-paper">
+              <a href={item.href ? withBase(item.href) : undefined} class="text-paper">
                 {item.label}
               </a>
             )}
@@ -108,7 +109,7 @@ const path = Astro.url.pathname;
               <ul class="mt-2 grid gap-2 pl-3">
                 {item.children.map((child) => (
                   <li>
-                    <a href={child.href} class="text-sm text-mist hover:text-paper">
+                    <a href={withBase(child.href)} class="text-sm text-mist hover:text-paper">
                       {child.label}
                     </a>
                   </li>

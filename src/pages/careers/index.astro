@@ -9,8 +9,6 @@ import { listJobs } from '../../lib/jobs';
 import { site } from '../../data/site';
 import type { Job, JobBrand } from '../../types';
 
-export const prerender = false;
-
 const jobs = await listJobs();
 const boards: {
   id: JobBrand;

@@ -7,6 +7,7 @@ import Button from '../../../components/ui/Button.astro';
 import ServiceVisual from '../../../components/visuals/ServiceVisual.astro';
 import { caseStudies, getCaseStudy, getCaseStudiesBySlug } from '../../../data/case-studies';
 import { site } from '../../../data/site';
+import { withBase } from '../../../lib/seo';
 
 export function getStaticPaths() {
   return caseStudies.map((study) => ({ params: { slug: study.slug } }));
@@ -81,7 +82,7 @@ const jsonLd = {
         <ul class="grid gap-3 md:grid-cols-2">
           {related.map((item) => (
             <li>
-              <a href={`/about/case-studies/${item.slug}`} class="block border border-line p-5 hover:border-axis">
+              <a href={withBase(`/about/case-studies/${item.slug}`)} class="block border border-line p-5 hover:border-axis">
                 <p class="font-mono text-[11px] text-pulse">{item.industry}</p>
                 <p class="mt-2 text-paper">{item.title}</p>
               </a>

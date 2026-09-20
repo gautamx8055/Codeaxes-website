@@ -1,6 +1,7 @@
 ---
 import type { Job } from '../../types';
 import { brandLabels, employmentLabels, workplaceLabels } from '../../lib/jobs';
+import { withBase } from '../../lib/seo';
 
 type Props = {
   job: Job;
@@ -9,7 +10,7 @@ type Props = {
 const { job } = Astro.props;
 ---
 
-<a href={`/careers/${job.slug}`} class="group flex h-full flex-col border border-line p-6">
+<a href={withBase(`/careers/${job.slug}`)} class="group flex h-full flex-col border border-line p-6">
   <p class="font-mono mb-4 text-[11px] uppercase tracking-[0.16em] text-pulse">
     {brandLabels[job.brand]} · {job.department}
   </p>

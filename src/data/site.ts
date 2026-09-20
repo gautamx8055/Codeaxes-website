@@ -2,7 +2,7 @@ export const site = {
   name: 'Codeaxes',
   legalName: 'Codeaxes',
   tagline: 'Engineering ambitious digital products.',
-  url: 'https://codeaxes.com',
+  url: 'https://gautamx8055.github.io/Codeaxes-website',
   locale: 'en_US',
   email: 'hello@codeaxes.com',
   phone: '+1 (415) 555-0148',

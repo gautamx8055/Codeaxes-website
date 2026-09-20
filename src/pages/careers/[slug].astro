@@ -4,16 +4,20 @@ import PageHero from '../../components/ui/PageHero.astro';
 import Section from '../../components/ui/Section.astro';
 import CtaBand from '../../components/ui/CtaBand.astro';
 import Button from '../../components/ui/Button.astro';
-import { brandLabels, employmentLabels, getJob, jobJsonLd, workplaceLabels } from '../../lib/jobs';
+import { brandLabels, employmentLabels, getJob, jobJsonLd, listJobs, workplaceLabels } from '../../lib/jobs';
 import { site } from '../../data/site';
+import { withBase } from '../../lib/seo';
 
-export const prerender = false;
+export async function getStaticPaths() {
+  const jobs = await listJobs();
+  return jobs.map((job) => ({ params: { slug: job.slug } }));
+}
 
 const slug = Astro.params.slug ?? '';
 const job = await getJob(slug);
 
 if (!job) {
-  return Astro.redirect('/careers');
+  return Astro.redirect(withBase('/careers'));
 }
 
 const applyHref =

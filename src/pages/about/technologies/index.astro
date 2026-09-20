@@ -3,6 +3,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import PageHero from '../../../components/ui/PageHero.astro';
 import Section from '../../../components/ui/Section.astro';
 import { techCategories, getTechnologiesByCategory } from '../../../data/technologies';
+import { withBase } from '../../../lib/seo';
 ---
 
 <BaseLayout
@@ -21,7 +22,7 @@ import { techCategories, getTechnologiesByCategory } from '../../../data/technol
       <Section id={category.id} eyebrow={category.id} title={category.name} kicker={category.summary}>
         <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
           {getTechnologiesByCategory(category.id).map((tech) => (
-            <a href={`/about/technologies/${tech.slug}`} class="border border-line p-5 hover:border-axis">
+            <a href={withBase(`/about/technologies/${tech.slug}`)} class="border border-line p-5 hover:border-axis">
               <h3 class="font-display text-xl text-paper">{tech.name}</h3>
               <p class="mt-2 text-sm text-mist">{tech.summary}</p>
             </a>

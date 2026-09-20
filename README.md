@@ -76,7 +76,7 @@ Any OpenAI-compatible endpoint works via `OPENAI_BASE_URL`. If the API is missin
 
 ## Careers and job postings
 
-The `/careers` page is live: it reads open roles from `data/jobs.json` on each request. Your hiring web app publishes roles by calling the jobs API. Do not hard-code postings in page templates.
+The `/careers` page is live: it reads open roles from `data/jobs.json`. GitHub Pages bakes that file in at deploy time. Your hiring web app can still publish roles through the jobs API on a Node host. Do not hard-code postings in page templates.
 
 Set a secret in `.env`:
 
@@ -130,7 +130,7 @@ Optional: `slug`, `applyUrl` (https), `applyEmail`. Draft and closed roles stay 
 | PATCH | `/api/jobs/[slug]` | Yes | Update or close (`{ "status": "closed" }`) |
 | DELETE | `/api/jobs/[slug]` | Yes | Remove |
 
-The careers pages must run on the Node adapter so they can read new postings without a rebuild.
+Live job create/update needs the Node adapter. GitHub Pages only serves the last built `data/jobs.json`.
 
 ## Kuroaxe
 
@@ -154,5 +154,4 @@ Dark graphite/navy base with electric blue, violet, and cyan. Display type is Ou
 - Point `site` in `astro.config.mjs` at the real domain.
 - Wire `/api/contact` to email or a CRM. The current handler validates and acknowledges.
 - Swap placeholder clients, quotes, and case studies.
-- Deploy with a Node-capable host (`@astrojs/node`, standalone) so the API routes run. Static hosts still get all pages; chat falls back to local search if `/api/chat` is unavailable.
-# Codeaxes-website
+- GitHub Pages serves the static site. Careers are built from `data/jobs.json` at deploy time. The jobs API still needs a Node host if you want live posting without a rebuild.

@@ -83,9 +83,11 @@ import { suggestedPrompts } from '../../lib/search';
   let messages: ChatMessage[] = [];
   let lastFocused: HTMLElement | null = null;
 
+  const siteBase = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+
   const linkify = (text: string) => {
     const escape = text.replace(/[&<>]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[char] ?? char);
-    return escape.replace(/(\/[a-z0-9\-/#]+)/g, (path) => `<a class="text-pulse underline" href="${path}">${path}</a>`);
+    return escape.replace(/(\/[a-z0-9\-/#]+)/g, (path) => `<a class="text-pulse underline" href="${siteBase}${path}">${path}</a>`);
   };
 
   const addBubble = (role: ChatMessage['role'], content: string) => {
@@ -124,7 +126,7 @@ import { suggestedPrompts } from '../../lib/search';
     status && (status.textContent = 'Searching the Codeaxes site…');
     let answer = localAnswer(query).answer;
     try {
-      const response = await fetch('/api/chat', {
+      const response = await fetch(`${import.meta.env.BASE_URL.replace(/\/?$/, '/')}api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages }),

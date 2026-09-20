@@ -1,5 +1,6 @@
 ---
 import type { Service } from '../../types';
+import { withBase } from '../../lib/seo';
 
 type Props = {
   service: Service;
@@ -10,7 +11,7 @@ const { service, index } = Astro.props;
 ---
 
 <a
-  href={`/services/${service.slug}`}
+  href={withBase(`/services/${service.slug}`)}
   class="group flex h-full flex-col border border-line p-6"
 >
   {index && <p class="font-mono mb-6 text-[11px] text-pulse">{index}</p>}

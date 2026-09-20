@@ -10,6 +10,7 @@ import ServiceVisual from '../../components/visuals/ServiceVisual.astro';
 import { getService, services } from '../../data/services';
 import { getCaseStudiesBySlug } from '../../data/case-studies';
 import { site } from '../../data/site';
+import { withBase } from '../../lib/seo';
 
 export function getStaticPaths() {
   return services.map((service) => ({ params: { slug: service.slug } }));
@@ -95,7 +96,7 @@ const jsonLd = {
         <ul class="flex flex-wrap gap-2">
           {service.stack.map((item) => (
             <li>
-              <a href="/about/technologies" class="border border-line px-3 py-1 text-sm text-mist hover:text-pulse">
+              <a href={withBase('/about/technologies')} class="border border-line px-3 py-1 text-sm text-mist hover:text-pulse">
                 {item}
               </a>
             </li>
