@@ -56,10 +56,12 @@ const boards: {
     boards.map((board) => (
       <Section
         id={board.id}
+        index={board.id === 'codeaxes' ? '01' : '02'}
+        tone={board.id === 'codeaxes' ? 'muted' : 'ink'}
         eyebrow={board.eyebrow}
         title={board.title}
         kicker={board.kicker}
-        class={board.id === 'kuroaxe' ? 'border-t border-line' : undefined}
+        split
       >
         {board.jobs.length > 0 ? (
           <div class="grid gap-4 md:grid-cols-2" data-reveal-stagger>

@@ -5,25 +5,42 @@ type Props = {
   title?: string;
   kicker?: string;
   class?: string;
+  tone?: 'void' | 'muted' | 'ink';
+  index?: string;
+  split?: boolean;
+  padBottom?: 'default' | 'tight';
 };
 
-const { id, eyebrow, title, kicker } = Astro.props;
+const { id, eyebrow, title, kicker, tone = 'void', index, split = false, padBottom = 'default' } = Astro.props;
 ---
 
-<section id={id} data-reveal class:list={['relative px-5 py-20 md:px-8 md:py-28 lg:py-32', Astro.props.class]}>
+<section
+  id={id}
+  data-tone={tone}
+  class:list={[
+    'page-section relative px-5 pt-16 md:px-8 md:pt-24 lg:pt-28',
+    padBottom === 'tight' ? 'pb-6 md:pb-8' : 'pb-16 md:pb-24 lg:pb-28',
+    Astro.props.class,
+  ]}
+>
   <div class="mx-auto w-full max-w-6xl">
     {
       (eyebrow || title) && (
-        <header class="mb-12 max-w-3xl md:mb-16">
-          {eyebrow && (
-            <p class="mb-3 flex items-center gap-3 text-sm font-medium tracking-[0.08em] text-axis">
-              {eyebrow}
+        <header data-reveal class:list={['section-head mb-12 max-w-3xl md:mb-16', split && 'is-split max-w-none']}>
+          <div>
+            {(eyebrow || index) && (
+              <p class="mb-3 flex items-center gap-3 text-sm font-semibold tracking-[0.08em] text-axis">
+                {index && <span class="section-index">{index}</span>}
+                {eyebrow}
+              </p>
+            )}
+            {title && <h2 class="font-display text-3xl leading-[1.2] text-paper md:text-5xl">{title}</h2>}
+          </div>
+          {kicker && (
+            <p class:list={['mt-5 max-w-2xl text-base leading-relaxed text-mist md:text-lg', split && 'md:mt-0']}>
+              {kicker}
             </p>
           )}
-          {title && (
-            <h2 class="font-display text-3xl leading-[1.2] text-paper md:text-5xl">{title}</h2>
-          )}
-          {kicker && <p class="mt-5 max-w-2xl text-base leading-relaxed text-mist md:text-lg">{kicker}</p>}
         </header>
       )
     }

@@ -38,9 +38,9 @@ const jsonLd = {
     <Button slot="actions" href="/about/case-studies" variant="secondary">Related work</Button>
   </PageHero>
 
-  <Section eyebrow="The work" title={service.tagline} kicker={service.explanation} />
+  <Section index="01" tone="muted" eyebrow="The work" title={service.tagline} kicker={service.explanation} split />
 
-  <Section eyebrow="Problems" title="What this service is for." class="border-y border-line">
+  <Section index="02" eyebrow="Problems" title="What this service is for.">
     <ol class="grid gap-6 md:grid-cols-2">
       {
         service.problems.map((problem, index) => (
@@ -53,7 +53,7 @@ const jsonLd = {
     </ol>
   </Section>
 
-  <Section eyebrow="Capabilities" title="What we actually deliver.">
+  <Section index="03" tone="ink" eyebrow="Capabilities" title="What we actually deliver.">
     <div class="grid gap-8 md:grid-cols-2">
       {
         service.capabilities.map((item) => (
@@ -69,7 +69,7 @@ const jsonLd = {
     </ul>
   </Section>
 
-  <Section eyebrow="Workflow" title="How this engagement runs." class="border-y border-line">
+  <Section index="04" tone="muted" eyebrow="Workflow" title="How this engagement runs.">
     <ol class="grid gap-6 md:grid-cols-5">
       {
         service.process.map((step, index) => (
@@ -83,7 +83,7 @@ const jsonLd = {
     </ol>
   </Section>
 
-  <Section eyebrow="Fit" title="Industries and stack.">
+  <Section index="05" eyebrow="Fit" title="Industries and stack.">
     <div class="grid gap-10 md:grid-cols-2">
       <div>
         <h3 class="font-mono mb-4 text-[11px] uppercase tracking-[0.16em] text-mist">Industries</h3>
@@ -106,7 +106,7 @@ const jsonLd = {
     </div>
   </Section>
 
-  <Section eyebrow="Use cases" title="Where this shows up in production.">
+  <Section index="06" tone="ink" eyebrow="Use cases" title="Where this shows up in production.">
     <div class="grid gap-6 md:grid-cols-2">
       {
         service.useCases.map((item) => (
@@ -124,7 +124,7 @@ const jsonLd = {
 
   {
     related.length > 0 && (
-      <Section eyebrow="Work" title="Related case studies.">
+      <Section index="07" tone="muted" eyebrow="Work" title="Related case studies.">
         <div class="grid gap-6">
           {related.map((study) => (
             <CaseStudyCard study={study} />
@@ -134,7 +134,7 @@ const jsonLd = {
     )
   }
 
-  <Section eyebrow="FAQ" title={`Questions about ${service.shortName}.`}>
+  <Section index="08" eyebrow="FAQ" title={`Questions about ${service.shortName}.`}>
     <Accordion items={service.faqs} name={service.slug} />
   </Section>
 

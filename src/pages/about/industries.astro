@@ -28,8 +28,14 @@ import { site } from '../../data/site';
     }
   </div>
   {
-    industries.map((industry) => (
-      <Section id={industry.slug} eyebrow={industry.name} title={industry.summary}>
+    industries.map((industry, index) => (
+      <Section
+        id={industry.slug}
+        index={String(index + 1).padStart(2, '0')}
+        tone={index % 2 === 0 ? 'muted' : 'ink'}
+        eyebrow={industry.name}
+        title={industry.summary}
+      >
         <div class="grid gap-10 lg:grid-cols-2">
           <div>
             <h3 class="font-mono mb-3 text-[11px] uppercase tracking-[0.16em] text-pulse">Challenges</h3>

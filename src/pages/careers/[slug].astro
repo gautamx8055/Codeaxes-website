@@ -49,7 +49,7 @@ const paragraphs = job.description
     </Button>
   </PageHero>
 
-  <Section>
+  <Section tone="muted">
     <ul class="flex flex-wrap gap-2">
       <li class="border border-line px-3 py-1 text-sm text-paper">{brandLabels[job.brand]}</li>
       <li class="border border-line px-3 py-1 text-sm text-paper">{job.location}</li>
@@ -61,7 +61,7 @@ const paragraphs = job.description
 
   {
     paragraphs.length > 0 && (
-      <Section eyebrow="The role" title="What this seat is for." class="border-y border-line">
+      <Section index="01" tone="ink" eyebrow="The role" title="What this seat is for.">
         <div class="max-w-3xl space-y-5 text-lg leading-relaxed text-mist">
           {paragraphs.map((paragraph) => (
             <p>{paragraph}</p>
@@ -73,7 +73,7 @@ const paragraphs = job.description
 
   {
     job.responsibilities.length > 0 && (
-      <Section eyebrow="Work" title="What you will own.">
+      <Section index="02" tone="muted" eyebrow="Work" title="What you will own.">
         <ul class="grid gap-3 md:grid-cols-2">
           {job.responsibilities.map((item) => (
             <li class="border border-line px-4 py-3 text-paper">{item}</li>
@@ -85,7 +85,7 @@ const paragraphs = job.description
 
   {
     job.requirements.length > 0 && (
-      <Section eyebrow="Fit" title="What you bring." class="border-y border-line">
+      <Section index="03" tone="ink" eyebrow="Fit" title="What you bring.">
         <ul class="grid gap-3 md:grid-cols-2">
           {job.requirements.map((item) => (
             <li class="border-l border-pulse pl-4 text-paper">{item}</li>

@@ -15,15 +15,13 @@ const { href, variant = 'primary', type = 'button', external = false } = Astro.p
 const resolvedHref = href ? withBase(href) : undefined;
 
 const classes = {
-  primary:
-    'bg-paper text-void hover:bg-white hover:shadow-[0_0_36px_color-mix(in_oklab,var(--color-axis)_28%,transparent)]',
-  secondary:
-    'border border-white/15 bg-white/5 text-paper backdrop-blur-md hover:border-axis hover:text-axis',
+  primary: 'bg-paper text-void hover:opacity-90',
+  secondary: 'border border-line bg-ink text-paper hover:border-axis hover:text-axis',
   ghost: 'text-paper hover:text-axis',
 }[variant];
 
 const shared =
-  'inline-flex cursor-pointer items-center justify-center gap-2 rounded-full px-6 py-2.5 text-[13px] font-medium tracking-[0.04em] transition-all duration-500 ease-out';
+  'inline-flex cursor-pointer items-center justify-center gap-2 rounded-full px-6 py-2.5 text-[13px] font-semibold tracking-[0.04em] transition-all duration-300 ease-out';
 ---
 
 {

@@ -21,18 +21,18 @@ if (!tech) throw new Error('Unknown technology');
     <Button slot="actions" href="/contact">Discuss a project</Button>
     <Button slot="actions" href="/about/technologies" variant="secondary">Full ecosystem</Button>
   </PageHero>
-  <Section eyebrow="What it is" title="In production terms.">
+  <Section index="01" tone="muted" eyebrow="What it is" title="In production terms.">
     <p class="max-w-3xl text-lg text-mist">{tech.what}</p>
   </Section>
-  <Section eyebrow="Why Codeaxes" title="When we reach for it." class="border-y border-line">
+  <Section index="02" tone="ink" eyebrow="Why Codeaxes" title="When we reach for it.">
     <p class="max-w-3xl text-lg text-mist">{tech.why}</p>
   </Section>
-  <Section eyebrow="Fit" title="Best-fit use cases.">
+  <Section index="03" eyebrow="Fit" title="Best-fit use cases.">
     <ul class="grid gap-3 md:grid-cols-2">
       {tech.useCases.map((item) => <li class="border border-line px-4 py-3 text-paper">{item}</li>)}
     </ul>
   </Section>
-  <Section eyebrow="Trade-offs" title="Benefits and limits.">
+  <Section index="04" tone="muted" eyebrow="Trade-offs" title="Benefits and limits.">
     <div class="grid gap-10 md:grid-cols-2">
       <div>
         <h3 class="font-mono mb-3 text-[11px] uppercase tracking-[0.16em] text-pulse">Benefits</h3>
@@ -44,15 +44,15 @@ if (!tech) throw new Error('Unknown technology');
       </div>
     </div>
   </Section>
-  <Section eyebrow="Ecosystem" title="Compatible technologies.">
+  <Section index="05" tone="ink" eyebrow="Ecosystem" title="Compatible technologies.">
     <ul class="flex flex-wrap gap-2">
       {tech.compatible.map((item) => <li class="border border-line px-3 py-1 text-sm text-mist">{item}</li>)}
     </ul>
   </Section>
-  <Section eyebrow="In the field" title="Example applications." class="border-y border-line">
+  <Section index="06" eyebrow="In the field" title="Example applications.">
     <ul class="space-y-3 text-paper">{tech.applications.map((item) => <li>{item}</li>)}</ul>
   </Section>
-  <Section eyebrow="Services" title="Where this stack shows up.">
+  <Section index="07" tone="muted" eyebrow="Services" title="Where this stack shows up.">
     <ul class="flex flex-wrap gap-2">
       {
         tech.relatedServices.map((slug) => (

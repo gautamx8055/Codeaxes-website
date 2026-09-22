@@ -18,7 +18,7 @@ import { site } from '../../data/site';
     <Button slot="actions" href="/contact">Start a project</Button>
     <Button slot="actions" href="/about/case-studies" variant="secondary">See the work</Button>
   </PageHero>
-  <Section>
+  <Section tone="muted" index="01">
     <div class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
       <div class="space-y-5 text-lg leading-relaxed text-mist">
         {aboutStory.body.map((paragraph) => <p>{paragraph}</p>)}
@@ -35,7 +35,7 @@ import { site } from '../../data/site';
       </ul>
     </div>
   </Section>
-  <Section eyebrow="How we work" title="Six operating commitments." class="border-y border-line">
+  <Section index="02" tone="ink" eyebrow="How we work" title="Six operating commitments.">
     <div class="grid gap-8 md:grid-cols-2">
       {
         whyCodeaxes.map((item) => (
@@ -47,7 +47,7 @@ import { site } from '../../data/site';
       }
     </div>
   </Section>
-  <Section eyebrow="Explore" title="Company pages.">
+  <Section index="03" tone="muted" eyebrow="Explore" title="Company pages.">
     <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {
         [

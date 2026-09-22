@@ -1,0 +1,180 @@
+---
+type Props = {
+  label: string;
+  autoplay?: boolean;
+};
+
+const { label, autoplay = true } = Astro.props;
+---
+
+<div
+  class="cover-deck"
+  data-cover-deck
+  data-autoplay={autoplay ? 'true' : 'false'}
+  aria-roledescription="carousel"
+>
+  <div class="cover-stage" data-cover-stage>
+    <slot />
+  </div>
+  <div class="cover-tabs" data-cover-tabs hidden></div>
+  <p class="sr-only" data-cover-status aria-live="polite"></p>
+  <p class="sr-only">{label}. Side frames bring that item forward. The center frame opens its page.</p>
+</div>
+
+<script>
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const bindDeck = (root: HTMLElement) => {
+    const stage = root.querySelector<HTMLElement>('[data-cover-stage]');
+    const tabsWrap = root.querySelector<HTMLElement>('[data-cover-tabs]');
+    const status = root.querySelector<HTMLElement>('[data-cover-status]');
+    if (!stage) return;
+
+    const allCards = () => [...stage.querySelectorAll<HTMLElement>('[data-cover-card]')];
+    let tab = '';
+    let activeId = allCards()[0]?.dataset.coverId ?? '';
+    let timer: number | undefined;
+    let startX = 0;
+
+    const visible = () =>
+      allCards().filter((card) => {
+        if (card.hidden) return false;
+        return !tab || card.dataset.tab === tab;
+      });
+
+    const paint = () => {
+      const cards = visible();
+      if (!cards.length) return;
+      if (!cards.some((card) => card.dataset.coverId === activeId)) {
+        activeId = cards[0].dataset.coverId ?? '';
+      }
+      const activeIndex = Math.max(
+        0,
+        cards.findIndex((card) => card.dataset.coverId === activeId),
+      );
+      allCards().forEach((card) => {
+        if (tab && card.dataset.tab !== tab) {
+          card.dataset.slot = 'off';
+          card.setAttribute('aria-hidden', 'true');
+          card.tabIndex = -1;
+          return;
+        }
+        const index = cards.indexOf(card);
+        let slot = index - activeIndex;
+        const half = Math.floor(cards.length / 2);
+        if (slot > half) slot -= cards.length;
+        if (slot < -half) slot += cards.length;
+        const shown = Math.abs(slot) <= 2;
+        card.dataset.slot = shown ? String(slot) : 'off';
+        card.setAttribute('aria-hidden', shown ? 'false' : 'true');
+        card.tabIndex = slot === 0 ? 0 : -1;
+      });
+      if (status) status.textContent = `${activeIndex + 1} of ${cards.length}`;
+      tabsWrap?.querySelectorAll<HTMLButtonElement>('[data-cover-tab]').forEach((button) => {
+        const selected = button.dataset.coverTab === (tab || 'All');
+        button.classList.toggle('is-active', selected);
+        button.setAttribute('aria-selected', String(selected));
+      });
+    };
+
+    const go = (nextId: string) => {
+      activeId = nextId;
+      paint();
+    };
+
+    const step = (dir: number) => {
+      const cards = visible();
+      if (!cards.length) return;
+      const index = cards.findIndex((card) => card.dataset.coverId === activeId);
+      const next = cards[(index + dir + cards.length) % cards.length];
+      if (next?.dataset.coverId) go(next.dataset.coverId);
+    };
+
+    const play = () => {
+      window.clearInterval(timer);
+      if (reduced || root.dataset.autoplay !== 'true') return;
+      timer = window.setInterval(() => step(1), 5200);
+    };
+
+    allCards().forEach((card, index) => {
+      card.dataset.coverId = card.dataset.coverId || String(index);
+      card.addEventListener('click', (event) => {
+        if (card.dataset.slot === '0') return;
+        event.preventDefault();
+        if (card.dataset.coverId) go(card.dataset.coverId);
+      });
+    });
+
+    const tabNames = [...new Set(allCards().map((card) => card.dataset.tab).filter(Boolean))] as string[];
+    if (tabsWrap && tabNames.length > 1) {
+      tabsWrap.hidden = false;
+      tabsWrap.setAttribute('role', 'tablist');
+      tabsWrap.replaceChildren();
+      ['All', ...tabNames].forEach((name, index) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'cover-tab';
+        button.dataset.coverTab = name;
+        button.textContent = name;
+        button.setAttribute('role', 'tab');
+        if (index === 0) button.classList.add('is-active');
+        button.addEventListener('click', () => {
+          tab = name === 'All' ? '' : name;
+          const first = visible()[0];
+          if (first?.dataset.coverId) activeId = first.dataset.coverId;
+          paint();
+          play();
+        });
+        tabsWrap.append(button);
+      });
+    }
+
+    root.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        step(-1);
+      }
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        step(1);
+      }
+    });
+    root.tabIndex = 0;
+
+    stage.addEventListener(
+      'touchstart',
+      (event) => {
+        startX = event.changedTouches[0]?.clientX ?? 0;
+      },
+      { passive: true },
+    );
+    stage.addEventListener(
+      'touchend',
+      (event) => {
+        const x = event.changedTouches[0]?.clientX ?? startX;
+        if (x - startX > 40) step(-1);
+        if (startX - x > 40) step(1);
+      },
+      { passive: true },
+    );
+
+    root.addEventListener('mouseenter', () => window.clearInterval(timer));
+    root.addEventListener('mouseleave', play);
+    root.addEventListener('focusin', () => window.clearInterval(timer));
+    root.addEventListener('focusout', play);
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) play();
+        else window.clearInterval(timer);
+      },
+      { threshold: 0.35 },
+    );
+    io.observe(root);
+
+    paint();
+    play();
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-cover-deck]').forEach(bindDeck);
+</script>

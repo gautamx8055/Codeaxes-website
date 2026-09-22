@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/ui/PageHero.astro';
 import Section from '../../components/ui/Section.astro';
 import CtaBand from '../../components/ui/CtaBand.astro';
+import CoverDeck from '../../components/ui/CoverDeck.astro';
+import CoverFace from '../../components/ui/CoverFace.astro';
 import { testimonials } from '../../data/testimonials';
 import { site } from '../../data/site';
 ---
@@ -18,8 +20,21 @@ import { site } from '../../data/site';
     body="Quotes are illustrative placeholders until live client permissions are in place. Structure, roles, and project types are production-ready."
     layout="rail"
   />
-  <Section>
-    <div class="grid gap-8">
+  <Section tone="muted">
+    <CoverDeck label="Testimonials">
+      {
+        testimonials.map((item) => (
+          <article data-cover-card data-tab={item.projectType} data-cover-id={item.id}>
+            <CoverFace kicker={item.projectType} title={item.company} body={`${item.name}, ${item.role}`}>
+              <div class="flex h-full flex-col justify-center p-5 md:p-6">
+                <p class="font-display line-clamp-6 text-xl leading-snug text-paper md:text-2xl">“{item.quote}”</p>
+              </div>
+            </CoverFace>
+          </article>
+        ))
+      }
+    </CoverDeck>
+    <div class="mt-12 grid gap-8">
       {
         testimonials.map((item) => (
           <article class="grid gap-6 border border-line p-8 lg:grid-cols-[1.4fr_0.6fr]">

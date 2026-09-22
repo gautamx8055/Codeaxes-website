@@ -2,10 +2,10 @@
 import { suggestedPrompts } from '../../lib/search';
 ---
 
-<div class="pointer-events-none fixed bottom-4 right-4 z-50 flex flex-col items-end gap-3">
+<div class="pointer-events-none fixed bottom-4 right-4 z-50 flex flex-col items-end gap-3 sm:bottom-5">
   <section
     id="codeaxes-ai"
-    class="pointer-events-auto hidden w-[min(100vw-2rem,24rem)] overflow-hidden rounded-3xl border border-white/10 bg-ink/90 shadow-glow backdrop-blur-xl"
+    class="pointer-events-auto hidden w-[min(100vw-2rem,24rem)] overflow-hidden rounded-3xl border border-line bg-ink shadow-glow"
     data-chat-panel
     role="dialog"
     aria-labelledby="chat-title"
@@ -15,7 +15,7 @@ import { suggestedPrompts } from '../../lib/search';
     <header class="flex items-center justify-between border-b border-line px-4 py-3">
       <div>
         <h2 id="chat-title" class="font-display text-base text-paper">Codeaxes AI</h2>
-        <p class="font-mono text-[10px] uppercase tracking-[0.16em] text-mist">Site search assistant</p>
+        <p class="font-mono text-[10px] uppercase tracking-[0.16em] text-mist">Site guide</p>
       </div>
       <div class="flex gap-2">
         <button type="button" class="h-10 cursor-pointer px-2 text-xs text-mist hover:text-paper" data-chat-clear>
@@ -27,14 +27,14 @@ import { suggestedPrompts } from '../../lib/search';
       </div>
     </header>
     <div class="max-h-[min(60vh,28rem)] space-y-3 overflow-y-auto p-4" data-chat-log tabindex="0">
-      <p class="rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-paper" data-welcome>
-        Hi, I’m Codeaxes AI. Ask me about our services, technologies, industries, case studies, or how we can help.
+      <p class="rounded-2xl border border-line bg-slate px-3 py-2 text-sm text-paper" data-welcome>
+        Hi, I'm Codeaxes AI. Ask me about a problem you're trying to ship: services, stack, industries, case studies, or how to start.
       </p>
     </div>
     <div class="flex flex-wrap gap-2 px-4 pb-3" data-prompts>
       {
         suggestedPrompts.map((prompt) => (
-          <button type="button" class="cursor-pointer rounded-full border border-white/10 px-2 py-1 text-left text-xs text-mist hover:text-paper" data-prompt>
+          <button type="button" class="cursor-pointer rounded-full border border-line px-2 py-1 text-left text-xs text-mist hover:text-paper" data-prompt>
             {prompt}
           </button>
         ))
@@ -47,9 +47,9 @@ import { suggestedPrompts } from '../../lib/search';
         name="message"
         autocomplete="off"
         class="w-full border border-line bg-void px-3 py-2 text-sm text-paper"
-        placeholder="Ask about services, stack, or work"
+        placeholder="Ask a real question, like a colleague"
       />
-      <button type="submit" class="cursor-pointer rounded-full bg-paper px-4 text-[13px] font-medium tracking-[0.04em] text-void">
+      <button type="submit" class="cursor-pointer rounded-full bg-paper px-4 text-[13px] font-semibold tracking-[0.04em] text-void" data-chat-send>
         Send
       </button>
     </form>
@@ -57,7 +57,7 @@ import { suggestedPrompts } from '../../lib/search';
   </section>
   <button
     type="button"
-    class="pointer-events-auto inline-flex h-12 cursor-pointer items-center gap-2 rounded-full bg-paper px-5 text-[13px] font-medium tracking-[0.04em] text-void shadow-glow"
+    class="pointer-events-auto inline-flex h-12 cursor-pointer items-center gap-2 rounded-full bg-paper px-5 text-[13px] font-semibold tracking-[0.04em] text-void shadow-glow"
     data-chat-open
     aria-expanded="false"
     aria-controls="codeaxes-ai"
@@ -68,7 +68,7 @@ import { suggestedPrompts } from '../../lib/search';
 
 <script>
   import { knowledge } from '../../data/knowledge';
-  import { formatLocalAnswer, searchKnowledge } from '../../lib/search';
+  import { composeAssistantReply } from '../../lib/assistant';
 
   type ChatMessage = { role: 'user' | 'assistant'; content: string };
 
@@ -78,27 +78,30 @@ import { suggestedPrompts } from '../../lib/search';
   const openBtn = document.querySelector<HTMLButtonElement>('[data-chat-open]');
   const closeBtn = document.querySelector('[data-chat-close]');
   const clearBtn = document.querySelector('[data-chat-clear]');
+  const sendBtn = document.querySelector<HTMLButtonElement>('[data-chat-send]');
   const status = document.querySelector('[data-chat-status]');
   const input = document.querySelector<HTMLInputElement>('#chat-input');
   let messages: ChatMessage[] = [];
   let lastFocused: HTMLElement | null = null;
+  let busy = false;
 
   const siteBase = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
 
   const linkify = (text: string) => {
     const escape = text.replace(/[&<>]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[char] ?? char);
-    return escape.replace(/(\/[a-z0-9\-/#]+)/g, (path) => `<a class="text-pulse underline" href="${siteBase}${path}">${path}</a>`);
+    return escape.replace(/(\/(?:[a-z0-9\-/#]+))/g, (path) => `<a class="text-pulse underline" href="${siteBase}${path}">${path}</a>`);
   };
 
   const addBubble = (role: ChatMessage['role'], content: string) => {
     const node = document.createElement('div');
     node.className =
       role === 'user'
-        ? 'ml-8 rounded-2xl rounded-tr-md border border-axis/35 bg-axis/10 px-3 py-2 text-sm text-paper'
-        : 'mr-4 rounded-2xl rounded-tl-md border border-white/10 bg-white/5 px-3 py-2 text-sm text-paper';
+        ? 'ml-8 rounded-2xl rounded-tr-md border border-axis/35 bg-axis/10 px-3 py-2 text-sm leading-relaxed text-paper'
+        : 'mr-4 rounded-2xl rounded-tl-md border border-line bg-slate px-3 py-2 text-sm leading-relaxed text-paper';
     node.innerHTML = linkify(content).replace(/\n/g, '<br />');
     log?.appendChild(node);
     log && (log.scrollTop = log.scrollHeight);
+    return node;
   };
 
   const setOpen = (open: boolean) => {
@@ -114,33 +117,38 @@ import { suggestedPrompts } from '../../lib/search';
     }
   };
 
-  const localAnswer = (query: string) => {
-    const hits = searchKnowledge(query, knowledge, 5);
-    const answer = formatLocalAnswer(query, hits);
-    return { answer, sources: hits.map((hit) => ({ title: hit.doc.title, url: hit.doc.url })) };
-  };
-
   const ask = async (query: string) => {
+    if (busy) return;
+    busy = true;
+    if (sendBtn) sendBtn.disabled = true;
     messages.push({ role: 'user', content: query });
     addBubble('user', query);
-    status && (status.textContent = 'Searching the Codeaxes site…');
-    let answer = localAnswer(query).answer;
+    const thinking = addBubble('assistant', 'One moment…');
+    thinking.dataset.typing = 'true';
+    status && (status.textContent = 'Looking across the Codeaxes site…');
+    const local = composeAssistantReply(query, knowledge, messages);
+    let answer = local.answer;
     try {
       const response = await fetch(`${import.meta.env.BASE_URL.replace(/\/?$/, '/')}api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages }),
+        signal: AbortSignal.timeout(2500),
       });
       if (response.ok) {
         const payload = await response.json();
         if (typeof payload.answer === 'string' && payload.answer.trim()) answer = payload.answer;
       }
     } catch {
-      status && (status.textContent = 'Using on-site search.');
+      status && (status.textContent = 'Answering from the published site.');
     }
+    thinking.remove();
     messages.push({ role: 'assistant', content: answer });
     addBubble('assistant', answer);
     status && (status.textContent = '');
+    busy = false;
+    if (sendBtn) sendBtn.disabled = false;
+    input?.focus();
   };
 
   openBtn?.addEventListener('click', () => setOpen(true));

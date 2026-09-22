@@ -15,7 +15,7 @@ const { eyebrow, title, body, layout = 'split' } = Astro.props;
     layout === 'center' && 'text-center',
   ]}
 >
-  <div class="pointer-events-none absolute inset-0 grid-axes"></div>
+  <div class="pointer-events-none absolute inset-0 opacity-40 grid-axes"></div>
   <div
     class:list={[
       'relative mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28',
@@ -24,7 +24,7 @@ const { eyebrow, title, body, layout = 'split' } = Astro.props;
     ]}
   >
     <div>
-      <p class="mb-4 flex items-center gap-3 text-sm font-medium tracking-[0.08em] text-axis">
+      <p class="mb-4 flex items-center gap-3 text-sm font-semibold tracking-[0.08em] text-axis">
         {eyebrow}
       </p>
       <h1 class="headline-beam font-display text-4xl leading-[1.15] md:text-6xl">{title}</h1>

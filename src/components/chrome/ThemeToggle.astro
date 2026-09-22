@@ -1,0 +1,47 @@
+---
+---
+
+<button
+  type="button"
+  class="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-line text-paper"
+  data-theme-toggle
+  aria-label="Switch to light theme"
+>
+  <span class="sr-only" data-theme-label>Switch to light theme</span>
+  <svg data-theme-sun class="hidden h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+    <circle cx="12" cy="12" r="4"></circle>
+    <path d="M12 3v1.5M12 19.5V21M4.9 4.9l1.1 1.1M18 18l1.1 1.1M3 12h1.5M19.5 12H21M4.9 19.1l1.1-1.1M18 6l1.1-1.1"></path>
+  </svg>
+  <svg data-theme-moon class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+    <path d="M16.5 13.5A6.5 6.5 0 0 1 10.5 6 5.2 5.2 0 1 0 16.5 13.5Z"></path>
+  </svg>
+</button>
+
+<script>
+  const root = document.documentElement;
+
+  const apply = (theme: 'light' | 'dark') => {
+    root.dataset.theme = theme;
+    try {
+      localStorage.setItem('codeaxes-theme', theme);
+    } catch {
+      /* ignore */
+    }
+    const next = theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme';
+    document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
+      button.setAttribute('aria-label', next);
+      const label = button.querySelector('[data-theme-label]');
+      if (label) label.textContent = next;
+      button.querySelector('[data-theme-sun]')?.classList.toggle('hidden', theme !== 'light');
+      button.querySelector('[data-theme-moon]')?.classList.toggle('hidden', theme === 'light');
+    });
+  };
+
+  document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
+    button.addEventListener('click', () => {
+      apply(root.dataset.theme === 'light' ? 'dark' : 'light');
+    });
+  });
+
+  apply(root.dataset.theme === 'light' ? 'light' : 'dark');
+</script>

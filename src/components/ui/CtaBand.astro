@@ -7,17 +7,30 @@ type Props = {
   body?: string;
   primary?: { label: string; href: string };
   secondary?: { label: string; href: string };
+  blend?: boolean;
 };
 
-const { eyebrow, title, body, primary, secondary } = Astro.props;
+const { eyebrow, title, body, primary, secondary, blend = false } = Astro.props;
 ---
 
-<section data-reveal class="relative overflow-hidden border-t border-white/10">
-  <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,color-mix(in_oklab,var(--color-axis)_16%,transparent),transparent_42%)]"></div>
-  <div class="mx-auto flex max-w-6xl flex-col gap-8 px-5 py-16 md:flex-row md:items-end md:justify-between md:px-8 md:py-20">
+<section
+  data-reveal
+  class:list={['cta-band relative', blend ? 'overflow-visible cta-band-blend' : 'overflow-hidden border-t border-line']}
+>
+  {
+    !blend && (
+      <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_70%_at_80%_0%,color-mix(in_oklab,var(--color-axis)_18%,transparent),transparent_58%)]"></div>
+    )
+  }
+  <div
+    class:list={[
+      'relative mx-auto flex max-w-6xl flex-col gap-8 px-5 md:flex-row md:items-end md:justify-between md:px-8',
+      blend ? 'pt-8 pb-16 md:pt-10 md:pb-20' : 'py-16 md:py-20',
+    ]}
+  >
     <div class="max-w-2xl">
       {eyebrow && (
-        <p class="mb-3 flex items-center gap-3 text-sm font-medium tracking-[0.08em] text-axis">
+        <p class="mb-3 flex items-center gap-3 text-sm font-semibold tracking-[0.08em] text-axis">
           {eyebrow}
         </p>
       )}

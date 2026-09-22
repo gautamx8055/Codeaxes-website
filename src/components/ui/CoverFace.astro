@@ -1,0 +1,21 @@
+---
+type Props = {
+  kicker: string;
+  title: string;
+  body?: string;
+};
+
+const { kicker, title, body } = Astro.props;
+---
+
+<div class="cover-face">
+  <div class="cover-sitebar">
+    <span class="cover-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+    <p class="cover-kicker">{kicker}</p>
+    <p class="cover-title">{title}</p>
+  </div>
+  <div class="cover-preview">
+    <slot />
+  </div>
+  {body && <p class="sr-only">{body}</p>}
+</div>

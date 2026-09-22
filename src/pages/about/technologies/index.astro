@@ -18,8 +18,16 @@ import { withBase } from '../../../lib/seo';
     layout="rail"
   />
   {
-    techCategories.map((category) => (
-      <Section id={category.id} eyebrow={category.id} title={category.name} kicker={category.summary}>
+    techCategories.map((category, index) => (
+      <Section
+        id={category.id}
+        index={String(index + 1).padStart(2, '0')}
+        tone={index % 2 === 0 ? 'muted' : 'ink'}
+        eyebrow={category.id}
+        title={category.name}
+        kicker={category.summary}
+        split
+      >
         <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
           {getTechnologiesByCategory(category.id).map((tech) => (
             <a href={withBase(`/about/technologies/${tech.slug}`)} class="border border-line p-5 hover:border-axis">

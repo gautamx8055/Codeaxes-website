@@ -41,24 +41,24 @@ const jsonLd = {
     <Button slot="actions" href="/contact">Start a similar project</Button>
   </PageHero>
 
-  <Section eyebrow="Challenge" title="What was in the way.">
+  <Section index="01" tone="muted" eyebrow="Challenge" title="What was in the way.">
     <p class="max-w-3xl text-lg text-mist">{study.challenge}</p>
   </Section>
-  <Section eyebrow="Strategy" title="How we chose to proceed." class="border-y border-line">
+  <Section index="02" tone="ink" eyebrow="Strategy" title="How we chose to proceed.">
     <p class="max-w-3xl text-lg text-mist">{study.strategy}</p>
   </Section>
-  <Section eyebrow="Solution" title="What shipped.">
+  <Section index="03" eyebrow="Solution" title="What shipped.">
     <p class="max-w-3xl text-lg text-mist">{study.solution}</p>
     <ul class="mt-8 grid gap-3 md:grid-cols-2">
       {study.features.map((feature) => <li class="border border-line px-4 py-3 text-paper">{feature}</li>)}
     </ul>
   </Section>
-  <Section eyebrow="Stack" title="Technologies on the critical path.">
+  <Section index="04" tone="muted" eyebrow="Stack" title="Technologies on the critical path.">
     <ul class="flex flex-wrap gap-2">
       {study.stack.map((item) => <li class="border border-line px-3 py-1 text-sm text-mist">{item}</li>)}
     </ul>
   </Section>
-  <Section eyebrow="Outcomes" title="Operating change the work targeted." class="border-y border-line">
+  <Section index="05" tone="ink" eyebrow="Outcomes" title="Operating change the work targeted.">
     <div class="grid gap-6 md:grid-cols-3">
       {
         study.outcomes.map((item) => (
@@ -78,7 +78,7 @@ const jsonLd = {
   </Section>
   {
     related.length > 0 && (
-      <Section eyebrow="Related" title="More of the same caliber.">
+      <Section index="06" tone="muted" eyebrow="Related" title="More of the same caliber.">
         <ul class="grid gap-3 md:grid-cols-2">
           {related.map((item) => (
             <li>

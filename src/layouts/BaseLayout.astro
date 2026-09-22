@@ -19,18 +19,28 @@ const { title, description, path, type, jsonLd } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
     <meta name="generator" content={Astro.generator} />
     <Seo title={title} description={description} path={path} type={type} jsonLd={jsonLd} />
+    <script is:inline>
+      (() => {
+        const key = 'codeaxes-theme';
+        let theme = 'dark';
+        try {
+          const stored = localStorage.getItem(key);
+          if (stored === 'light' || stored === 'dark') theme = stored;
+          else if (window.matchMedia('(prefers-color-scheme: light)').matches) theme = 'light';
+        } catch {}
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
   </head>
   <body class="atmosphere min-h-screen antialiased">
     <a class="skip-link" href="#main">Skip to main content</a>
-    <div class="axis-rail axis-rail-y" aria-hidden="true"></div>
-    <div class="axis-rail axis-rail-x" aria-hidden="true"></div>
     <ScrollEffects />
     <Header />
     <main id="main">
