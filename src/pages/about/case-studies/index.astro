@@ -4,11 +4,7 @@ import PageHero from '../../../components/ui/PageHero.astro';
 import Section from '../../../components/ui/Section.astro';
 import CaseStudyCard from '../../../components/ui/CaseStudyCard.astro';
 import CaseStudyFilters from '../../../components/islands/CaseStudyFilters.astro';
-import CoverDeck from '../../../components/ui/CoverDeck.astro';
-import CoverFace from '../../../components/ui/CoverFace.astro';
-import ServiceVisual from '../../../components/visuals/ServiceVisual.astro';
 import { caseStudies } from '../../../data/case-studies';
-import { withBase } from '../../../lib/seo';
 ---
 
 <BaseLayout
@@ -23,26 +19,8 @@ import { withBase } from '../../../lib/seo';
     layout="rail"
   />
   <Section tone="ink">
-    <CoverDeck label="Case studies">
-      {
-        caseStudies.map((study) => (
-          <a
-            href={withBase(`/about/case-studies/${study.slug}`)}
-            data-cover-card
-            data-tab={study.industry}
-            data-cover-id={study.slug}
-          >
-            <CoverFace kicker={study.industry} title={study.client} body={study.summary}>
-              <ServiceVisual kind={study.visual} />
-            </CoverFace>
-          </a>
-        ))
-      }
-    </CoverDeck>
-    <div class="mt-12">
-      <CaseStudyFilters>
-        {caseStudies.map((study) => <CaseStudyCard study={study} />)}
-      </CaseStudyFilters>
-    </div>
+    <CaseStudyFilters>
+      {caseStudies.map((study) => <CaseStudyCard study={study} />)}
+    </CaseStudyFilters>
   </Section>
 </BaseLayout>

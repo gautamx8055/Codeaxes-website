@@ -3,8 +3,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/ui/PageHero.astro';
 import Section from '../../components/ui/Section.astro';
 import CtaBand from '../../components/ui/CtaBand.astro';
-import CoverDeck from '../../components/ui/CoverDeck.astro';
-import CoverFace from '../../components/ui/CoverFace.astro';
 import { testimonials } from '../../data/testimonials';
 import { site } from '../../data/site';
 ---
@@ -21,37 +19,24 @@ import { site } from '../../data/site';
     layout="rail"
   />
   <Section tone="muted">
-    <CoverDeck label="Testimonials">
+    <div class="grid gap-8">
       {
         testimonials.map((item) => (
-          <article data-cover-card data-tab={item.projectType} data-cover-id={item.id}>
-            <CoverFace kicker={item.projectType} title={item.company} body={`${item.name}, ${item.role}`}>
-              <div class="flex h-full flex-col justify-center p-5 md:p-6">
-                <p class="font-display line-clamp-6 text-xl leading-snug text-paper md:text-2xl">“{item.quote}”</p>
-              </div>
-            </CoverFace>
-          </article>
-        ))
-      }
-    </CoverDeck>
-    <div class="mt-12 grid gap-8">
-      {
-        testimonials.map((item) => (
-          <article class="grid gap-6 border border-line p-8 lg:grid-cols-[1.4fr_0.6fr]">
+          <article class="grid gap-6 rounded-3xl border border-line p-8 lg:grid-cols-[1.4fr_0.6fr]">
             <blockquote>
-              <p class="font-display text-2xl leading-snug text-paper md:text-3xl">“{item.quote}”</p>
+              <p class="quote-text text-xl text-paper md:text-2xl">“{item.quote}”</p>
               <footer class="mt-6">
-                <p class="text-paper">{item.name}</p>
+                <p class="font-medium text-paper">{item.name}</p>
                 <p class="text-sm text-mist">
                   {item.role}, {item.company}
                 </p>
               </footer>
             </blockquote>
             <div class="border-t border-line pt-4 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
-              <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-pulse">{item.projectType}</p>
+              <p class="kicker text-mist">{item.projectType}</p>
               {item.metric && (
                 <p class="mt-4">
-                  <span class="font-display text-3xl text-paper">{item.metric}</span>
+                  <span class="font-display text-3xl font-medium text-paper">{item.metric}</span>
                   <span class="mt-1 block text-sm text-mist">{item.metricLabel}</span>
                 </p>
               )}

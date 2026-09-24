@@ -19,17 +19,17 @@ const { title, description, path, type, jsonLd } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
     <meta name="generator" content={Astro.generator} />
     <Seo title={title} description={description} path={path} type={type} jsonLd={jsonLd} />
     <script is:inline>
       (() => {
         const key = 'codeaxes-theme';
-        let theme = 'light';
+        let theme = 'dark';
         try {
           const stored = localStorage.getItem(key);
           if (stored === 'light' || stored === 'dark') theme = stored;

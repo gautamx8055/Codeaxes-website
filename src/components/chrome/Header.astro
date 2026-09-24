@@ -9,10 +9,11 @@ import { withBase, withoutBase } from '../../lib/seo';
 const path = withoutBase(Astro.url.pathname);
 ---
 
-<header class="glass sticky top-0 z-40 border-b border-line">
-  <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3 md:px-8">
+<div class="header-offset" data-header-offset aria-hidden="true"></div>
+<header class="glass site-header border-b border-line">
+  <div class="header-bar mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2.5 sm:gap-4 sm:px-5 sm:py-3 md:px-8" data-header-bar>
     <Logo />
-    <nav class="hidden items-center lg:flex" aria-label="Primary">
+    <nav class="hidden items-center xl:flex" aria-label="Primary">
       {
         primaryNav.map((item) =>
           item.children ? (
@@ -20,7 +21,7 @@ const path = withoutBase(Astro.url.pathname);
               <a
                 href={item.href ? withBase(item.href) : undefined}
                 class:list={[
-                  'inline-flex items-center gap-1 px-3 py-2 text-sm font-semibold text-mist hover:text-paper',
+                  'inline-flex items-center gap-1 px-3 py-2 font-display text-[11px] font-semibold uppercase tracking-[0.22em] text-mist hover:text-paper',
                   path.startsWith(item.href ?? '///') && 'text-paper',
                 ]}
                 aria-haspopup="true"
@@ -56,7 +57,7 @@ const path = withoutBase(Astro.url.pathname);
           ) : item.external ? (
             <a
               href={item.href}
-              class="inline-flex items-center gap-1 px-3 py-2 text-sm font-semibold text-mist hover:text-pulse"
+              class="inline-flex items-center gap-1 px-3 py-2 font-display text-[11px] font-semibold uppercase tracking-[0.22em] text-mist hover:text-paper"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -67,7 +68,7 @@ const path = withoutBase(Astro.url.pathname);
             <a
               href={item.href ? withBase(item.href) : undefined}
               class:list={[
-                'px-3 py-2 text-sm font-semibold text-mist hover:text-paper',
+                'px-3 py-2 font-display text-[11px] font-semibold uppercase tracking-[0.22em] text-mist hover:text-paper',
                 (item.href === '/' ? path === '/' : path.startsWith(item.href ?? '///')) && 'text-paper',
               ]}
             >
@@ -79,10 +80,10 @@ const path = withoutBase(Astro.url.pathname);
     </nav>
     <div class="flex items-center gap-2">
       <ThemeToggle />
-      <Button href={site.cta.primary.href} class="hidden lg:inline-flex">{site.cta.primary.label}</Button>
+      <Button href={site.cta.primary.href} class="!hidden xl:!inline-flex">{site.cta.primary.label}</Button>
       <button
         type="button"
-        class="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-line text-paper lg:hidden"
+        class="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-line text-paper xl:hidden"
         data-nav-toggle
         aria-expanded="false"
         aria-controls="mobile-nav"
@@ -92,7 +93,7 @@ const path = withoutBase(Astro.url.pathname);
       </button>
     </div>
   </div>
-  <div id="mobile-nav" class="hidden max-h-[min(80vh,40rem)] overflow-y-auto border-t border-line bg-void lg:hidden" data-mobile-nav>
+  <div id="mobile-nav" class="hidden max-h-[min(80vh,40rem)] overflow-y-auto border-t border-line bg-void xl:hidden" data-mobile-nav>
     <nav class="mx-auto max-w-6xl px-5 py-4" aria-label="Mobile">
       {
         primaryNav.map((item) => (
@@ -158,9 +159,24 @@ const path = withoutBase(Astro.url.pathname);
 <script>
   const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
   const panel = document.querySelector<HTMLElement>('[data-mobile-nav]');
+  const header = document.querySelector<HTMLElement>('header.glass');
+  const offset = document.querySelector<HTMLElement>('[data-header-offset]');
+  const bar = document.querySelector<HTMLElement>('[data-header-bar]');
+
+  const syncOffset = () => {
+    if (!offset || !bar) return;
+    const height = Math.ceil(bar.getBoundingClientRect().height);
+    offset.style.height = `${height}px`;
+    document.documentElement.style.setProperty('--site-header-h', `${height}px`);
+  };
+  syncOffset();
+  window.addEventListener('resize', syncOffset);
+
   toggle?.addEventListener('click', () => {
     const open = panel?.classList.toggle('hidden') === false;
     toggle.setAttribute('aria-expanded', String(open));
+    header?.classList.toggle('is-menu-open', open);
+    document.dispatchEvent(new Event('codeaxes:header-show'));
   });
 
   document.querySelectorAll<HTMLElement>('[data-nav-item]').forEach((item) => {
@@ -179,6 +195,8 @@ const path = withoutBase(Astro.url.pathname);
     if (event.key === 'Escape') {
       panel?.classList.add('hidden');
       toggle?.setAttribute('aria-expanded', 'false');
+      header?.classList.remove('is-menu-open');
+      document.dispatchEvent(new Event('codeaxes:header-show'));
       const active = document.activeElement;
       if (active instanceof HTMLElement && active.closest('[data-nav-item]')) active.blur();
     }

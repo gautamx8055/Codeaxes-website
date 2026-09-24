@@ -8,49 +8,100 @@ type Props = {
 const { items } = Astro.props;
 ---
 
-<div class="relative" data-slider>
-  <div class="overflow-hidden border border-line" data-slides>
+<div class="quote-stage" data-slider>
+  <div class="overflow-hidden" data-slides>
     {
       items.map((item, index) => (
-        <blockquote class="slider-pane p-8 md:p-12" data-pane hidden={index !== 0} data-index={index}>
-          <p class="font-display text-2xl leading-snug text-paper md:text-4xl">“{item.quote}”</p>
-          <footer class="mt-8">
-            <p class="text-paper">{item.name}</p>
-            <p class="text-sm text-mist">
-              {item.role}, {item.company}
-            </p>
-            <p class="font-mono mt-2 text-[11px] uppercase tracking-[0.16em] text-pulse">{item.projectType}</p>
+        <blockquote class="slider-pane p-6 md:p-10" data-pane hidden={index !== 0} data-index={index}>
+          <p class="kicker mb-5 text-mist">{item.projectType}</p>
+          <p class="quote-text text-xl text-paper md:text-2xl">“{item.quote}”</p>
+          <footer class="mt-8 flex flex-wrap items-end justify-between gap-6">
+            <div>
+              <p class="font-medium text-paper">{item.name}</p>
+              <p class="text-sm text-mist">
+                {item.role}, {item.company}
+              </p>
+            </div>
+            {item.metric && (
+              <p class="text-right">
+                <span class="font-display block text-2xl font-medium text-paper md:text-3xl">{item.metric}</span>
+                <span class="font-mono mt-1 block text-[11px] uppercase tracking-[0.14em] text-mist">{item.metricLabel}</span>
+              </p>
+            )}
           </footer>
         </blockquote>
       ))
     }
   </div>
-  <div class="mt-4 flex items-center gap-3">
-    <button type="button" class="h-11 cursor-pointer rounded-full border border-line px-4 text-sm text-paper" data-prev>
-      Previous
+  <div class="flex flex-wrap items-center gap-3 border-t border-line px-6 py-4 md:px-10">
+    <button type="button" class="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-line text-paper hover:bg-paper hover:text-void" data-prev aria-label="Previous testimonial">
+      ‹
     </button>
-    <button type="button" class="h-11 cursor-pointer rounded-full border border-line px-4 text-sm text-paper" data-next>
-      Next
+    <button type="button" class="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-line text-paper hover:bg-paper hover:text-void" data-next aria-label="Next testimonial">
+      ›
     </button>
-    <p class="font-mono text-[11px] text-mist" data-status aria-live="polite"></p>
+    <div class="flex flex-wrap gap-1.5" data-dots></div>
+    <p class="font-mono ml-auto text-[11px] text-mist" data-status aria-live="polite"></p>
   </div>
 </div>
 
 <script>
-  const root = document.querySelector('[data-slider]');
-  if (root) {
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll<HTMLElement>('[data-slider]').forEach((root) => {
     const panes = [...root.querySelectorAll<HTMLElement>('[data-pane]')];
-    let index = 0;
     const status = root.querySelector('[data-status]');
+    const dotsWrap = root.querySelector('[data-dots]');
+    let index = 0;
+    let timer: number | undefined;
+
     const show = (next: number) => {
       index = (next + panes.length) % panes.length;
       panes.forEach((pane, i) => {
         pane.hidden = i !== index;
       });
-      if (status) status.textContent = `${index + 1} of ${panes.length}`;
+      dotsWrap?.querySelectorAll('button').forEach((dot, i) => {
+        dot.classList.toggle('is-active', i === index);
+        dot.setAttribute('aria-current', i === index ? 'true' : 'false');
+      });
+      if (status) status.textContent = `${String(index + 1).padStart(2, '0')} / ${String(panes.length).padStart(2, '0')}`;
     };
-    root.querySelector('[data-prev]')?.addEventListener('click', () => show(index - 1));
-    root.querySelector('[data-next]')?.addEventListener('click', () => show(index + 1));
+
+    const play = () => {
+      window.clearInterval(timer);
+      if (reduced) return;
+      timer = window.setInterval(() => show(index + 1), 6400);
+    };
+
+    if (dotsWrap) {
+      dotsWrap.replaceChildren();
+      panes.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'quote-dot';
+        dot.setAttribute('aria-label', `Show testimonial ${i + 1}`);
+        dot.addEventListener('click', () => {
+          show(i);
+          play();
+        });
+        dotsWrap.append(dot);
+      });
+    }
+
+    root.querySelector('[data-prev]')?.addEventListener('click', () => {
+      show(index - 1);
+      play();
+    });
+    root.querySelector('[data-next]')?.addEventListener('click', () => {
+      show(index + 1);
+      play();
+    });
+    root.addEventListener('mouseenter', () => window.clearInterval(timer));
+    root.addEventListener('mouseleave', play);
+    root.addEventListener('focusin', () => window.clearInterval(timer));
+    root.addEventListener('focusout', play);
+
     show(0);
-  }
+    play();
+  });
 </script>

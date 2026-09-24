@@ -2,10 +2,10 @@
 import { deliveryProcess } from '../../data/process';
 ---
 
-<ol class="process-timeline flex gap-4 overflow-x-auto pb-4 md:grid md:grid-cols-2 md:overflow-visible md:pb-0 xl:grid-cols-7" data-reveal-stagger>
+<ol class="process-timeline flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 md:grid md:grid-cols-2 md:overflow-visible md:pb-0 xl:grid-cols-7" data-reveal-stagger>
   {
     deliveryProcess.map((step, index) => (
-      <li class="min-w-[14rem] border-t border-axis pt-4 md:min-w-0">
+      <li class="min-w-[min(16rem,78vw)] snap-start border-t border-axis pt-4 md:min-w-0">
         <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-pulse">
           {String(index + 1).padStart(2, '0')}
         </p>

@@ -11,17 +11,17 @@ const { compact = false } = Astro.props;
 
 <a href={withBase('/')} class:list={['group inline-flex items-center gap-3', Astro.props.class]} aria-label="Codeaxes home">
   <span class="relative grid h-9 w-9 place-items-center rounded-2xl border border-line bg-slate" aria-hidden="true">
-    <svg viewBox="0 0 36 36" class="h-7 w-7">
-      <line x1="6" y1="30" x2="30" y2="6" stroke="currentColor" class="text-axis" stroke-width="1.6" />
-      <line x1="6" y1="6" x2="30" y2="30" stroke="currentColor" class="text-signal" stroke-width="1.6" />
-      <circle cx="18" cy="18" r="2.2" fill="currentColor" class="text-pulse" />
+    <svg viewBox="0 0 36 36" class="h-6 w-6">
+      <line x1="6" y1="30" x2="30" y2="6" stroke="currentColor" class="text-paper" stroke-width="1.4" />
+      <line x1="6" y1="6" x2="30" y2="30" stroke="currentColor" class="text-mist" stroke-width="1.4" />
+      <circle cx="18" cy="18" r="2.2" fill="currentColor" class="text-paper" />
     </svg>
   </span>
   {
     !compact && (
-      <span class="leading-tight">
-        <span class="font-display block text-[1.05rem] font-bold text-paper">Codeaxes</span>
-        <span class="hidden text-[11px] font-semibold tracking-[0.08em] text-mist sm:block">Product engineering</span>
+      <span class="leading-none">
+        <span class="font-display block text-[1.05rem] font-semibold uppercase tracking-[0.2em] text-paper">Codeaxes</span>
+        <span class="hidden font-display text-[10px] font-semibold uppercase tracking-[0.22em] text-mist sm:block">Product engineering</span>
       </span>
     )
   }

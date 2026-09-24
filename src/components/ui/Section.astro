@@ -18,8 +18,8 @@ const { id, eyebrow, title, kicker, tone = 'void', index, split = false, padBott
   id={id}
   data-tone={tone}
   class:list={[
-    'page-section relative px-5 pt-16 md:px-8 md:pt-24 lg:pt-28',
-    padBottom === 'tight' ? 'pb-6 md:pb-8' : 'pb-16 md:pb-24 lg:pb-28',
+    'page-section relative px-4 pt-12 sm:px-5 sm:pt-16 md:px-8 md:pt-24 lg:pt-28',
+    padBottom === 'tight' ? 'pb-6 md:pb-8' : 'pb-12 sm:pb-16 md:pb-24 lg:pb-28',
     Astro.props.class,
   ]}
 >
@@ -29,12 +29,12 @@ const { id, eyebrow, title, kicker, tone = 'void', index, split = false, padBott
         <header data-reveal class:list={['section-head mb-12 max-w-3xl md:mb-16', split && 'is-split max-w-none']}>
           <div>
             {(eyebrow || index) && (
-              <p class="mb-3 flex items-center gap-3 text-sm font-semibold tracking-[0.08em] text-axis">
+              <p class="kicker mb-4">
                 {index && <span class="section-index">{index}</span>}
                 {eyebrow}
               </p>
             )}
-            {title && <h2 class="font-display text-3xl leading-[1.2] text-paper md:text-5xl">{title}</h2>}
+            {title && <h2 class="font-display text-[2.1rem] leading-[0.98] text-paper sm:text-4xl md:text-6xl">{title}</h2>}
           </div>
           {kicker && (
             <p class:list={['mt-5 max-w-2xl text-base leading-relaxed text-mist md:text-lg', split && 'md:mt-0']}>

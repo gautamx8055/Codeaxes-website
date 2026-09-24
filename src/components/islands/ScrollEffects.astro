@@ -8,17 +8,42 @@
 <script>
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const bar = document.querySelector<HTMLElement>('[data-scroll-progress] span');
-  const header = document.querySelector('header.glass');
+  const header = document.querySelector<HTMLElement>('header.glass');
+  let lastY = Math.max(0, window.scrollY);
+  let hidden = false;
+
+  const setHeaderHidden = (next: boolean) => {
+    if (!header) return;
+    const hide = next && !reduce;
+    if (hide === hidden) return;
+    hidden = hide;
+    header.classList.toggle('is-hidden', hide);
+    header.style.setProperty('translate', hide ? '0 -110%' : '0px', 'important');
+  };
 
   const onScroll = () => {
+    const y = Math.max(0, window.scrollY);
     const max = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+    const progress = max > 0 ? Math.min(1, y / max) : 0;
     if (bar) bar.style.width = `${progress * 100}%`;
-    header?.classList.toggle('is-scrolled', window.scrollY > 16);
+    header?.classList.toggle('is-scrolled', y > 16);
+
+    const menuOpen = header?.classList.contains('is-menu-open');
+    const delta = y - lastY;
+    if (reduce || menuOpen || y < 48) {
+      setHeaderHidden(false);
+    } else if (delta > 8) {
+      setHeaderHidden(true);
+    } else if (delta < -8) {
+      setHeaderHidden(false);
+    }
+    lastY = y;
   };
 
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
+  header?.addEventListener('focusin', () => setHeaderHidden(false));
+  document.addEventListener('codeaxes:header-show', () => setHeaderHidden(false));
 
   if (!reduce) {
     const reveal = document.querySelectorAll('[data-reveal], [data-reveal-stagger]');
@@ -55,6 +80,19 @@
       },
       { passive: true },
     );
+
+    const hero = document.querySelector<HTMLElement>('[data-hero]');
+    if (hero) {
+      hero.addEventListener(
+        'pointermove',
+        (event) => {
+          const rect = hero.getBoundingClientRect();
+          hero.style.setProperty('--mx', `${event.clientX - rect.left}px`);
+          hero.style.setProperty('--my', `${event.clientY - rect.top}px`);
+        },
+        { passive: true },
+      );
+    }
   } else {
     document.querySelectorAll('[data-reveal], [data-reveal-stagger]').forEach((node) => {
       node.classList.add('is-inview');

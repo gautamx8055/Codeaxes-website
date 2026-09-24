@@ -20,7 +20,7 @@ const visual =
 
 <a
   href={withBase(`/about/case-studies/${study.slug}`)}
-  class="group grid overflow-hidden border border-line md:grid-cols-2"
+  class="group grid overflow-hidden border-b border-r border-line md:grid-cols-2"
   data-industry={study.industry}
   data-services={study.services.join(',')}
 >
@@ -28,8 +28,8 @@ const visual =
     <ServiceVisual kind={visual} />
   </div>
   <div class="flex flex-col p-6">
-    <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-pulse">{study.industry}</p>
-    <h3 class="font-display mt-3 text-2xl tracking-tight text-paper group-hover:text-pulse">{study.client}</h3>
+    <p class="kicker text-mist">{study.industry}</p>
+    <h3 class="font-display mt-3 text-2xl tracking-wide text-paper group-hover:text-signal">{study.client}</h3>
     <p class="mt-3 text-sm text-mist">{study.summary}</p>
     <ul class="mt-4 flex flex-wrap gap-2">
       {study.stack.slice(0, 4).map((item) => (

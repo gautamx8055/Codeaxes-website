@@ -2,13 +2,14 @@
 type Props = {
   label: string;
   autoplay?: boolean;
+  emphasis?: boolean;
 };
 
-const { label, autoplay = true } = Astro.props;
+const { label, autoplay = true, emphasis = false } = Astro.props;
 ---
 
 <div
-  class="cover-deck"
+  class:list={['cover-deck', emphasis && 'cover-deck--hero']}
   data-cover-deck
   data-autoplay={autoplay ? 'true' : 'false'}
   aria-roledescription="carousel"
