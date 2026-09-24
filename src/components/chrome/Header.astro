@@ -17,11 +17,11 @@ const path = withoutBase(Astro.url.pathname);
       {
         primaryNav.map((item) =>
           item.children ? (
-            <div class="group/nav relative" data-nav-item>
+            <div class="group/nav relative z-10" data-nav-item>
               <a
                 href={item.href ? withBase(item.href) : undefined}
                 class:list={[
-                  'inline-flex items-center gap-1 px-3 py-2 font-display text-[11px] font-semibold uppercase tracking-[0.22em] text-mist hover:text-paper',
+                  'relative z-20 inline-flex items-center gap-1 px-3 py-2 font-display text-[15px] font-semibold uppercase tracking-[0.14em] text-mist hover:text-paper',
                   path.startsWith(item.href ?? '///') && 'text-paper',
                 ]}
                 aria-haspopup="true"
@@ -35,18 +35,18 @@ const path = withoutBase(Astro.url.pathname);
               </a>
               <div
                 class:list={[
-                  'nav-sub absolute left-0 top-full z-50 -mt-1 pt-4',
+                  'nav-sub absolute left-0 top-full z-10 pt-3',
                   (item.children?.length ?? 0) > 7 ? 'w-[min(44rem,calc(100vw-2rem))]' : 'w-[min(22rem,calc(100vw-2rem))]',
                 ]}
                 data-submenu
               >
-                <div class="rounded-2xl border border-line bg-ink p-3 shadow-glow">
+                <div class="nav-sub-panel rounded-2xl border border-line bg-ink p-3 shadow-glow">
                   <ul class:list={['grid gap-1', (item.children?.length ?? 0) > 7 && 'sm:grid-cols-2']}>
                     {item.children.map((child) => (
                       <li>
                         <a href={withBase(child.href)} class="block rounded-xl px-3 py-2 hover:bg-slate">
-                          <span class="block text-sm text-paper">{child.label}</span>
-                          {child.description && <span class="block text-xs text-mist">{child.description}</span>}
+                          <span class="block text-base text-paper">{child.label}</span>
+                          {child.description && <span class="block text-sm text-mist">{child.description}</span>}
                         </a>
                       </li>
                     ))}
@@ -57,18 +57,18 @@ const path = withoutBase(Astro.url.pathname);
           ) : item.external ? (
             <a
               href={item.href}
-              class="inline-flex items-center gap-1 px-3 py-2 font-display text-[11px] font-semibold uppercase tracking-[0.22em] text-mist hover:text-paper"
+              class="inline-flex items-center gap-1 px-3 py-2 font-display text-[15px] font-semibold uppercase tracking-[0.14em] text-mist hover:text-paper"
               target="_blank"
               rel="noopener noreferrer"
             >
               {item.label}
-              <span class="font-mono text-[10px] text-axis">↗</span>
+              <span class="font-mono text-xs text-axis">↗</span>
             </a>
           ) : (
             <a
               href={item.href ? withBase(item.href) : undefined}
               class:list={[
-                'px-3 py-2 font-display text-[11px] font-semibold uppercase tracking-[0.22em] text-mist hover:text-paper',
+                'px-3 py-2 font-display text-[15px] font-semibold uppercase tracking-[0.14em] text-mist hover:text-paper',
                 (item.href === '/' ? path === '/' : path.startsWith(item.href ?? '///')) && 'text-paper',
               ]}
             >
@@ -99,11 +99,11 @@ const path = withoutBase(Astro.url.pathname);
         primaryNav.map((item) => (
           <div class="border-b border-line py-3">
             {item.external ? (
-              <a href={item.href} class="font-semibold text-paper" target="_blank" rel="noopener noreferrer">
+              <a href={item.href} class="text-lg font-semibold text-paper" target="_blank" rel="noopener noreferrer">
                 {item.label} ↗
               </a>
             ) : (
-              <a href={item.href ? withBase(item.href) : undefined} class="font-semibold text-paper">
+              <a href={item.href ? withBase(item.href) : undefined} class="text-lg font-semibold text-paper">
                 {item.label}
               </a>
             )}
@@ -112,7 +112,7 @@ const path = withoutBase(Astro.url.pathname);
               <ul class="mt-2 grid gap-2 pl-3">
                 {item.children.map((child) => (
                   <li>
-                    <a href={withBase(child.href)} class="text-sm font-semibold text-mist hover:text-paper">
+                    <a href={withBase(child.href)} class="text-base font-semibold text-mist hover:text-paper">
                       {child.label}
                     </a>
                   </li>
@@ -128,31 +128,49 @@ const path = withoutBase(Astro.url.pathname);
 </header>
 
 <style>
+  [data-nav-item].is-open,
+  [data-nav-item]:focus-within {
+    z-index: 40;
+  }
+
+  [data-nav-item]::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    height: 0.85rem;
+    pointer-events: none;
+  }
+
+  [data-nav-item].is-open::after,
+  [data-nav-item]:focus-within::after {
+    pointer-events: auto;
+  }
+
   .nav-sub {
     pointer-events: none;
     opacity: 0;
     visibility: hidden;
     transition:
-      opacity 140ms ease,
-      visibility 0s linear 180ms,
-      pointer-events 0s linear 180ms;
+      opacity 120ms ease,
+      visibility 0s linear 80ms;
   }
 
-  .nav-sub::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 100%;
-    height: 1.25rem;
+  .nav-sub-panel {
+    pointer-events: none;
   }
 
-  .group\/nav:hover .nav-sub,
-  .group\/nav:focus-within .nav-sub {
+  [data-nav-item].is-open .nav-sub,
+  [data-nav-item]:focus-within .nav-sub {
     visibility: visible;
-    pointer-events: auto;
     opacity: 1;
     transition-delay: 0s;
+  }
+
+  [data-nav-item].is-open .nav-sub-panel,
+  [data-nav-item]:focus-within .nav-sub-panel {
+    pointer-events: auto;
   }
 </style>
 
@@ -179,20 +197,38 @@ const path = withoutBase(Astro.url.pathname);
     document.dispatchEvent(new Event('codeaxes:header-show'));
   });
 
-  document.querySelectorAll<HTMLElement>('[data-nav-item]').forEach((item) => {
-    const trigger = item.querySelector<HTMLElement>('[data-nav-trigger]');
-    const sync = () => {
-      const open = item.matches(':hover, :focus-within');
-      trigger?.setAttribute('aria-expanded', String(open));
-    };
-    item.addEventListener('mouseenter', sync);
-    item.addEventListener('mouseleave', sync);
-    item.addEventListener('focusin', sync);
-    item.addEventListener('focusout', () => window.setTimeout(sync, 0));
+  const navItems = [...document.querySelectorAll<HTMLElement>('[data-nav-item]')];
+  let closeNav: number | undefined;
+  let openNav: HTMLElement | undefined;
+
+  const setOpenNav = (next?: HTMLElement) => {
+    window.clearTimeout(closeNav);
+    openNav = next;
+    navItems.forEach((item) => {
+      const on = item === next;
+      item.classList.toggle('is-open', on);
+      item.querySelector('[data-nav-trigger]')?.setAttribute('aria-expanded', String(on));
+    });
+  };
+
+  navItems.forEach((item) => {
+    item.addEventListener('mouseenter', () => setOpenNav(item));
+    item.addEventListener('mouseleave', () => {
+      closeNav = window.setTimeout(() => {
+        if (openNav === item) setOpenNav(undefined);
+      }, 120);
+    });
+    item.addEventListener('focusin', () => setOpenNav(item));
+    item.addEventListener('focusout', () => {
+      closeNav = window.setTimeout(() => {
+        if (!item.contains(document.activeElement)) setOpenNav(undefined);
+      }, 0);
+    });
   });
 
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {
+      setOpenNav(undefined);
       panel?.classList.add('hidden');
       toggle?.setAttribute('aria-expanded', 'false');
       header?.classList.remove('is-menu-open');

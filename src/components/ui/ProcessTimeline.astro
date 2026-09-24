@@ -30,8 +30,10 @@ const glyphs = [
         const next = deliveryProcess[index + 1];
         return (
           <li class="process-station">
-            <div class="process-node">
-              <span>{String(index + 1).padStart(2, '0')}</span>
+            <div class="process-rail">
+              <div class="process-node">
+                <span>{String(index + 1).padStart(2, '0')}</span>
+              </div>
             </div>
             <article class="process-card">
               <div class="process-card-head">
@@ -105,6 +107,7 @@ const glyphs = [
   .process-track li:nth-child(6) span { color: var(--color-pulse); background: color-mix(in oklab, var(--color-pulse) 16%, transparent); }
 
   .process-spine {
+    --rail: 3.1rem;
     position: relative;
     display: grid;
     gap: 1.15rem;
@@ -113,15 +116,17 @@ const glyphs = [
   .process-spine::before {
     content: '';
     position: absolute;
-    left: 1.55rem;
+    left: calc(var(--rail) / 2);
     top: 1.7rem;
     bottom: 1.7rem;
     width: 2px;
+    margin-left: -1px;
     background: linear-gradient(180deg, var(--color-axis), var(--color-signal), var(--color-pulse));
     opacity: 0.9;
     transform: scaleY(0);
     transform-origin: top;
     transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
   }
 
   .process-spine.is-inview::before {
@@ -131,26 +136,37 @@ const glyphs = [
   .process-station {
     position: relative;
     display: grid;
-    grid-template-columns: 3.2rem minmax(0, 1fr);
+    grid-template-columns: var(--rail) minmax(0, 1fr);
     gap: 1rem;
     align-items: start;
+  }
+
+  .process-rail {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    width: var(--rail);
+    place-items: center;
+    place-self: center;
   }
 
   .process-node {
     position: relative;
     z-index: 1;
     display: grid;
-    width: 3.1rem;
-    height: 3.1rem;
+    width: var(--rail);
+    height: var(--rail);
     place-items: center;
     border-radius: 999px;
     border: 1px solid color-mix(in oklab, var(--color-axis) 50%, var(--color-line));
     background: var(--color-ink);
     box-shadow: 0 0 0 6px var(--color-void), 0 0 22px color-mix(in oklab, var(--color-axis) 22%, transparent);
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     font-weight: 600;
-    letter-spacing: 0.08em;
+    letter-spacing: 0;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
     color: var(--color-axis);
   }
 
@@ -289,6 +305,7 @@ const glyphs = [
     }
 
     .process-spine {
+      --rail: 3.45rem;
       gap: 0.4rem;
     }
 
@@ -298,16 +315,18 @@ const glyphs = [
     }
 
     .process-station {
-      grid-template-columns: minmax(0, 1fr) 4.2rem minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1fr) var(--rail) minmax(0, 1fr);
       align-items: center;
+      justify-items: stretch;
       gap: 1.35rem;
     }
 
-    .process-node {
+    .process-rail {
       grid-column: 2;
       grid-row: 1;
-      width: 3.45rem;
-      height: 3.45rem;
+      width: var(--rail);
+      height: var(--rail);
+      place-self: center;
     }
 
     .process-station:nth-child(odd) .process-card {

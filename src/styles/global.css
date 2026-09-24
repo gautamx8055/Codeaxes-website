@@ -29,24 +29,6 @@
 }
 
 :root,
-html[data-theme='dark'] {
-  color-scheme: dark;
-  --void: #070b14;
-  --ink: #0d1422;
-  --slate: #151d2c;
-  --line: #27344a;
-  --mist: #8b97ab;
-  --paper: #f2f6fb;
-  --axis: #4c8dff;
-  --signal: #2ee6d6;
-  --pulse: #8b7cff;
-  --warn: #e0a454;
-  --danger: #ef4444;
-  --flame: #4c8dff;
-  --glow: 0 22px 56px color-mix(in oklab, #4c8dff 18%, transparent);
-  --cover-shadow: 0 32px 80px color-mix(in oklab, black 48%, transparent);
-}
-
 html[data-theme='light'] {
   color-scheme: light;
   --void: #f3f6fb;
@@ -63,6 +45,24 @@ html[data-theme='light'] {
   --flame: #2563eb;
   --glow: 0 18px 40px color-mix(in oklab, #2563eb 14%, transparent);
   --cover-shadow: 0 24px 50px color-mix(in oklab, #0e1628 12%, transparent);
+}
+
+html[data-theme='dark'] {
+  color-scheme: dark;
+  --void: #070b14;
+  --ink: #0d1422;
+  --slate: #151d2c;
+  --line: #27344a;
+  --mist: #8b97ab;
+  --paper: #f2f6fb;
+  --axis: #4c8dff;
+  --signal: #2ee6d6;
+  --pulse: #8b7cff;
+  --warn: #e0a454;
+  --danger: #ef4444;
+  --flame: #4c8dff;
+  --glow: 0 22px 56px color-mix(in oklab, #4c8dff 18%, transparent);
+  --cover-shadow: 0 32px 80px color-mix(in oklab, black 48%, transparent);
 }
 
 html {
@@ -95,6 +95,15 @@ h4,
   line-height: 0.98;
   font-weight: 600;
   text-wrap: balance;
+}
+
+h1,
+h2,
+h1.font-display,
+h2.font-display,
+.section-head h2,
+.section-head .kicker {
+  font-weight: 700;
 }
 
 ::selection {
