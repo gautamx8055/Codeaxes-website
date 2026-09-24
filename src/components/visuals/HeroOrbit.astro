@@ -1,62 +1,25 @@
 ---
-const inner = [
-  { label: 'Python', delay: '0s' },
-  { label: 'TypeScript', delay: '-8s' },
-  { label: 'React', delay: '-16s' },
-  { label: 'Node.js', delay: '-24s' },
-];
-
-const outer = [
-  { label: 'Docker', delay: '-3s' },
-  { label: 'Kubernetes', delay: '-10s' },
-  { label: 'PostgreSQL', delay: '-17s' },
-  { label: 'Go', delay: '-24s' },
-  { label: 'AWS', delay: '-31s' },
-  { label: 'GraphQL', delay: '-38s' },
-];
 ---
 
-<figure class="hero-orbit" aria-label="Live engineering orbit with core languages and platforms">
+<figure class="hero-orbit" aria-label="Live delivery axis">
   <div class="hero-orbit-stage">
     <div class="hero-orbit-glow" aria-hidden="true"></div>
     <div class="hero-orbit-ring hero-orbit-ring--outer" aria-hidden="true"></div>
     <div class="hero-orbit-ring hero-orbit-ring--inner" aria-hidden="true"></div>
-
     <div class="hero-orbit-core">
       <span class="hero-orbit-pulse" aria-hidden="true"></span>
       <p class="hero-orbit-kicker">Axis</p>
       <p class="hero-orbit-title">Live</p>
     </div>
-
-    <div class="hero-orbit-path hero-orbit-path--inner">
-      {
-        inner.map((item) => (
-          <span class="hero-orbit-chip" style={`--delay:${item.delay}`}>
-            {item.label}
-          </span>
-        ))
-      }
-    </div>
-    <div class="hero-orbit-path hero-orbit-path--outer">
-      {
-        outer.map((item) => (
-          <span class="hero-orbit-chip" style={`--delay:${item.delay}`}>
-            {item.label}
-          </span>
-        ))
-      }
-    </div>
-
     <div class="hero-orbit-card hero-orbit-card--a">
       <p>delivery.ok</p>
       <strong>99.4%</strong>
     </div>
     <div class="hero-orbit-card hero-orbit-card--b">
-      <p>runtime</p>
-      <strong>Node · Py</strong>
+      <p>gate</p>
+      <strong>Ready</strong>
     </div>
   </div>
-  <figcaption class="hero-orbit-caption">Languages, cloud, and delivery in one live axis.</figcaption>
 </figure>
 
 <style>
@@ -68,13 +31,12 @@ const outer = [
   .hero-orbit-stage {
     position: relative;
     isolation: isolate;
-    overflow: visible;
     aspect-ratio: 1 / 1;
-    max-height: 34rem;
+    max-height: 28rem;
     border-radius: 1.75rem;
-    border: 1px solid color-mix(in oklab, var(--color-paper) 12%, transparent);
+    border: 1px solid color-mix(in oklab, var(--color-axis) 22%, transparent);
     background:
-      radial-gradient(circle at 50% 48%, color-mix(in oklab, var(--color-paper) 8%, transparent), transparent 42%),
+      radial-gradient(circle at 50% 48%, color-mix(in oklab, var(--color-axis) 16%, transparent), transparent 42%),
       linear-gradient(180deg, color-mix(in oklab, var(--color-slate) 70%, transparent), var(--color-ink));
     box-shadow: 0 30px 80px color-mix(in oklab, black 28%, transparent);
   }
@@ -83,7 +45,7 @@ const outer = [
     position: absolute;
     inset: 18%;
     border-radius: 999px;
-    background: radial-gradient(circle, color-mix(in oklab, var(--flame) 28%, transparent), transparent 68%);
+    background: radial-gradient(circle, color-mix(in oklab, var(--color-axis) 28%, transparent), transparent 68%);
     filter: blur(12px);
     animation: orbit-breathe 6s ease-in-out infinite;
   }
@@ -91,7 +53,7 @@ const outer = [
   .hero-orbit-ring {
     position: absolute;
     border-radius: 999px;
-    border: 1px dashed color-mix(in oklab, var(--color-paper) 18%, transparent);
+    border: 1px dashed color-mix(in oklab, var(--color-axis) 32%, transparent);
     pointer-events: none;
   }
 
@@ -115,9 +77,9 @@ const outer = [
     width: 7.5rem;
     height: 7.5rem;
     border-radius: 999px;
-    border: 1px solid color-mix(in oklab, var(--color-paper) 24%, transparent);
+    border: 1px solid color-mix(in oklab, var(--color-axis) 40%, transparent);
     background: color-mix(in oklab, var(--color-void) 78%, transparent);
-    box-shadow: 0 0 40px color-mix(in oklab, var(--flame) 22%, transparent);
+    box-shadow: 0 0 40px color-mix(in oklab, var(--color-axis) 28%, transparent);
     transform: translate(-50%, -50%);
     text-align: center;
   }
@@ -126,7 +88,7 @@ const outer = [
     position: absolute;
     inset: 12%;
     border-radius: 999px;
-    border: 1px solid color-mix(in oklab, var(--flame) 55%, transparent);
+    border: 1px solid color-mix(in oklab, var(--color-axis) 45%, transparent);
     animation: orbit-breathe 2.8s ease-in-out infinite;
   }
 
@@ -136,7 +98,7 @@ const outer = [
     font-weight: 600;
     letter-spacing: 0.28em;
     text-transform: uppercase;
-    color: var(--color-mist);
+    color: var(--color-axis);
   }
 
   .hero-orbit-title {
@@ -148,55 +110,12 @@ const outer = [
     color: var(--color-paper);
   }
 
-  .hero-orbit-path {
-    position: absolute;
-    z-index: 2;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-  }
-
-  .hero-orbit-chip {
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: inline-flex;
-    align-items: center;
-    white-space: nowrap;
-    padding: 0.42rem 0.75rem;
-    border: 1px solid color-mix(in oklab, var(--color-paper) 16%, transparent);
-    border-radius: 999px;
-    background: color-mix(in oklab, var(--color-void) 72%, transparent);
-    backdrop-filter: blur(10px);
-    color: var(--color-paper);
-    font-family: var(--font-display);
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    box-shadow: 0 10px 24px color-mix(in oklab, black 22%, transparent);
-    animation: orbit-inner 32s linear infinite;
-    animation-delay: var(--delay);
-  }
-
-  .hero-orbit-path--inner .hero-orbit-chip {
-    --radius: 7.2rem;
-    animation-duration: 32s;
-  }
-
-  .hero-orbit-path--outer .hero-orbit-chip {
-    --radius: 10.6rem;
-    animation-name: orbit-outer;
-    animation-duration: 46s;
-  }
-
   .hero-orbit-card {
     position: absolute;
     z-index: 4;
     min-width: 7.5rem;
     padding: 0.7rem 0.85rem;
-    border: 1px solid color-mix(in oklab, var(--color-paper) 12%, transparent);
+    border: 1px solid color-mix(in oklab, var(--color-axis) 28%, transparent);
     border-radius: 1rem;
     background: color-mix(in oklab, var(--color-void) 70%, transparent);
     backdrop-filter: blur(12px);
@@ -233,36 +152,9 @@ const outer = [
     animation-delay: -2.4s;
   }
 
-  .hero-orbit-caption {
-    margin-top: 0.85rem;
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-mist);
-  }
-
   @keyframes orbit-spin {
     to {
       transform: rotate(360deg);
-    }
-  }
-
-  @keyframes orbit-inner {
-    from {
-      transform: rotate(0deg) translateX(var(--radius)) rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg) translateX(var(--radius)) rotate(-360deg);
-    }
-  }
-
-  @keyframes orbit-outer {
-    from {
-      transform: rotate(0deg) translateX(var(--radius)) rotate(0deg);
-    }
-    to {
-      transform: rotate(-360deg) translateX(var(--radius)) rotate(360deg);
     }
   }
 
@@ -288,25 +180,7 @@ const outer = [
     }
   }
 
-  @media (max-width: 1023px) {
-    .hero-orbit-path--inner .hero-orbit-chip {
-      --radius: 6rem;
-    }
-
-    .hero-orbit-path--outer .hero-orbit-chip {
-      --radius: 8.4rem;
-    }
-  }
-
   @media (max-width: 639px) {
-    .hero-orbit-path--inner .hero-orbit-chip {
-      --radius: 5.4rem;
-    }
-
-    .hero-orbit-path--outer .hero-orbit-chip {
-      --radius: 7.8rem;
-    }
-
     .hero-orbit-core {
       width: 6.2rem;
       height: 6.2rem;
@@ -319,24 +193,10 @@ const outer = [
 
   @media (prefers-reduced-motion: reduce) {
     .hero-orbit-ring,
-    .hero-orbit-chip,
     .hero-orbit-glow,
     .hero-orbit-pulse,
     .hero-orbit-card {
       animation: none;
-    }
-
-    .hero-orbit-path--inner .hero-orbit-chip:nth-child(1) {
-      transform: rotate(0deg) translateX(var(--radius)) rotate(0deg);
-    }
-    .hero-orbit-path--inner .hero-orbit-chip:nth-child(2) {
-      transform: rotate(90deg) translateX(var(--radius)) rotate(-90deg);
-    }
-    .hero-orbit-path--inner .hero-orbit-chip:nth-child(3) {
-      transform: rotate(180deg) translateX(var(--radius)) rotate(-180deg);
-    }
-    .hero-orbit-path--inner .hero-orbit-chip:nth-child(4) {
-      transform: rotate(270deg) translateX(var(--radius)) rotate(-270deg);
     }
   }
 </style>

@@ -4,6 +4,7 @@ import PageHero from '../components/ui/PageHero.astro';
 import Section from '../components/ui/Section.astro';
 import CtaBand from '../components/ui/CtaBand.astro';
 import FaqSearch from '../components/islands/FaqSearch.astro';
+import Button from '../components/ui/Button.astro';
 import { faqCategories } from '../data/faqs';
 import { site } from '../data/site';
 
@@ -31,7 +32,10 @@ const jsonLd = {
     title="Straight answers, searchable."
     body="If the question is not here, Codeaxes AI can search the rest of the site, or start a project and ask us directly."
     layout="rail"
-  />
+  >
+    <Button slot="actions" href="/contact">Start a project</Button>
+    <Button slot="actions" href="/services" variant="secondary">Browse services</Button>
+  </PageHero>
   <Section tone="muted">
     <FaqSearch />
   </Section>

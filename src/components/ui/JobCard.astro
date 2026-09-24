@@ -10,11 +10,11 @@ type Props = {
 const { job } = Astro.props;
 ---
 
-<a href={withBase(`/careers/${job.slug}`)} class="group flex h-full flex-col border border-line p-6">
-  <p class="font-mono mb-4 text-[11px] uppercase tracking-[0.16em] text-pulse">
+<a href={withBase(`/careers/${job.slug}`)} class="group flex h-full flex-col rounded-2xl border border-line p-6 transition hover:border-axis hover:shadow-glow">
+  <p class="font-mono mb-4 text-[11px] uppercase tracking-[0.16em] text-axis">
     {brandLabels[job.brand]} · {job.department}
   </p>
-  <h3 class="font-display text-2xl tracking-tight text-paper group-hover:text-pulse">{job.title}</h3>
+  <h3 class="font-display text-2xl tracking-tight text-paper group-hover:text-axis">{job.title}</h3>
   <p class="mt-3 flex-1 text-sm leading-relaxed text-mist">{job.summary}</p>
   <ul class="mt-5 flex flex-wrap gap-2">
     <li class="border border-line px-2 py-1 text-[11px] uppercase tracking-[0.12em] text-mist">{job.location}</li>

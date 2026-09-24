@@ -19,6 +19,7 @@ import CaseStudyCard from '../components/ui/CaseStudyCard.astro';
 import TestimonialSlider from '../components/ui/TestimonialSlider.astro';
 import ServiceVisual from '../components/visuals/ServiceVisual.astro';
 import HeroOrbit from '../components/visuals/HeroOrbit.astro';
+import TechLogos from '../components/visuals/TechLogos.astro';
 
 const telemetry = ['ai-automation', 'blockchain', 'cloud-computing', 'devops']
   .map((slug) => services.find((item) => item.slug === slug))
@@ -31,6 +32,7 @@ const telemetry = ['ai-automation', 'blockchain', 'cloud-computing', 'devops']
   path="/"
 >
   <section class="mission-hero" data-hero>
+    <TechLogos />
     <div class="mission-horizon" aria-hidden="true"></div>
     <div class="relative mx-auto flex max-w-4xl flex-col items-center px-4 pt-6 pb-10 text-center sm:px-5 sm:pt-8 sm:pb-12 md:px-8 md:pt-10 md:pb-14">
       <p class="kicker mb-4">{site.tagline}</p>
@@ -49,7 +51,7 @@ const telemetry = ['ai-automation', 'blockchain', 'cloud-computing', 'devops']
       </div>
     </div>
     <div class="hero-telemetry justify-center" aria-label="Active practices">
-      <span><span class="live-dot" aria-hidden="true"></span> Axis ready</span>
+      <span>Axis ready</span>
       {telemetry.map((service) => <span>{service.shortName}</span>)}
     </div>
   </section>

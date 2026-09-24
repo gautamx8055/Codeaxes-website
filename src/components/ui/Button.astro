@@ -15,8 +15,8 @@ const { href, variant = 'primary', type = 'button', external = false } = Astro.p
 const resolvedHref = href ? withBase(href) : undefined;
 
 const classes = {
-  primary: 'btn-sheen bg-paper text-void',
-  secondary: 'btn-outline border border-paper bg-transparent text-paper',
+  primary: 'btn-sheen bg-axis text-white',
+  secondary: 'btn-outline border border-axis bg-transparent text-paper',
   ghost: 'text-paper hover:text-mist',
 }[variant];
 

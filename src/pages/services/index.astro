@@ -4,6 +4,7 @@ import Section from '../../components/ui/Section.astro';
 import ServiceCard from '../../components/ui/ServiceCard.astro';
 import CtaBand from '../../components/ui/CtaBand.astro';
 import PageHero from '../../components/ui/PageHero.astro';
+import Button from '../../components/ui/Button.astro';
 import { services } from '../../data/services';
 import { site } from '../../data/site';
 ---
@@ -18,7 +19,10 @@ import { site } from '../../data/site';
     title="Pick the axis your product is missing."
     body="Thirteen practices, shared engineering standards. Every page explains problems, delivery, stack, and how we measure done."
     layout="rail"
-  />
+  >
+    <Button slot="actions" href="/contact">Start a project</Button>
+    <Button slot="actions" href="/about/case-studies" variant="secondary">See related work</Button>
+  </PageHero>
   <Section tone="muted">
     <div class="grid gap-4 md:grid-cols-2" data-reveal-stagger>
       {services.map((service, index) => <ServiceCard service={service} index={String(index + 1).padStart(2, '0')} />)}

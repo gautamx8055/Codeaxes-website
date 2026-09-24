@@ -24,6 +24,13 @@ const hasVisual = Astro.slots.has('default');
       )
     }
     {
+      Astro.slots.has('panel') && (
+        <div class="mt-8 w-full max-w-xl">
+          <slot name="panel" />
+        </div>
+      )
+    }
+    {
       hasVisual && layout !== 'rail' && (
         <div class="tech-frame mx-auto mt-8 w-full max-w-xl">
           <slot />

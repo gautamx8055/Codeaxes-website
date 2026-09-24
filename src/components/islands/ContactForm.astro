@@ -6,27 +6,27 @@ import { services } from '../../data/services';
   <div class="grid gap-5 md:grid-cols-2">
     <div>
       <label class="mb-2 block text-sm text-paper" for="name">Name</label>
-      <input id="name" name="name" autocomplete="name" required class="w-full border border-line bg-void px-3 py-3 text-paper" />
+      <input id="name" name="name" autocomplete="name" required class="w-full rounded-xl border border-line bg-void px-3 py-3 text-paper" />
       <p class="mt-1 hidden text-sm text-danger" data-error-for="name"></p>
     </div>
     <div>
       <label class="mb-2 block text-sm text-paper" for="email">Business email</label>
-      <input id="email" name="email" type="email" autocomplete="email" required class="w-full border border-line bg-void px-3 py-3 text-paper" />
+      <input id="email" name="email" type="email" autocomplete="email" required class="w-full rounded-xl border border-line bg-void px-3 py-3 text-paper" />
       <p class="mt-1 hidden text-sm text-danger" data-error-for="email"></p>
     </div>
     <div>
       <label class="mb-2 block text-sm text-paper" for="company">Company</label>
-      <input id="company" name="company" autocomplete="organization" required class="w-full border border-line bg-void px-3 py-3 text-paper" />
+      <input id="company" name="company" autocomplete="organization" required class="w-full rounded-xl border border-line bg-void px-3 py-3 text-paper" />
       <p class="mt-1 hidden text-sm text-danger" data-error-for="company"></p>
     </div>
     <div>
       <label class="mb-2 block text-sm text-paper" for="phone">Phone</label>
-      <input id="phone" name="phone" type="tel" autocomplete="tel" class="w-full border border-line bg-void px-3 py-3 text-paper" />
+      <input id="phone" name="phone" type="tel" autocomplete="tel" class="w-full rounded-xl border border-line bg-void px-3 py-3 text-paper" />
       <p class="mt-1 hidden text-sm text-danger" data-error-for="phone"></p>
     </div>
     <div>
       <label class="mb-2 block text-sm text-paper" for="service">Service interest</label>
-      <select id="service" name="service" required class="w-full border border-line bg-void px-3 py-3 text-paper">
+      <select id="service" name="service" required class="w-full rounded-xl border border-line bg-void px-3 py-3 text-paper">
         <option value="">Select a service</option>
         {services.map((service) => <option value={service.slug}>{service.name}</option>)}
         <option value="not-sure">Not sure yet</option>
@@ -35,7 +35,7 @@ import { services } from '../../data/services';
     </div>
     <div>
       <label class="mb-2 block text-sm text-paper" for="budget">Estimated budget</label>
-      <select id="budget" name="budget" required class="w-full border border-line bg-void px-3 py-3 text-paper">
+      <select id="budget" name="budget" required class="w-full rounded-xl border border-line bg-void px-3 py-3 text-paper">
         <option value="">Select a range</option>
         <option value="under-50k">Under 50k</option>
         <option value="50-150k">50k-150k</option>
@@ -48,7 +48,7 @@ import { services } from '../../data/services';
   </div>
   <div>
     <label class="mb-2 block text-sm text-paper" for="timeline">Timeline</label>
-    <select id="timeline" name="timeline" required class="w-full border border-line bg-void px-3 py-3 text-paper">
+    <select id="timeline" name="timeline" required class="w-full rounded-xl border border-line bg-void px-3 py-3 text-paper">
       <option value="">Select timing</option>
       <option value="asap">As soon as we can staff it</option>
       <option value="quarter">This quarter</option>
@@ -59,11 +59,11 @@ import { services } from '../../data/services';
   </div>
   <div>
     <label class="mb-2 block text-sm text-paper" for="details">Project details</label>
-    <textarea id="details" name="details" required minlength="20" rows="6" class="w-full border border-line bg-void px-3 py-3 text-paper"></textarea>
+    <textarea id="details" name="details" required minlength="20" rows="6" class="w-full rounded-xl border border-line bg-void px-3 py-3 text-paper"></textarea>
     <p class="mt-1 hidden text-sm text-danger" data-error-for="details"></p>
   </div>
   <p class="text-sm text-mist">We use this enquiry to prepare a discovery conversation. Do not send secrets or personal health information.</p>
-  <button type="submit" class="inline-flex h-12 cursor-pointer items-center justify-center rounded-full bg-paper px-6 text-[13px] font-semibold tracking-[0.04em] text-void">
+  <button type="submit" class="btn-sheen inline-flex h-12 cursor-pointer items-center justify-center rounded-full bg-axis px-6 font-display text-[12px] font-semibold uppercase tracking-[0.18em] text-white">
     Send enquiry
   </button>
   <p class="text-sm text-mist" data-form-status aria-live="polite"></p>

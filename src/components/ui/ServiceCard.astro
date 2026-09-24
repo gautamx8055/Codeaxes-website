@@ -12,10 +12,10 @@ const { service, index } = Astro.props;
 
 <a
   href={withBase(`/services/${service.slug}`)}
-  class="group flex h-full flex-col border border-line p-6"
+  class="group flex h-full flex-col rounded-2xl border border-line p-6 transition hover:border-axis hover:shadow-glow"
 >
-  {index && <p class="font-mono mb-6 text-[11px] text-pulse">{index}</p>}
-  <h3 class="font-display text-2xl tracking-tight text-paper group-hover:text-pulse">{service.name}</h3>
+  {index && <p class="font-mono mb-6 text-[11px] text-axis">{index}</p>}
+  <h3 class="font-display text-2xl tracking-tight text-paper group-hover:text-axis">{service.name}</h3>
   <p class="mt-3 flex-1 text-sm leading-relaxed text-mist">{service.summary}</p>
   <p class="font-mono mt-6 text-[11px] uppercase tracking-[0.16em] text-axis">Open service →</p>
 </a>

@@ -21,7 +21,7 @@ import { site } from '../../data/site';
   <div class="mx-auto flex max-w-6xl flex-wrap gap-2 px-4 pt-8 sm:px-5 sm:pt-10 md:px-8">
     {
       industries.map((industry) => (
-        <a href={`#${industry.slug}`} class="border border-line px-3 py-1 font-mono text-[11px] uppercase tracking-[0.12em] text-mist hover:text-pulse">
+        <a href={`#${industry.slug}`} class="rounded-full border border-line px-3 py-1 font-mono text-[11px] uppercase tracking-[0.12em] text-mist hover:border-axis hover:text-axis">
           {industry.name}
         </a>
       ))

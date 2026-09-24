@@ -7,6 +7,7 @@ import CtaBand from '../../components/ui/CtaBand.astro';
 import { aboutStory } from '../../data/about';
 import { whyCodeaxes } from '../../data/why';
 import { site } from '../../data/site';
+import { withBase } from '../../lib/seo';
 ---
 
 <BaseLayout
@@ -23,7 +24,7 @@ import { site } from '../../data/site';
       <div class="space-y-5 text-lg leading-relaxed text-mist">
         {aboutStory.body.map((paragraph) => <p>{paragraph}</p>)}
       </div>
-      <ul class="space-y-6 border border-line p-6">
+      <ul class="space-y-6 rounded-2xl border border-line bg-ink p-6">
         {
           aboutStory.stats.map((stat) => (
             <li>
@@ -58,7 +59,7 @@ import { site } from '../../data/site';
           ['Technologies', '/about/technologies', 'The documented stack'],
           ['Careers', '/careers', 'Codeaxes and Kuroaxe open roles'],
         ].map(([label, href, body]) => (
-          <a href={href} class="border border-line p-5 hover:border-axis">
+          <a href={withBase(href)} class="rounded-2xl border border-line p-5 transition hover:border-axis hover:shadow-glow">
             <h3 class="font-display text-xl text-paper">{label}</h3>
             <p class="mt-2 text-sm text-mist">{body}</p>
           </a>

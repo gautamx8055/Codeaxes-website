@@ -4,7 +4,9 @@ import PageHero from '../../../components/ui/PageHero.astro';
 import Section from '../../../components/ui/Section.astro';
 import CaseStudyCard from '../../../components/ui/CaseStudyCard.astro';
 import CaseStudyFilters from '../../../components/islands/CaseStudyFilters.astro';
+import CtaBand from '../../../components/ui/CtaBand.astro';
 import { caseStudies } from '../../../data/case-studies';
+import { site } from '../../../data/site';
 ---
 
 <BaseLayout
@@ -23,4 +25,5 @@ import { caseStudies } from '../../../data/case-studies';
       {caseStudies.map((study) => <CaseStudyCard study={study} />)}
     </CaseStudyFilters>
   </Section>
+  <CtaBand title="Want a study that looks like your problem?" primary={site.cta.primary} />
 </BaseLayout>
