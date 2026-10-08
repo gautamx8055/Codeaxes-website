@@ -44,35 +44,11 @@ export const primaryNav: NavItem[] = [
   },
 ];
 
-export const footerNav = {
-  company: [
-    { label: 'About', href: '/about' },
-    { label: 'Clients', href: '/about/clients' },
-    { label: 'Testimonials', href: '/about/testimonials' },
-    { label: 'Case studies', href: '/about/case-studies' },
-    { label: 'Careers', href: '/careers' },
-    { label: 'Contact', href: '/contact' },
-  ],
-  services: [
-    { label: 'All services', href: '/services' },
-    { label: 'AI automation', href: '/services/ai-automation' },
-    { label: 'Mobile apps', href: '/services/mobile-apps' },
-    { label: 'SaaS development', href: '/services/saas-development' },
-    { label: 'PaaS development', href: '/services/paas-development' },
-    { label: 'QA testing', href: '/services/qa-testing' },
-    { label: 'Custom development', href: '/services/custom-development' },
-    { label: 'Product development', href: '/services/product-development' },
-    { label: 'Blockchain', href: '/services/blockchain' },
-    { label: 'Project data', href: '/services/project-data' },
-    { label: 'Game development', href: '/services/game-development' },
-    { label: 'Cloud computing', href: '/services/cloud-computing' },
-    { label: '2D animations', href: '/services/2d-animations' },
-    { label: 'DevOps', href: '/services/devops' },
-  ],
-  resources: [
-    { label: 'Industries', href: '/about/industries' },
-    { label: 'Technologies', href: '/about/technologies' },
-    { label: 'FAQ', href: '/faq' },
-    { label: site.kuroaxe.name, href: site.kuroaxe.url, external: true },
-  ],
-};
+export const footerNav = [
+  { label: 'About', href: '/about' },
+  { label: 'Services', href: '/services' },
+  { label: 'Case studies', href: '/about/case-studies' },
+  { label: 'Careers', href: '/careers' },
+  { label: 'Contact', href: '/contact' },
+  { label: 'FAQ', href: '/faq' },
+];

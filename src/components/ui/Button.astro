@@ -15,13 +15,13 @@ const { href, variant = 'primary', type = 'button', external = false } = Astro.p
 const resolvedHref = href ? withBase(href) : undefined;
 
 const classes = {
-  primary: 'btn-sheen bg-axis text-white',
-  secondary: 'btn-outline border border-axis bg-transparent text-paper',
+  primary: 'btn-sheen text-white',
+  secondary: 'btn-outline border border-line bg-transparent text-paper',
   ghost: 'text-paper hover:text-mist',
 }[variant];
 
 const shared =
-  'inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-full px-5 py-2 font-display text-[15px] font-semibold uppercase tracking-[0.12em] transition-all duration-300 ease-out sm:px-6';
+  'inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-xl px-5 py-2 text-[15px] font-medium tracking-normal transition-colors duration-300 ease-out sm:px-6';
 ---
 
 {

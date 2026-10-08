@@ -11,6 +11,13 @@
   const header = document.querySelector<HTMLElement>('header.glass');
   let lastY = Math.max(0, window.scrollY);
   let hidden = false;
+  let scrolled = false;
+  let frame = 0;
+  let max = 0;
+
+  const measure = () => {
+    max = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+  };
 
   const setHeaderHidden = (next: boolean) => {
     if (!header) return;
@@ -21,81 +28,51 @@
     header.style.setProperty('translate', hide ? '0 -110%' : '0px', 'important');
   };
 
-  const onScroll = () => {
+  const paint = () => {
+    frame = 0;
     const y = Math.max(0, window.scrollY);
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = max > 0 ? Math.min(1, y / max) : 0;
-    if (bar) bar.style.width = `${progress * 100}%`;
-    header?.classList.toggle('is-scrolled', y > 16);
+    if (bar) bar.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
+
+    const nextScrolled = y > 16;
+    if (header && nextScrolled !== scrolled) {
+      scrolled = nextScrolled;
+      header.classList.toggle('is-scrolled', nextScrolled);
+    }
 
     const menuOpen = header?.classList.contains('is-menu-open');
     const delta = y - lastY;
-    if (reduce || menuOpen || y < 48) {
-      setHeaderHidden(false);
-    } else if (delta > 8) {
-      setHeaderHidden(true);
-    } else if (delta < -8) {
-      setHeaderHidden(false);
-    }
+    if (reduce || menuOpen || y < 48) setHeaderHidden(false);
+    else if (delta > 8) setHeaderHidden(true);
+    else if (delta < -8) setHeaderHidden(false);
     lastY = y;
   };
 
-  onScroll();
+  const onScroll = () => {
+    if (frame) return;
+    frame = requestAnimationFrame(paint);
+  };
+
+  measure();
+  paint();
   window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', measure, { passive: true });
   header?.addEventListener('focusin', () => setHeaderHidden(false));
   document.addEventListener('codeaxes:header-show', () => setHeaderHidden(false));
 
-  if (!reduce) {
-    const reveal = document.querySelectorAll('[data-reveal], [data-reveal-stagger]');
+  const reveal = document.querySelectorAll('[data-reveal], [data-reveal-stagger]');
+  if (reduce) {
+    reveal.forEach((node) => node.classList.add('is-inview'));
+  } else {
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-inview');
-            io.unobserve(entry.target);
-          }
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add('is-inview');
+          io.unobserve(entry.target);
         }
       },
       { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
     );
     reveal.forEach((node) => io.observe(node));
-    window.setTimeout(() => {
-      reveal.forEach((node) => node.classList.add('is-inview'));
-    }, 1600);
-
-    let ticking = false;
-    window.addEventListener(
-      'scroll',
-      () => {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(() => {
-          const y = window.scrollY;
-          document.querySelectorAll<HTMLElement>('[data-parallax]').forEach((node) => {
-            const factor = Number(node.dataset.parallax ?? 0.12);
-            node.style.transform = `translate3d(0, ${y * factor * 0.15}px, 0)`;
-          });
-          ticking = false;
-        });
-      },
-      { passive: true },
-    );
-
-    const hero = document.querySelector<HTMLElement>('[data-hero]');
-    if (hero) {
-      hero.addEventListener(
-        'pointermove',
-        (event) => {
-          const rect = hero.getBoundingClientRect();
-          hero.style.setProperty('--mx', `${event.clientX - rect.left}px`);
-          hero.style.setProperty('--my', `${event.clientY - rect.top}px`);
-        },
-        { passive: true },
-      );
-    }
-  } else {
-    document.querySelectorAll('[data-reveal], [data-reveal-stagger]').forEach((node) => {
-      node.classList.add('is-inview');
-    });
   }
 </script>

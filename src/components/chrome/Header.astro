@@ -10,8 +10,9 @@ const path = withoutBase(Astro.url.pathname);
 ---
 
 <div class="header-offset" data-header-offset aria-hidden="true"></div>
-<header class="glass site-header border-b border-line">
-  <div class="header-bar mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2.5 sm:gap-4 sm:px-5 sm:py-3 md:px-8" data-header-bar>
+<header class="glass site-header">
+  <div class="header-shell">
+  <div class="header-bar mx-auto flex items-center justify-between gap-3 px-3 py-2 sm:gap-4 sm:px-4 sm:py-2.5 md:px-5" data-header-bar>
     <Logo />
     <nav class="hidden items-center xl:flex" aria-label="Primary">
       {
@@ -21,15 +22,15 @@ const path = withoutBase(Astro.url.pathname);
               <a
                 href={item.href ? withBase(item.href) : undefined}
                 class:list={[
-                  'relative z-20 inline-flex items-center gap-1 px-3 py-2 font-display text-[15px] font-semibold uppercase tracking-[0.14em] text-mist hover:text-paper',
-                  path.startsWith(item.href ?? '///') && 'text-paper',
+                  'relative z-20 inline-flex items-center gap-1 px-3 py-2 text-[14px] font-medium tracking-normal text-mist transition-colors duration-300 hover:text-axis',
+                  path.startsWith(item.href ?? '///') && 'text-axis',
                 ]}
                 aria-haspopup="true"
                 aria-expanded="false"
                 data-nav-trigger
               >
                 {item.label}
-                <span aria-hidden="true" class="text-axis">
+                <span aria-hidden="true" class="text-mist">
                   ▾
                 </span>
               </a>
@@ -57,7 +58,7 @@ const path = withoutBase(Astro.url.pathname);
           ) : item.external ? (
             <a
               href={item.href}
-              class="inline-flex items-center gap-1 px-3 py-2 font-display text-[15px] font-semibold uppercase tracking-[0.14em] text-mist hover:text-paper"
+              class="inline-flex items-center gap-1 px-3 py-2 text-[14px] font-medium tracking-normal text-mist transition-colors duration-300 hover:text-axis"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -68,8 +69,8 @@ const path = withoutBase(Astro.url.pathname);
             <a
               href={item.href ? withBase(item.href) : undefined}
               class:list={[
-                'px-3 py-2 font-display text-[15px] font-semibold uppercase tracking-[0.14em] text-mist hover:text-paper',
-                (item.href === '/' ? path === '/' : path.startsWith(item.href ?? '///')) && 'text-paper',
+                'px-3 py-2 text-[14px] font-medium tracking-normal text-mist transition-colors duration-300 hover:text-axis',
+                (item.href === '/' ? path === '/' : path.startsWith(item.href ?? '///')) && 'text-axis',
               ]}
             >
               {item.label}
@@ -80,10 +81,10 @@ const path = withoutBase(Astro.url.pathname);
     </nav>
     <div class="flex items-center gap-2">
       <ThemeToggle />
-      <Button href={site.cta.primary.href} class="!hidden xl:!inline-flex">{site.cta.primary.label}</Button>
+      <Button href={site.cta.primary.href} variant="secondary" class="!hidden xl:!inline-flex">{site.cta.primary.label}</Button>
       <button
         type="button"
-        class="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-line text-paper xl:hidden"
+        class="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-line text-paper xl:hidden"
         data-nav-toggle
         aria-expanded="false"
         aria-controls="mobile-nav"
@@ -93,7 +94,7 @@ const path = withoutBase(Astro.url.pathname);
       </button>
     </div>
   </div>
-  <div id="mobile-nav" class="hidden max-h-[min(80vh,40rem)] overflow-y-auto border-t border-line bg-void xl:hidden" data-mobile-nav>
+  <div id="mobile-nav" class="hidden max-h-[min(80vh,40rem)] overflow-y-auto border-t border-line bg-ink xl:hidden" data-mobile-nav>
     <nav class="mx-auto max-w-6xl px-5 py-4" aria-label="Mobile">
       {
         primaryNav.map((item) => (
@@ -112,7 +113,7 @@ const path = withoutBase(Astro.url.pathname);
               <ul class="mt-2 grid gap-2 pl-3">
                 {item.children.map((child) => (
                   <li>
-                    <a href={withBase(child.href)} class="text-base font-semibold text-mist hover:text-paper">
+                    <a href={withBase(child.href)} class="text-base font-semibold text-mist hover:text-axis">
                       {child.label}
                     </a>
                   </li>
@@ -124,6 +125,7 @@ const path = withoutBase(Astro.url.pathname);
       }
       <Button href={site.cta.primary.href} class="mt-4 w-full">{site.cta.primary.label}</Button>
     </nav>
+  </div>
   </div>
 </header>
 
@@ -180,10 +182,13 @@ const path = withoutBase(Astro.url.pathname);
   const header = document.querySelector<HTMLElement>('header.glass');
   const offset = document.querySelector<HTMLElement>('[data-header-offset]');
   const bar = document.querySelector<HTMLElement>('[data-header-bar]');
+  const shell = document.querySelector<HTMLElement>('.header-shell');
 
   const syncOffset = () => {
-    if (!offset || !bar) return;
-    const height = Math.ceil(bar.getBoundingClientRect().height);
+    if (!offset) return;
+    const measured = shell ?? bar;
+    if (!measured) return;
+    const height = Math.ceil(measured.getBoundingClientRect().height) + 16;
     offset.style.height = `${height}px`;
     document.documentElement.style.setProperty('--site-header-h', `${height}px`);
   };
