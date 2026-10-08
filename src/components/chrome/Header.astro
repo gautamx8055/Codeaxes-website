@@ -94,26 +94,26 @@ const path = withoutBase(Astro.url.pathname);
       </button>
     </div>
   </div>
-  <div id="mobile-nav" class="hidden max-h-[min(80vh,40rem)] overflow-y-auto border-t border-line bg-ink xl:hidden" data-mobile-nav>
+  <div id="mobile-nav" class="hidden max-h-[calc(100dvh-4.75rem)] overflow-y-auto overscroll-contain border-t border-line bg-ink xl:hidden" data-mobile-nav>
     <nav class="mx-auto max-w-6xl px-5 py-4" aria-label="Mobile">
       {
         primaryNav.map((item) => (
           <div class="border-b border-line py-3">
             {item.external ? (
-              <a href={item.href} class="text-lg font-semibold text-paper" target="_blank" rel="noopener noreferrer">
+              <a href={item.href} class="flex min-h-11 items-center text-lg font-semibold text-paper" target="_blank" rel="noopener noreferrer">
                 {item.label} ↗
               </a>
             ) : (
-              <a href={item.href ? withBase(item.href) : undefined} class="text-lg font-semibold text-paper">
+              <a href={item.href ? withBase(item.href) : undefined} class="flex min-h-11 items-center text-lg font-semibold text-paper">
                 {item.label}
               </a>
             )}
             {item.note && <p class="mt-1 text-xs text-mist">{item.note}</p>}
             {item.children && (
-              <ul class="mt-2 grid gap-2 pl-3">
+              <ul class="mt-1 grid">
                 {item.children.map((child) => (
                   <li>
-                    <a href={withBase(child.href)} class="text-base font-semibold text-mist hover:text-axis">
+                    <a href={withBase(child.href)} class="flex min-h-11 items-center text-base font-medium text-mist hover:text-axis">
                       {child.label}
                     </a>
                   </li>
@@ -182,13 +182,10 @@ const path = withoutBase(Astro.url.pathname);
   const header = document.querySelector<HTMLElement>('header.glass');
   const offset = document.querySelector<HTMLElement>('[data-header-offset]');
   const bar = document.querySelector<HTMLElement>('[data-header-bar]');
-  const shell = document.querySelector<HTMLElement>('.header-shell');
 
   const syncOffset = () => {
-    if (!offset) return;
-    const measured = shell ?? bar;
-    if (!measured) return;
-    const height = Math.ceil(measured.getBoundingClientRect().height) + 16;
+    if (!offset || !bar) return;
+    const height = Math.ceil(bar.getBoundingClientRect().height) + 16;
     offset.style.height = `${height}px`;
     document.documentElement.style.setProperty('--site-header-h', `${height}px`);
   };
@@ -199,6 +196,7 @@ const path = withoutBase(Astro.url.pathname);
     const open = panel?.classList.toggle('hidden') === false;
     toggle.setAttribute('aria-expanded', String(open));
     header?.classList.toggle('is-menu-open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
     document.dispatchEvent(new Event('codeaxes:header-show'));
   });
 
@@ -237,6 +235,7 @@ const path = withoutBase(Astro.url.pathname);
       panel?.classList.add('hidden');
       toggle?.setAttribute('aria-expanded', 'false');
       header?.classList.remove('is-menu-open');
+      document.body.style.overflow = '';
       document.dispatchEvent(new Event('codeaxes:header-show'));
       const active = document.activeElement;
       if (active instanceof HTMLElement && active.closest('[data-nav-item]')) active.blur();

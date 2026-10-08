@@ -140,6 +140,12 @@ a:focus-visible .brand-mark {
   transform: translateX(4px);
 }
 
+@media (max-width: 767px) {
+  footer {
+    padding-bottom: calc(4.75rem + env(safe-area-inset-bottom));
+  }
+}
+
 .quote-text {
   font-family: var(--font-sans);
   font-weight: 400;
@@ -305,6 +311,25 @@ html[data-theme='light'] .headline-beam {
   font-weight: 500;
   letter-spacing: 0.18em;
   color: var(--color-axis);
+}
+
+@media (min-width: 768px) {
+  #why article:nth-child(2n),
+  #stack a:nth-child(2n) {
+    border-right-width: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  #why article:nth-child(2n),
+  #stack a:nth-child(2n) {
+    border-right-width: 1px;
+  }
+
+  #why article:nth-child(3n),
+  #stack a:nth-child(3n) {
+    border-right-width: 0;
+  }
 }
 
 #why article,

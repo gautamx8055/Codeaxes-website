@@ -17,7 +17,7 @@ const hasVisual = Astro.slots.has('default');
     {body && <p class="mx-auto mt-5 max-w-xl text-base leading-relaxed text-mist sm:text-lg">{body}</p>}
     {
       Astro.slots.has('actions') && (
-        <div class="mt-7 flex flex-wrap items-center justify-center gap-3">
+        <div class="mt-7 flex w-full flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center">
           <slot name="actions" />
         </div>
       )

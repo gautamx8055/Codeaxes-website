@@ -34,9 +34,9 @@ import ServiceVisual from '../components/visuals/ServiceVisual.astro';
       <p class="mx-auto mt-6 max-w-xl text-base leading-relaxed text-mist sm:text-lg">
         Codeaxes designs and engineers scalable web, mobile, AI, and cloud products. These are platforms that operators can run, auditors can trust, and teams can extend.
       </p>
-      <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
-        <Button href={site.cta.primary.href}>{site.cta.primary.label}</Button>
-        <Button href={site.cta.secondary.href} variant="secondary">{site.cta.secondary.label}</Button>
+      <div class="mt-8 flex w-full flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center">
+        <Button href={site.cta.primary.href} class="w-full sm:w-auto">{site.cta.primary.label}</Button>
+        <Button href={site.cta.secondary.href} variant="secondary" class="w-full sm:w-auto">{site.cta.secondary.label}</Button>
       </div>
     </div>
   </section>

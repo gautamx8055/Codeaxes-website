@@ -222,10 +222,16 @@ const glyphs = [
   .process-card h3 {
     margin: 0;
     font-family: var(--font-display);
-    font-size: 1.7rem;
+    font-size: 1.35rem;
     font-weight: 600;
     letter-spacing: 0.04em;
     color: var(--color-paper);
+  }
+
+  @media (min-width: 640px) {
+    .process-card h3 {
+      font-size: 1.7rem;
+    }
   }
 
   .process-card > p {
@@ -299,9 +305,7 @@ const glyphs = [
 
   @media (min-width: 900px) {
     .process-track {
-      flex-wrap: nowrap;
-      justify-content: space-between;
-      overflow: visible;
+      justify-content: flex-start;
     }
 
     .process-spine {
