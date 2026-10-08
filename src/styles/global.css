@@ -131,16 +131,6 @@ h2.font-display,
   color: var(--color-axis);
 }
 
-.kicker::before {
-  content: '';
-  width: 1.35rem;
-  height: 2px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #2f62a8, #3d944c);
-  transform-origin: left;
-  animation: kicker-draw 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
 .brand-mark {
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -148,15 +138,6 @@ h2.font-display,
 a:hover .brand-mark,
 a:focus-visible .brand-mark {
   transform: translateX(4px);
-}
-
-@keyframes kicker-draw {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
 }
 
 .quote-text {
