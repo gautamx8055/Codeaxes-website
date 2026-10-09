@@ -142,7 +142,7 @@ Kuroaxe is an **external** partner link (`https://kuroaxe.com`) in navigation an
 - `/services` and `/services/[slug]`
 - `/about`, `/about/clients`, `/about/testimonials`, `/about/case-studies`, `/about/case-studies/[slug]`, `/about/industries`, `/about/technologies`, `/about/technologies/[slug]`
 - `/contact`, `/faq`, `/careers`, `/careers/[slug]`
-- `POST /api/chat`, `POST /api/contact`
+- `POST /api/chat`, `POST /api/contact`, `POST /api/newsletter`
 - `GET|POST /api/jobs`, `GET|PATCH|DELETE /api/jobs/[slug]`
 
 ## Design tokens
@@ -152,6 +152,6 @@ Dark graphite/navy base with electric blue, violet, and cyan. Display type is Ou
 ## Notes for production
 
 - Point `site` in `astro.config.mjs` at the real domain.
-- Wire `/api/contact` to email or a CRM. The current handler validates and acknowledges.
+- `POST /api/contact` and `POST /api/newsletter` validate and append submissions to `data/inbox/`. GitHub Pages only serves the static site, so those routes run on `astro dev` and the Node server.
 - Swap placeholder clients, quotes, and case studies.
 - GitHub Pages serves the static site. Careers are built from `data/jobs.json` at deploy time. The jobs API still needs a Node host if you want live posting without a rebuild.

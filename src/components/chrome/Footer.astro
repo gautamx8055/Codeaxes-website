@@ -44,21 +44,24 @@ const location = `${site.address.city}, ${site.address.region}`;
     </nav>
 
     <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-      <form class="flex w-full min-w-0 max-w-md gap-2" data-newsletter>
-        <label class="sr-only" for="newsletter-email">Work email for product notes</label>
-        <input
-          id="newsletter-email"
-          name="email"
-          type="email"
-          required
-          placeholder="Work email"
-          class="min-h-11 min-w-0 w-full rounded-xl border border-line bg-ink px-4 py-2 text-base text-paper placeholder:text-mist"
-        />
-        <button type="submit" class="btn-sheen min-h-11 shrink-0 cursor-pointer rounded-xl px-4 py-2 text-[15px] font-medium text-white">
-          Notes
-        </button>
-        <p class="sr-only" data-newsletter-status aria-live="polite"></p>
-      </form>
+      <div class="w-full min-w-0 max-w-md">
+        <form class="flex w-full min-w-0 gap-2" data-newsletter>
+          <label class="sr-only" for="newsletter-email">Work email for product notes</label>
+          <input class="sr-only" tabindex="-1" autocomplete="off" name="company_url" aria-hidden="true" />
+          <input
+            id="newsletter-email"
+            name="email"
+            type="email"
+            required
+            placeholder="Work email"
+            class="min-h-11 min-w-0 w-full rounded-xl border border-line bg-ink px-4 py-2 text-base text-paper placeholder:text-mist"
+          />
+          <button type="submit" class="btn-sheen min-h-11 shrink-0 cursor-pointer rounded-xl px-4 py-2 text-[15px] font-medium text-white">
+            Notes
+          </button>
+        </form>
+        <p class="mt-2 text-sm text-mist" data-newsletter-status aria-live="polite"></p>
+      </div>
       <div class="flex flex-wrap gap-4 text-sm text-mist">
         {
           Object.entries(site.social).map(([name, href]) => (
@@ -87,12 +90,29 @@ const location = `${site.address.city}, ${site.address.region}`;
 <script>
   const form = document.querySelector<HTMLFormElement>('[data-newsletter]');
   const status = document.querySelector('[data-newsletter-status]');
-  form?.addEventListener('submit', (event) => {
+  form?.addEventListener('submit', async (event) => {
     event.preventDefault();
-    const email = new FormData(form).get('email');
-    if (typeof email === 'string' && email.includes('@')) {
-      status && (status.textContent = 'Saved locally for this session. Production wiring goes in later.');
+    const email = String(new FormData(form).get('email') ?? '').trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      status && (status.textContent = 'Enter a valid work email.');
+      return;
+    }
+    status && (status.textContent = 'Saving…');
+    try {
+      const response = await fetch(`${import.meta.env.BASE_URL.replace(/\/?$/, '/')}api/newsletter`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.fromEntries(new FormData(form).entries())),
+      });
+      const payload = (await response.json().catch(() => ({}))) as { error?: string };
+      if (!response.ok) {
+        status && (status.textContent = payload.error || 'Could not save that email.');
+        return;
+      }
       form.reset();
+      status && (status.textContent = 'Saved. We will send product notes to that address.');
+    } catch {
+      status && (status.textContent = 'The notes form is unavailable right now.');
     }
   });
 </script>

@@ -63,6 +63,7 @@ import { services } from '../../data/services';
     <p class="mt-1 hidden text-sm text-danger" data-error-for="details"></p>
   </div>
   <p class="text-sm text-mist">We use this enquiry to prepare a discovery conversation. Do not send secrets or personal health information.</p>
+  <input class="sr-only" tabindex="-1" autocomplete="off" name="company_url" aria-hidden="true" />
   <button type="submit" class="btn-sheen inline-flex h-11 cursor-pointer items-center justify-center rounded-xl px-5 text-[15px] font-medium text-white">
     Send enquiry
   </button>
@@ -115,7 +116,18 @@ import { services } from '../../data/services';
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(Object.fromEntries(data.entries())),
       });
-      if (!response.ok) throw new Error('fail');
+      const payload = (await response.json().catch(() => ({}))) as { error?: string; errors?: Record<string, string> };
+      if (!response.ok) {
+        const serverErrors = payload.errors ?? {};
+        form.querySelectorAll('[data-error-for]').forEach((node) => {
+          const field = node.getAttribute('data-error-for') ?? '';
+          const message = serverErrors[field];
+          node.textContent = message ?? '';
+          node.classList.toggle('hidden', !message);
+        });
+        status && (status.textContent = payload.error || 'The enquiry could not be saved. Email hello@codeaxes.com.');
+        return;
+      }
       form.reset();
       status && (status.textContent = 'Received. We will reply with a discovery slot. If you need us sooner, email hello@codeaxes.com.');
     } catch {

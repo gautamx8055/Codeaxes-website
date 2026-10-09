@@ -1,21 +1,26 @@
 import type { APIRoute } from 'astro';
+import { allowSubmission, clientKey, enquiryFromBody, saveEnquiry } from '../../lib/inbox';
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request }) => {
+const json = (body: unknown, status = 200) =>
+  new Response(JSON.stringify(body), {
+    status,
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+export const POST: APIRoute = async ({ request, clientAddress }) => {
+  if (!allowSubmission(`contact:${clientKey(request, clientAddress)}`)) {
+    return json({ error: 'Too many enquiries from this network. Email hello@codeaxes.com.' }, 429);
+  }
   try {
-    const body = await request.json();
-    const required = ['name', 'email', 'company', 'service', 'budget', 'timeline', 'details'];
-    for (const key of required) {
-      if (!String(body[key] ?? '').trim()) {
-        return new Response(JSON.stringify({ error: `Missing ${key}` }), { status: 400 });
-      }
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(body.email))) {
-      return new Response(JSON.stringify({ error: 'Invalid email' }), { status: 400 });
-    }
-    return new Response(JSON.stringify({ ok: true }), { headers: { 'Content-Type': 'application/json' } });
+    const body = (await request.json()) as Record<string, unknown>;
+    const result = enquiryFromBody(body);
+    if ('ignored' in result) return json({ ok: true });
+    if ('errors' in result) return json({ error: 'Check the form and try again.', errors: result.errors }, 400);
+    const enquiry = await saveEnquiry(result.enquiry);
+    return json({ ok: true, id: enquiry.id }, 201);
   } catch {
-    return new Response(JSON.stringify({ error: 'Invalid payload' }), { status: 400 });
+    return json({ error: 'Invalid payload' }, 400);
   }
 };
