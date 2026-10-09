@@ -119,7 +119,7 @@ Content-Type: application/json
 `workplace`: `remote` | `hybrid` | `onsite`  
 `status`: `draft` | `open` | `closed` (defaults to `open`)
 
-Optional: `slug`, `applyUrl` (https), `applyEmail`. Draft and closed roles stay off `/careers`. Filter lists with `GET /api/jobs?brand=codeaxes` or `?brand=kuroaxe`.
+Optional: `slug`, `applyUrl` (https), `applyEmail`, `externalId`. Draft and closed roles stay off `/careers`. Send the HR portal's own job id as `externalId`. Publishing that same id again updates the role instead of adding a second card. Filter lists with `GET /api/jobs?brand=codeaxes` or `?brand=kuroaxe`.
 
 ### Other endpoints
 

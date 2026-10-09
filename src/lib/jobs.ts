@@ -198,6 +198,13 @@ export function parseJobInput(body: Record<string, unknown>, existing?: Job): { 
 
   if (typeof body.slug === 'string' && body.slug.trim()) next.slug = slugify(body.slug);
 
+  if (typeof body.externalId === 'string') {
+    const externalId = body.externalId.trim().slice(0, 120);
+    if (externalId) next.externalId = externalId;
+  } else if (existing?.externalId) {
+    next.externalId = existing.externalId;
+  }
+
   return { job: errors.length ? undefined : next, errors };
 }
 
@@ -210,7 +217,7 @@ export async function listJobs(includeHidden = false, brand?: JobBrand) {
 
 export async function getJob(slug: string, includeHidden = false) {
   const jobs = await readJobs();
-  const job = jobs.find((item) => item.slug === slug);
+  const job = jobs.find((item) => item.slug === slug || item.id === slug || item.externalId === slug);
   if (!job) return null;
   if (!includeHidden && job.status !== 'open') return null;
   return job;
@@ -222,6 +229,24 @@ export async function createJob(body: Record<string, unknown>) {
     const parsed = parseJobInput(body);
     if (!parsed.job || parsed.errors.length) return { errors: parsed.errors };
     const now = new Date().toISOString();
+    const existingIndex = parsed.job.externalId
+      ? jobs.findIndex((item) => item.externalId === parsed.job?.externalId)
+      : -1;
+    if (existingIndex !== -1) {
+      const existing = jobs[existingIndex];
+      const slug = uniqueSlug(parsed.job.slug ?? existing.slug, jobs, existing.id);
+      const job: Job = {
+        ...existing,
+        ...parsed.job,
+        id: existing.id,
+        slug,
+        createdAt: existing.createdAt,
+        updatedAt: now,
+      };
+      jobs[existingIndex] = job;
+      await writeJobs(jobs);
+      return { job, updated: true as const };
+    }
     const id = randomUUID();
     const slug = uniqueSlug(parsed.job.slug ?? slugify(parsed.job.title ?? id), jobs);
     const job: Job = {
@@ -240,6 +265,7 @@ export async function createJob(body: Record<string, unknown>) {
       compensation: parsed.job.compensation,
       applyUrl: parsed.job.applyUrl,
       applyEmail: parsed.job.applyEmail,
+      externalId: parsed.job.externalId,
       status: parsed.job.status ?? 'open',
       createdAt: now,
       updatedAt: now,

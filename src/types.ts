@@ -149,6 +149,7 @@ export type Job = {
   compensation?: string;
   applyUrl?: string;
   applyEmail?: string;
+  externalId?: string;
   status: JobStatus;
   createdAt: string;
   updatedAt: string;

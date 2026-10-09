@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../data/site';
+import { withBase } from '../../lib/seo';
+---
+
+<BaseLayout title="Open role" description="A role published from the hiring workspace." path="/careers/role">
+  <main class="mx-auto max-w-3xl px-4 py-16 sm:px-5 md:px-8" data-role-page data-email={site.email} data-base={withBase('/careers')}>
+    <p class="text-mist" data-role-status>Loading this role…</p>
+    <article class="hidden" data-role-body></article>
+  </main>
+</BaseLayout>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-role-page]');
+  const status = document.querySelector<HTMLElement>('[data-role-status]');
+  const body = document.querySelector<HTMLElement>('[data-role-body]');
+  const slug = new URLSearchParams(location.search).get('slug') ?? '';
+  const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+  const fallbackEmail = root?.dataset.email ?? '';
+
+  const escapeHtml = (value: string) =>
+    value.replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char] ?? char);
+
+  type Role = {
+    title: string;
+    brand: 'codeaxes' | 'kuroaxe';
+    department: string;
+    location: string;
+    summary: string;
+    description: string;
+    responsibilities: string[];
+    requirements: string[];
+    compensation?: string;
+    applyUrl?: string;
+    applyEmail?: string;
+    employmentType: string;
+    workplace: string;
+  };
+
+  const show = (job: Role) => {
+    const apply = job.applyUrl || `mailto:${job.applyEmail || fallbackEmail}?subject=${encodeURIComponent(`Application: ${job.title}`)}`;
+    const paragraphs = job.description.split(/\n{2,}/).map((item) => item.trim()).filter(Boolean);
+    if (status) status.classList.add('hidden');
+    if (!body) return;
+    body.classList.remove('hidden');
+    document.title = `${job.title} | ${job.brand === 'kuroaxe' ? 'Kuroaxe' : 'Codeaxes'}`;
+    body.innerHTML = `
+      <p class="text-sm uppercase tracking-[0.14em] text-axis">${escapeHtml(job.brand)} · ${escapeHtml(job.department)}</p>
+      <h1 class="font-display mt-4 text-4xl font-medium tracking-tight text-paper sm:text-5xl">${escapeHtml(job.title)}</h1>
+      <p class="mt-4 text-lg text-mist">${escapeHtml(job.summary)}</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a class="btn-sheen inline-flex min-h-11 items-center rounded-xl px-5 text-[15px] font-medium text-white" href="${escapeHtml(apply)}">Apply</a>
+        <a class="inline-flex min-h-11 items-center rounded-xl border border-line px-5 text-[15px] font-medium text-paper" href="${base}careers">All roles</a>
+      </div>
+      <ul class="mt-8 flex flex-wrap gap-2 text-sm text-paper">
+        <li class="border border-line px-3 py-1">${escapeHtml(job.location)}</li>
+        <li class="border border-line px-3 py-1">${escapeHtml(job.employmentType)}</li>
+        <li class="border border-line px-3 py-1">${escapeHtml(job.workplace)}</li>
+        ${job.compensation ? `<li class="border border-line px-3 py-1">${escapeHtml(job.compensation)}</li>` : ''}
+      </ul>
+      <div class="mt-10 space-y-4 text-mist">${paragraphs.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')}</div>
+      ${job.responsibilities.length ? `<h2 class="font-display mt-10 text-2xl text-paper">What you will own</h2><ul class="mt-4 grid gap-3">${job.responsibilities.map((item) => `<li class="border border-line px-4 py-3 text-paper">${escapeHtml(item)}</li>`).join('')}</ul>` : ''}
+      ${job.requirements.length ? `<h2 class="font-display mt-10 text-2xl text-paper">What you bring</h2><ul class="mt-4 grid gap-3">${job.requirements.map((item) => `<li class="border-l border-pulse pl-4 text-paper">${escapeHtml(item)}</li>`).join('')}</ul>` : ''}
+    `;
+  };
+
+  if (!slug) {
+    if (status) status.textContent = 'This role link is missing a job.';
+  } else {
+    fetch(`${base}api/jobs/${encodeURIComponent(slug)}`)
+      .then((response) => (response.ok ? response.json() : null))
+      .then((payload: { job?: Role } | null) => {
+        if (!payload?.job) {
+          if (status) status.textContent = 'This role is not open. It may have been closed in the hiring workspace.';
+          return;
+        }
+        show(payload.job);
+      })
+      .catch(() => {
+        if (status) status.textContent = 'The hiring list is unavailable right now.';
+      });
+  }
+</script>

@@ -64,13 +64,14 @@ const boards: {
         split
       >
         {board.jobs.length > 0 ? (
-          <div class="grid gap-4 md:grid-cols-2" data-reveal-stagger>
+          <div class="grid gap-4 md:grid-cols-2" data-reveal-stagger data-job-list={board.id}>
             {board.jobs.map((job) => (
               <JobCard job={job} />
             ))}
           </div>
         ) : (
-          <div class="border border-line p-8">
+          <div data-job-list={board.id}>
+            <div class="border border-line p-8">
             <p class="font-display text-2xl text-paper">No live {board.eyebrow} roles.</p>
             <p class="mt-3 max-w-xl text-mist">{board.empty}</p>
             <div class="mt-6 flex flex-wrap gap-3">
@@ -82,11 +83,66 @@ const boards: {
                 <Button href="/contact">Contact Codeaxes</Button>
               )}
             </div>
+            </div>
           </div>
         )}
       </Section>
     ))
   }
+
+  <script>
+    const labels = {
+      brand: { codeaxes: 'Codeaxes', kuroaxe: 'Kuroaxe' },
+      employment: { 'full-time': 'Full-time', 'part-time': 'Part-time', contract: 'Contract', internship: 'Internship' },
+      workplace: { remote: 'Remote', hybrid: 'Hybrid', onsite: 'On-site' },
+    };
+    const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+    const escapeHtml = (value: string) =>
+      value.replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char] ?? char);
+
+    const card = (job: {
+      slug: string;
+      title: string;
+      brand: 'codeaxes' | 'kuroaxe';
+      department: string;
+      summary: string;
+      location: string;
+      employmentType: keyof typeof labels.employment;
+      workplace: keyof typeof labels.workplace;
+    }) => {
+      const href = `${base}careers/role?slug=${encodeURIComponent(job.slug)}`;
+      return `<a href="${href}" class="group flex h-full flex-col rounded-2xl border border-line p-6 transition hover:border-axis">
+        <p class="font-mono mb-4 text-[11px] uppercase tracking-[0.16em] text-axis">${escapeHtml(labels.brand[job.brand])} · ${escapeHtml(job.department)}</p>
+        <h3 class="font-display text-2xl tracking-tight text-paper">${escapeHtml(job.title)}</h3>
+        <p class="mt-3 flex-1 text-sm leading-relaxed text-mist">${escapeHtml(job.summary)}</p>
+        <ul class="mt-5 flex flex-wrap gap-2">
+          <li class="border border-line px-2 py-1 text-[11px] uppercase tracking-[0.12em] text-mist">${escapeHtml(job.location)}</li>
+          <li class="border border-line px-2 py-1 text-[11px] uppercase tracking-[0.12em] text-mist">${escapeHtml(labels.employment[job.employmentType] ?? job.employmentType)}</li>
+          <li class="border border-line px-2 py-1 text-[11px] uppercase tracking-[0.12em] text-mist">${escapeHtml(labels.workplace[job.workplace] ?? job.workplace)}</li>
+        </ul>
+        <p class="font-mono mt-6 text-[11px] uppercase tracking-[0.16em] text-axis">Open role →</p>
+      </a>`;
+    };
+
+    const paint = (jobs: Array<{ brand: 'codeaxes' | 'kuroaxe' }>) => {
+      for (const brand of ['codeaxes', 'kuroaxe'] as const) {
+        const list = document.querySelector<HTMLElement>(`[data-job-list="${brand}"]`);
+        if (!list) continue;
+        const mine = jobs.filter((job) => job.brand === brand);
+        if (!mine.length) continue;
+        list.className = 'grid gap-4 md:grid-cols-2';
+        list.innerHTML = mine.map((job) => card(job as Parameters<typeof card>[0])).join('');
+      }
+    };
+
+    fetch(`${base}api/jobs`)
+      .then((response) => (response.ok ? response.json() : null))
+      .then((payload: { jobs?: Array<{ brand: 'codeaxes' | 'kuroaxe' }> } | null) => {
+        if (payload?.jobs) paint(payload.jobs);
+      })
+      .catch(() => undefined);
+  </script>
 
   <CtaBand
     eyebrow="Hiring"

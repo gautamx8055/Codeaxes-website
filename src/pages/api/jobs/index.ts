@@ -38,7 +38,7 @@ export const POST: APIRoute = async ({ request }) => {
         headers,
       });
     }
-    return new Response(JSON.stringify({ job: result.job }), { status: 201, headers });
+    return new Response(JSON.stringify({ job: result.job }), { status: 'updated' in result && result.updated ? 200 : 201, headers });
   } catch {
     return new Response(JSON.stringify({ error: 'Invalid JSON payload.' }), { status: 400, headers });
   }
