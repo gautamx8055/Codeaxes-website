@@ -1199,8 +1199,18 @@ export const technologies: Technology[] = [
   },
 ];
 
+const technologyKeys = new Map(technologies.map((tech) => [normalizeTechnologyName(tech.name), tech]));
+
+function normalizeTechnologyName(value: string) {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, '');
+}
+
 export function getTechnology(slug: string): Technology | undefined {
   return technologies.find((tech) => tech.slug === slug);
+}
+
+export function findTechnology(label: string): Technology | undefined {
+  return technologyKeys.get(normalizeTechnologyName(label));
 }
 
 export function getTechnologiesByCategory(category: TechCategory): Technology[] {

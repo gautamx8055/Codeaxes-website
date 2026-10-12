@@ -1,3 +1,4 @@
+import { industries } from './industries';
 import { site } from './site';
 import type { NavItem } from '../types';
 
@@ -23,13 +24,20 @@ export const primaryNav: NavItem[] = [
     ],
   },
   {
+    label: 'Industries',
+    href: '/about/industries',
+    children: industries.map((industry) => ({
+      label: industry.name,
+      href: `/about/industries#${industry.slug}`,
+    })),
+  },
+  {
     label: 'About',
     href: '/about',
     children: [
       { label: 'Our Clients', href: '/about/clients', description: 'Engagements across industries' },
       { label: 'Testimonials', href: '/about/testimonials', description: 'How teams describe working with us' },
       { label: 'Case Studies', href: '/about/case-studies', description: 'Problems, systems, and outcomes' },
-      { label: 'Industries', href: '/about/industries', description: 'Where we build' },
       { label: 'Technologies', href: '/about/technologies', description: 'The Codeaxes stack' },
     ],
   },

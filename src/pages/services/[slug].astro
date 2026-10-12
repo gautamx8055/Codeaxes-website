@@ -10,6 +10,7 @@ import ServiceVisual from '../../components/visuals/ServiceVisual.astro';
 import { getService, services } from '../../data/services';
 import { getCaseStudiesBySlug } from '../../data/case-studies';
 import { site } from '../../data/site';
+import { findTechnology } from '../../data/technologies';
 import { withBase } from '../../lib/seo';
 
 export function getStaticPaths() {
@@ -34,7 +35,7 @@ const jsonLd = {
 <BaseLayout title={service.name} description={service.summary} path={`/services/${service.slug}`} jsonLd={jsonLd}>
   <PageHero eyebrow={service.heroEyebrow} title={service.heroTitle} body={service.heroBody}>
     <ServiceVisual kind={service.visual} />
-    <Button slot="actions" href="/contact">Start a project</Button>
+    <Button slot="actions" href="/contact">Book consultation</Button>
     <Button slot="actions" href="/about/case-studies" variant="secondary">Related work</Button>
   </PageHero>
 
@@ -83,26 +84,42 @@ const jsonLd = {
     </ol>
   </Section>
 
-  <Section index="05" eyebrow="Fit" title="Industries and stack.">
-    <div class="grid gap-10 md:grid-cols-2">
-      <div>
-        <h3 class="font-mono mb-4 text-[11px] uppercase tracking-[0.16em] text-mist">Industries</h3>
-        <ul class="flex flex-wrap gap-2">
-          {service.industries.map((item) => <li class="border border-line px-3 py-1 text-sm text-paper">{item}</li>)}
-        </ul>
-      </div>
-      <div>
-        <h3 class="font-mono mb-4 text-[11px] uppercase tracking-[0.16em] text-mist">Typical stack</h3>
-        <ul class="flex flex-wrap gap-2">
-          {service.stack.map((item) => (
-            <li>
-              <a href={withBase('/about/technologies')} class="border border-line px-3 py-1 text-sm text-mist hover:text-pulse">
+  <Section class="fit-section" index="05" eyebrow="Fit" title="Industries and stack.">
+    <div class="fit-grid">
+      <article class="fit-panel">
+        <header>
+          <h3>Industries</h3>
+          <p>{service.industries.length} sectors</p>
+        </header>
+        <ul class="fit-industries">
+          {
+            service.industries.map((item) => (
+              <li>
+                <span aria-hidden="true" />
                 {item}
-              </a>
-            </li>
-          ))}
+              </li>
+            ))
+          }
         </ul>
-      </div>
+      </article>
+      <article class="fit-panel is-stack">
+        <header>
+          <h3>Typical stack</h3>
+          <p>Tools we actually operate</p>
+        </header>
+        <ul class="fit-stack">
+          {
+            service.stack.map((item) => {
+              const tech = findTechnology(item);
+              return (
+                <li>
+                  <a href={withBase(tech ? `/about/technologies/${tech.slug}` : '/about/technologies')}>{item}</a>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </article>
     </div>
   </Section>
 
@@ -125,7 +142,7 @@ const jsonLd = {
   {
     related.length > 0 && (
       <Section index="07" tone="muted" eyebrow="Work" title="Related case studies.">
-        <div class="grid gap-6">
+        <div class="grid gap-5 md:grid-cols-2">
           {related.map((study) => (
             <CaseStudyCard study={study} />
           ))}
@@ -140,3 +157,114 @@ const jsonLd = {
 
   <CtaBand title={`Start a ${service.shortName} conversation.`} primary={site.cta.primary} secondary={{ label: 'All services', href: '/services' }} />
 </BaseLayout>
+
+<style>
+  .fit-section :global(.section-head) {
+    margin-bottom: 2rem;
+  }
+
+  .fit-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .fit-panel {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    border-radius: 1.25rem;
+    background: #ffffff;
+    padding: 1.25rem;
+  }
+
+  .fit-panel header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .fit-panel h3 {
+    margin: 0;
+    color: var(--paper);
+    font-size: 1.15rem;
+    font-weight: 650;
+    letter-spacing: -0.03em;
+    line-height: 1.25;
+  }
+
+  .fit-panel header p {
+    margin: 0;
+    color: var(--mist);
+    font-size: 0.8rem;
+  }
+
+  .fit-industries,
+  .fit-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .fit-industries li,
+  .fit-stack a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.5rem;
+    border-radius: 999px;
+    padding: 0.35rem 0.95rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .fit-industries li {
+    gap: 0.5rem;
+    background: #f3f7fb;
+    color: var(--paper);
+  }
+
+  .fit-industries li span {
+    width: 0.45rem;
+    height: 0.45rem;
+    flex: none;
+    border-radius: 999px;
+    background: #2f62a8;
+  }
+
+  .fit-industries li:nth-child(even) span {
+    background: #3d944c;
+  }
+
+  .fit-stack a {
+    background: #e7f1fb;
+    color: #16386e;
+  }
+
+  .fit-stack a:hover {
+    background: #2f62a8;
+    color: #ffffff;
+  }
+
+  @media (min-width: 768px) {
+    .fit-grid {
+      grid-template-columns: 1fr 1fr;
+      align-items: stretch;
+    }
+
+    .fit-panel {
+      padding: 1.4rem 1.4rem 1.5rem;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .fit-section :global(.section-head) {
+      margin-bottom: 1.25rem;
+    }
+  }
+</style>

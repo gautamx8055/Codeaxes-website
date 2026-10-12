@@ -26,7 +26,7 @@ export const site = {
     label: 'Marketing services by our partner brand',
   },
   cta: {
-    primary: { label: 'Start a project', href: '/contact' },
+    primary: { label: 'Book consultation', href: '/contact' },
     secondary: { label: 'Explore our work', href: '/about/case-studies' },
   },
 } as const;

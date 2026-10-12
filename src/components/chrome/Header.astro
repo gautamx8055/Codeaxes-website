@@ -6,6 +6,11 @@ import { site } from '../../data/site';
 import { withBase, withoutBase } from '../../lib/seo';
 
 const path = withoutBase(Astro.url.pathname);
+const currentHref = primaryNav
+  .map((item) => item.href)
+  .filter((href): href is string => Boolean(href) && href !== '/')
+  .filter((href) => path === href || path.startsWith(`${href}/`))
+  .sort((a, b) => b.length - a.length)[0];
 ---
 
 <div class="header-offset" data-header-offset aria-hidden="true"></div>
@@ -22,7 +27,7 @@ const path = withoutBase(Astro.url.pathname);
                 href={item.href ? withBase(item.href) : undefined}
                 class:list={[
                   'relative z-20 inline-flex items-center gap-1 px-3 py-2 text-[14px] font-medium tracking-normal text-mist transition-colors duration-300 hover:text-axis',
-                  path.startsWith(item.href ?? '///') && 'text-axis',
+                  item.href === currentHref && 'text-axis',
                 ]}
                 aria-haspopup="true"
                 aria-expanded="false"
@@ -69,7 +74,7 @@ const path = withoutBase(Astro.url.pathname);
               href={item.href ? withBase(item.href) : undefined}
               class:list={[
                 'px-3 py-2 text-[14px] font-medium tracking-normal text-mist transition-colors duration-300 hover:text-axis',
-                (item.href === '/' ? path === '/' : path.startsWith(item.href ?? '///')) && 'text-axis',
+                (item.href === '/' ? path === '/' : item.href === currentHref) && 'text-axis',
               ]}
             >
               {item.label}

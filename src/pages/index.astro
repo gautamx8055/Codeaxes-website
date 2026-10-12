@@ -5,7 +5,7 @@ import { clients } from '../data/clients';
 import { caseStudies } from '../data/case-studies';
 import { testimonials } from '../data/testimonials';
 import { whyCodeaxes } from '../data/why';
-import { techCategories } from '../data/technologies';
+import { getTechnologiesByCategory, techCategories } from '../data/technologies';
 import { withBase } from '../lib/seo';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/ui/Button.astro';
@@ -16,6 +16,7 @@ import CoverFace from '../components/ui/CoverFace.astro';
 import LogoStrip from '../components/ui/LogoStrip.astro';
 import ProcessTimeline from '../components/ui/ProcessTimeline.astro';
 import CaseStudyCard from '../components/ui/CaseStudyCard.astro';
+import ComplianceBand from '../components/ui/ComplianceBand.astro';
 import TestimonialSlider from '../components/ui/TestimonialSlider.astro';
 import ServiceVisual from '../components/visuals/ServiceVisual.astro';
 ---
@@ -72,7 +73,7 @@ import ServiceVisual from '../components/visuals/ServiceVisual.astro';
   </Section>
 
   <Section id="work" index="03" tone="ink" eyebrow="Case studies" title="Featured product work." kicker="Illustrative engagements used to show how we structure delivery. Outcomes describe the operating change the work targeted." split>
-    <div class="grid gap-0 border-t border-line lg:grid-cols-2" data-reveal-stagger>
+    <div class="grid gap-5 md:grid-cols-2" data-reveal-stagger>
       {caseStudies.slice(0, 4).map((study) => <CaseStudyCard study={study} />)}
     </div>
     <div class="mt-8 text-center">
@@ -80,24 +81,39 @@ import ServiceVisual from '../components/visuals/ServiceVisual.astro';
     </div>
   </Section>
 
+  <ComplianceBand />
+
   <Section id="process" index="04" tone="muted" eyebrow="Delivery" title="Discover through scale." kicker="A real sequence. We do not skip Test to make a launch date look pretty." split>
     <ProcessTimeline />
   </Section>
 
-  <Section id="stack" index="05" tone="ink" eyebrow="Technology" title="An ecosystem we can actually operate.">
-    <div class="grid gap-0 border-t border-line md:grid-cols-2 lg:grid-cols-3" data-reveal-stagger>
+  <Section id="stack" index="05" tone="ink" eyebrow="Technology" title="An ecosystem we can actually operate." kicker="Every tool below has its own page: what it is, when we use it, and where it stops being the right choice." split>
+    <div class="tech-groups">
       {
         techCategories.map((category) => (
-          <a href={withBase(`/about/technologies#${category.id}`)} class="block border-b border-r border-line p-6 hover:bg-slate">
-            <p class="kicker text-mist">{category.id}</p>
-            <h3 class="font-display mt-3 text-3xl text-paper">{category.name}</h3>
-            <p class="mt-2 text-sm text-mist">{category.summary}</p>
-          </a>
+          <article class="tech-group">
+            <header>
+              <h3>
+                <a href={withBase(`/about/technologies#${category.id}`)}>{category.name}</a>
+              </h3>
+              <p>{category.summary}</p>
+            </header>
+            <ul>
+              {getTechnologiesByCategory(category.id).map((tech) => (
+                <li>
+                  <a href={withBase(`/about/technologies/${tech.slug}`)}>
+                    <strong>{tech.name}</strong>
+                    <span>{tech.summary}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </article>
         ))
       }
     </div>
-    <div class="mt-8">
-      <Button href="/about/technologies" variant="secondary">Open the stack</Button>
+    <div class="mt-8 text-center">
+      <Button href="/about/technologies" variant="secondary">All technologies</Button>
     </div>
   </Section>
 
@@ -119,3 +135,101 @@ import ServiceVisual from '../components/visuals/ServiceVisual.astro';
     />
   </div>
 </BaseLayout>
+
+<style>
+  .tech-groups {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .tech-group {
+    border: 1px solid var(--line);
+    border-radius: 1.25rem;
+    background: #ffffff;
+    padding: 1.15rem;
+  }
+
+  .tech-group header {
+    display: grid;
+    gap: 0.35rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .tech-group h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 650;
+    letter-spacing: -0.03em;
+    line-height: 1.25;
+  }
+
+  .tech-group h3 a {
+    color: var(--paper);
+  }
+
+  .tech-group h3 a:hover {
+    color: var(--axis);
+  }
+
+  .tech-group header p {
+    margin: 0;
+    max-width: 42rem;
+    color: var(--mist);
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+
+  .tech-group ul {
+    display: grid;
+    gap: 0.55rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tech-group li a {
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+    gap: 0.3rem;
+    border-radius: 0.9rem;
+    background: #f4f8fc;
+    padding: 0.85rem 0.95rem;
+  }
+
+  .tech-group li a:hover {
+    background: #e7f1fb;
+  }
+
+  .tech-group strong {
+    color: var(--paper);
+    font-size: 0.98rem;
+    font-weight: 650;
+  }
+
+  .tech-group li span {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--mist);
+    font-size: 0.86rem;
+    line-height: 1.45;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  @media (min-width: 720px) {
+    .tech-group {
+      padding: 1.35rem;
+    }
+
+    .tech-group ul {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .tech-group ul {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+</style>
