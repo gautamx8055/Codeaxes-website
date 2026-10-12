@@ -42,24 +42,6 @@ html[data-theme='light'] {
   --cover-shadow: 0 18px 40px color-mix(in oklab, #171717 8%, transparent);
 }
 
-html[data-theme='dark'] {
-  color-scheme: dark;
-  --void: #070b14;
-  --ink: #0d1422;
-  --slate: #151d2c;
-  --line: #27344a;
-  --mist: #8b97ab;
-  --paper: #f2f6fb;
-  --axis: #6eb4e4;
-  --signal: #5cbf6e;
-  --pulse: #8ec8ee;
-  --warn: #e0a454;
-  --danger: #ef4444;
-  --flame: #4c8dff;
-  --glow: 0 22px 56px color-mix(in oklab, #4c8dff 18%, transparent);
-  --cover-shadow: 0 32px 80px color-mix(in oklab, black 48%, transparent);
-}
-
 html {
   scroll-padding-top: 5.75rem;
   overflow-x: clip;

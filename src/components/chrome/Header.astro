@@ -1,7 +1,6 @@
 ---
 import Logo from './Logo.astro';
 import Button from '../ui/Button.astro';
-import ThemeToggle from './ThemeToggle.astro';
 import { primaryNav } from '../../data/navigation';
 import { site } from '../../data/site';
 import { withBase, withoutBase } from '../../lib/seo';
@@ -80,7 +79,6 @@ const path = withoutBase(Astro.url.pathname);
       }
     </nav>
     <div class="flex items-center gap-2">
-      <ThemeToggle />
       <Button href={site.cta.primary.href} variant="secondary" class="!hidden xl:!inline-flex">{site.cta.primary.label}</Button>
       <button
         type="button"
