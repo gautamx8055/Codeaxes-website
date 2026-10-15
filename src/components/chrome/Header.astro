@@ -100,12 +100,30 @@ const currentHref = primaryNav
   <div id="mobile-nav" class="hidden max-h-[calc(100dvh-4.75rem)] overflow-y-auto overscroll-contain border-t border-line bg-ink xl:hidden" data-mobile-nav>
     <nav class="mx-auto max-w-6xl px-5 py-4" aria-label="Mobile">
       {
-        primaryNav.map((item) => (
-          <div class="border-b border-line py-3">
+        primaryNav.map((item, index) => (
+          <div class="border-b border-line py-3" data-mobile-group>
             {item.external ? (
               <a href={item.href} class="flex min-h-11 items-center text-lg font-semibold text-paper" target="_blank" rel="noopener noreferrer">
                 {item.label} ↗
               </a>
+            ) : item.children ? (
+              <div class="flex items-center justify-between gap-2">
+                <a href={item.href ? withBase(item.href) : undefined} class="flex min-h-11 flex-1 items-center text-lg font-semibold text-paper">
+                  {item.label}
+                </a>
+                <button
+                  type="button"
+                  class="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-xl text-mist hover:text-axis"
+                  aria-expanded="false"
+                  aria-controls={`mobile-sub-${index}`}
+                  aria-label={`Show ${item.label} pages`}
+                  data-mobile-sub-toggle
+                >
+                  <svg class="h-4 w-4 transition-transform duration-200" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="m3.5 6 4.5 4.5L12.5 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </button>
+              </div>
             ) : (
               <a href={item.href ? withBase(item.href) : undefined} class="flex min-h-11 items-center text-lg font-semibold text-paper">
                 {item.label}
@@ -113,7 +131,7 @@ const currentHref = primaryNav
             )}
             {item.note && <p class="mt-1 text-xs text-mist">{item.note}</p>}
             {item.children && (
-              <ul class="mt-1 grid">
+              <ul id={`mobile-sub-${index}`} class="mt-1 hidden" data-mobile-sub>
                 {item.children.map((child) => (
                   <li>
                     <a href={withBase(child.href)} class="flex min-h-11 items-center text-base font-medium text-mist hover:text-axis">
@@ -201,6 +219,17 @@ const currentHref = primaryNav
     header?.classList.toggle('is-menu-open', open);
     document.body.style.overflow = open ? 'hidden' : '';
     document.dispatchEvent(new Event('codeaxes:header-show'));
+  });
+
+  document.querySelectorAll<HTMLElement>('[data-mobile-group]').forEach((group) => {
+    const button = group.querySelector<HTMLButtonElement>('[data-mobile-sub-toggle]');
+    const list = group.querySelector<HTMLElement>('[data-mobile-sub]');
+    if (!button || !list) return;
+    button.addEventListener('click', () => {
+      const open = list.classList.toggle('hidden') === false;
+      button.setAttribute('aria-expanded', String(open));
+      button.querySelector('svg')?.classList.toggle('rotate-180', open);
+    });
   });
 
   const navItems = [...document.querySelectorAll<HTMLElement>('[data-nav-item]')];
