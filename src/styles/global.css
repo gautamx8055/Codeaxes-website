@@ -3,6 +3,9 @@
 @import '@fontsource/ibm-plex-mono/600.css';
 @import 'tailwindcss';
 
+@source not "../kuroaxe";
+@source not "../pages/kuroaxe";
+
 @theme {
   --font-sans: 'Manrope Variable', Manrope, ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Manrope Variable', Manrope, ui-sans-serif, system-ui, sans-serif;

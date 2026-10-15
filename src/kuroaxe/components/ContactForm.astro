@@ -1,0 +1,197 @@
+---
+import { contact } from "../content/contact";
+import { services } from "../content/services";
+import { site } from "../content/site";
+---
+
+<form
+  id="enquiry"
+  class="theme-ivory bg-ivory p-6 text-ink sm:p-10 lg:p-12"
+  novalidate
+  data-enquiry-to={site.email}
+>
+  <div class="grid gap-8 sm:grid-cols-2">
+    <div class="sm:col-span-1">
+      <label for="name" class="kicker-ink">Name</label>
+      <input id="name" name="name" type="text" autocomplete="name" required class="field" />
+      <p class="error" data-error-for="name" hidden></p>
+    </div>
+    <div>
+      <label for="email" class="kicker-ink">Work email</label>
+      <input id="email" name="email" type="email" autocomplete="email" required class="field" />
+      <p class="error" data-error-for="email" hidden></p>
+    </div>
+    <div>
+      <label for="company" class="kicker-ink">Company</label>
+      <input id="company" name="company" type="text" autocomplete="organization" required class="field" />
+      <p class="error" data-error-for="company" hidden></p>
+    </div>
+    <div>
+      <label for="phone" class="kicker-ink">Phone</label>
+      <input id="phone" name="phone" type="tel" autocomplete="tel" class="field" />
+      <p class="error" data-error-for="phone" hidden></p>
+    </div>
+    <fieldset class="sm:col-span-2">
+      <legend class="kicker-ink">Services needed</legend>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        {
+          services.map((service) => (
+            <label class="flex min-h-11 cursor-pointer items-center gap-3 text-sm">
+              <input type="checkbox" name="services" value={service.slug} class="accent-[var(--color-gilt)]" />
+              {service.title}
+            </label>
+          ))
+        }
+      </div>
+      <p class="error" data-error-for="services" hidden></p>
+    </fieldset>
+    <div>
+      <label for="budget" class="kicker-ink">Budget range</label>
+      <select id="budget" name="budget" required class="field">
+        <option value="">Select a range</option>
+        {contact.budgets.map((item) => <option value={item.value}>{item.label}</option>)}
+      </select>
+      <p class="error" data-error-for="budget" hidden></p>
+    </div>
+    <div>
+      <label for="timeline" class="kicker-ink">Timeline</label>
+      <select id="timeline" name="timeline" required class="field">
+        <option value="">Select a timing</option>
+        {contact.timelines.map((item) => <option value={item.value}>{item.label}</option>)}
+      </select>
+      <p class="error" data-error-for="timeline" hidden></p>
+    </div>
+    <div class="sm:col-span-2">
+      <label for="details" class="kicker-ink">Project or campaign details</label>
+      <textarea id="details" name="details" rows="6" required minlength="20" class="field min-h-36"></textarea>
+      <p class="error" data-error-for="details" hidden></p>
+    </div>
+  </div>
+
+  <p class="mt-8 text-sm text-ink/65">{contact.privacy}</p>
+
+  <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
+    <button type="submit" class="btn-primary">Send enquiry</button>
+    <a class="link-gilt scribble-double !text-ink" href={contact.meeting.href}>{contact.meeting.label}</a>
+  </div>
+
+  <p id="form-status" class="mt-6 text-sm" role="status" aria-live="polite"></p>
+</form>
+
+<style>
+  .field {
+    margin-top: 0.65rem;
+    display: block;
+    width: 100%;
+    min-height: 2.75rem;
+    border: none;
+    background-color: transparent;
+    background-image: url("/kuroaxe/scribbles/field-ink.svg");
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    background-size: 100% 10px;
+    padding: 0.55rem 0 0.7rem;
+    color: var(--color-ink);
+    font: inherit;
+    border-radius: 0;
+  }
+
+  .field:focus {
+    outline: none;
+    background-image: url("/kuroaxe/scribbles/field-teal.svg");
+  }
+
+  .field[aria-invalid="true"] {
+    background-image: url("/kuroaxe/scribbles/field-orange.svg");
+  }
+
+  .error {
+    margin-top: 0.4rem;
+    font-size: 0.8rem;
+    color: var(--color-orange);
+  }
+</style>
+
+<script>
+  const form = document.getElementById("enquiry");
+  const status = document.getElementById("form-status");
+  if (!(form instanceof HTMLFormElement) || !status) {
+    // no-op
+  } else {
+    const setError = (name: string, message: string) => {
+      const field =
+        form.querySelector<HTMLElement>(`[name="${name}"]`) ??
+        form.querySelector<HTMLElement>(`#${name}`);
+      const error = form.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
+      if (field) field.setAttribute("aria-invalid", message ? "true" : "false");
+      if (error) {
+        error.hidden = !message;
+        error.textContent = message;
+      }
+    };
+
+    const emailOk = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+      let firstInvalid: HTMLElement | null = null;
+
+      const name = String(data.get("name") ?? "").trim();
+      const email = String(data.get("email") ?? "").trim();
+      const company = String(data.get("company") ?? "").trim();
+      const phone = String(data.get("phone") ?? "").trim();
+      const budget = String(data.get("budget") ?? "");
+      const timeline = String(data.get("timeline") ?? "");
+      const details = String(data.get("details") ?? "").trim();
+      const selected = data.getAll("services");
+
+      const checks: Array<[string, string]> = [
+        ["name", name ? "" : "Please enter your name."],
+        ["email", !email ? "Please enter a work email." : emailOk(email) ? "" : "Enter a valid email address."],
+        ["company", company ? "" : "Please enter the company name."],
+        [
+          "phone",
+          phone && phone.replace(/\D/g, "").length < 7 ? "Enter a phone number with at least seven digits, or leave it blank." : "",
+        ],
+        ["services", selected.length ? "" : "Select at least one service."],
+        ["budget", budget ? "" : "Choose a budget range."],
+        ["timeline", timeline ? "" : "Choose a timeline."],
+        ["details", details.length >= 20 ? "" : "Add a little more detail (at least 20 characters)."],
+      ];
+
+      for (const [key, message] of checks) {
+        setError(key, message);
+        if (message && !firstInvalid) {
+          firstInvalid =
+            form.querySelector(`#${key}`) ??
+            form.querySelector(`[name="${key}"]`);
+        }
+      }
+
+      if (firstInvalid) {
+        status.textContent = "Please correct the highlighted fields.";
+        firstInvalid.focus();
+        return;
+      }
+
+      const recipient = form.dataset.enquiryTo ?? "studio@kuroaxe.com";
+      const body = [
+        `Name: ${name}`,
+        `Work email: ${email}`,
+        `Company: ${company}`,
+        phone ? `Phone: ${phone}` : "",
+        `Services: ${selected.join(", ")}`,
+        `Budget: ${budget}`,
+        `Timeline: ${timeline}`,
+        "",
+        details,
+      ]
+        .filter((line) => line !== "")
+        .join("\n");
+      const mailto = `mailto:${recipient}?subject=${encodeURIComponent(`Enquiry: ${company}`)}&body=${encodeURIComponent(body)}`;
+      status.textContent = `Opening your email client. If nothing appears, write to ${recipient}.`;
+      window.location.href = mailto;
+    });
+  }
+</script>

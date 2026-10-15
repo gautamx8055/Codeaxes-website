@@ -1,0 +1,56 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Seo from "../components/Seo.astro";
+import JsonLd from "../components/JsonLd.astro";
+import { kx } from "../lib/paths";
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  theme?: "ink" | "ivory";
+  index?: boolean;
+}
+
+const {
+  title,
+  description,
+  path,
+  jsonLd,
+  theme = "ink",
+  index = true,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href={kx("/favicon.svg")} />
+    <Seo title={title} description={description} path={path} index={index} />
+    {jsonLd && <JsonLd data={jsonLd} />}
+  </head>
+  <body class:list={[theme === "ivory" ? "bg-ivory text-ink" : "bg-ink text-ivory"]}>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[90] focus:rounded-full focus:bg-yellow focus:px-4 focus:py-2 focus:text-ink"
+    >
+      Skip to content
+    </a>
+    <div class="grain" aria-hidden="true"></div>
+    <Header />
+    <main id="main" class="relative z-10">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      import { initAtelierMotion } from "../scripts/atelier-motion";
+      initAtelierMotion();
+    </script>
+  </body>
+</html>

@@ -119,7 +119,7 @@ export function composeAssistantReply(
 
   if (/kuroaxe|marketing brand|marketing (arm|partner)/i.test(lower)) {
     return {
-      answer: `Kuroaxe is Codeaxes' partner brand for marketing services. Engineering and product work stays with Codeaxes. Kuroaxe lives at ${site.kuroaxe.url}, and marketing roles are listed on /careers.`,
+      answer: `Kuroaxe is Codeaxes' partner brand for marketing services. Engineering and product work stays with Codeaxes. Kuroaxe lives at ${site.kuroaxe.absoluteUrl}, and marketing roles are listed on /careers.`,
       sources: [{ title: 'Careers', url: '/careers' }],
     };
   }

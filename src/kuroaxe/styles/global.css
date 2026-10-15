@@ -1,0 +1,509 @@
+@import "tailwindcss" source(none);
+@import "@fontsource/sora/latin-400.css";
+@import "@fontsource/sora/latin-500.css";
+@import "@fontsource/sora/latin-600.css";
+@import "@fontsource/sora/latin-700.css";
+@import "@fontsource/sora/latin-800.css";
+@import "@fontsource/inter/latin-400.css";
+@import "@fontsource/inter/latin-500.css";
+@import "@fontsource/inter/latin-600.css";
+@import "@fontsource/inter/latin-700.css";
+@import "@fontsource/caveat-brush/latin-400.css";
+
+@source "../";
+@source "../../pages/kuroaxe";
+
+@theme {
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-script: "Caveat Brush", "Marker Felt", cursive;
+
+  --color-ink: #111111;
+  --color-charcoal: #1a1a1a;
+  --color-midnight: #111111;
+  --color-ivory: #ffffff;
+  --color-gilt: #ebff3d;
+  --color-bone: #9a9a9a;
+  --color-orange: #ff6b35;
+  --color-orange-dark: #ff8a3d;
+  --color-yellow: #ebff3d;
+  --color-turquoise: #20d9c2;
+  --color-sapphire: #20d9c2;
+  --color-burgundy: #20d9c2;
+  --color-antique: #20d9c2;
+  --color-tealink: #20d9c2;
+  --color-crimson: #ff6b35;
+
+  --ease-jazz: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    --header-h: 4.5rem;
+    --scribble-wave: url("/kuroaxe/scribbles/wave.svg");
+    --scribble-hook: url("/kuroaxe/scribbles/hook.svg");
+    --scribble-wobble: url("/kuroaxe/scribbles/wobble.svg");
+    --scribble-arc: url("/kuroaxe/scribbles/arc.svg");
+    --scribble-double: url("/kuroaxe/scribbles/double.svg");
+    --scribble-slash: url("/kuroaxe/scribbles/slash.svg");
+  }
+
+  html {
+    scroll-behavior: auto;
+    font-synthesis: none;
+  }
+
+  body {
+    @apply bg-ink font-sans text-ivory antialiased;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    font-weight: 400;
+    letter-spacing: 0.005em;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  ::selection {
+    background: var(--color-yellow);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-yellow);
+    outline-offset: 3px;
+  }
+
+  a,
+  button {
+    cursor: pointer;
+  }
+
+  img,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+@layer components {
+  .hairline {
+    height: 1px;
+    background: color-mix(in oklab, var(--color-white, #fff) 12%, transparent);
+  }
+
+  .kicker {
+    @apply font-display text-[0.7rem] font-bold uppercase tracking-[0.16em];
+    color: var(--color-yellow);
+  }
+
+  .kicker-ink {
+    @apply font-display text-[0.7rem] font-bold uppercase tracking-[0.16em];
+    color: var(--color-turquoise);
+  }
+
+  .kicker-dark {
+    @apply font-display text-[0.7rem] font-bold uppercase tracking-[0.16em] text-ink;
+  }
+
+  .display {
+    @apply font-display font-extrabold tracking-[-0.03em] text-ivory;
+    line-height: 1.02;
+  }
+
+  .font-script {
+    font-family: var(--font-script);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    line-height: 1;
+  }
+
+  .brass {
+    position: relative;
+    z-index: 1;
+    isolation: isolate;
+    display: inline-block;
+    width: fit-content;
+    max-width: 100%;
+    overflow: visible;
+    padding-bottom: 0.22em;
+    color: var(--color-orange);
+  }
+
+  .brass::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: -0.08em;
+    bottom: 0;
+    width: calc(100% + 0.28em);
+    height: 0.32em;
+    pointer-events: none;
+    background: currentColor;
+    -webkit-mask: var(--scribble-wave) center / 100% 100% no-repeat;
+    mask: var(--scribble-wave) center / 100% 100% no-repeat;
+    transform: scaleX(0);
+    transform-origin: left center;
+    animation: brass-draw 0.9s 0.28s var(--ease-jazz) forwards;
+  }
+
+  .scribble-hook::after {
+    -webkit-mask-image: var(--scribble-hook);
+    mask-image: var(--scribble-hook);
+    height: 0.36em;
+    bottom: -0.04em;
+  }
+
+  .scribble-wave::after {
+    -webkit-mask-image: var(--scribble-wave);
+    mask-image: var(--scribble-wave);
+  }
+
+  .scribble-wobble::after {
+    -webkit-mask-image: var(--scribble-wobble);
+    mask-image: var(--scribble-wobble);
+  }
+
+  .scribble-arc::after {
+    -webkit-mask-image: var(--scribble-arc);
+    mask-image: var(--scribble-arc);
+  }
+
+  .scribble-double::after {
+    -webkit-mask-image: var(--scribble-double);
+    mask-image: var(--scribble-double);
+    height: 0.38em;
+  }
+
+  .scribble-slash::after {
+    -webkit-mask-image: var(--scribble-slash);
+    mask-image: var(--scribble-slash);
+  }
+
+  .brass-orange {
+    color: var(--color-orange);
+  }
+
+  @keyframes brass-draw {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  .measure {
+    max-width: 40rem;
+  }
+
+  .prose-luxe {
+    font-size: 1.125rem;
+    line-height: 1.75;
+  }
+
+  .prose-luxe p + p {
+    margin-top: 1.25rem;
+  }
+
+  .shell {
+    @apply mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-16;
+  }
+
+  .glass-nav {
+    background: color-mix(in oklab, var(--color-ink) 88%, transparent);
+    backdrop-filter: blur(18px) saturate(1.15);
+    -webkit-backdrop-filter: blur(18px) saturate(1.15);
+    border-bottom: 1px solid color-mix(in oklab, white 8%, transparent);
+  }
+
+  .btn-primary,
+  .btn-ghost,
+  .btn-ink {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-7 py-3 font-display text-[0.8rem] font-semibold tracking-[-0.01em] transition-transform duration-200;
+  }
+
+  .btn-primary {
+    background: var(--color-yellow);
+    color: var(--color-ink);
+  }
+
+  .btn-primary:hover {
+    background: color-mix(in oklab, var(--color-yellow) 70%, var(--color-orange-dark));
+    transform: translateY(-1px);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--color-ivory);
+    box-shadow: inset 0 0 0 1.5px color-mix(in oklab, white 55%, transparent);
+  }
+
+  .btn-ghost:hover {
+    box-shadow: inset 0 0 0 1.5px var(--color-yellow);
+    color: var(--color-yellow);
+  }
+
+  .btn-ink {
+    background: var(--color-ink);
+    color: var(--color-ivory);
+  }
+
+  .btn-ink:hover {
+    background: var(--color-turquoise);
+    color: var(--color-ink);
+  }
+
+  .link-gilt {
+    @apply relative inline-block text-turquoise transition-colors duration-300;
+    text-decoration: none;
+  }
+
+  .link-gilt::after {
+    content: "";
+    position: absolute;
+    left: -0.04em;
+    bottom: 0.02em;
+    width: calc(100% + 0.12em);
+    height: 0.22em;
+    pointer-events: none;
+    background: currentColor;
+    opacity: 0.9;
+    -webkit-mask: var(--scribble-wobble) center / 100% 100% no-repeat;
+    mask: var(--scribble-wobble) center / 100% 100% no-repeat;
+  }
+
+  .link-gilt:hover {
+    color: var(--color-yellow);
+  }
+
+  .link-gilt.scribble-wave::after {
+    -webkit-mask-image: var(--scribble-wave);
+    mask-image: var(--scribble-wave);
+  }
+
+  .link-gilt.scribble-hook::after {
+    -webkit-mask-image: var(--scribble-hook);
+    mask-image: var(--scribble-hook);
+  }
+
+  .link-gilt.scribble-arc::after {
+    -webkit-mask-image: var(--scribble-arc);
+    mask-image: var(--scribble-arc);
+  }
+
+  .link-gilt.scribble-double::after {
+    -webkit-mask-image: var(--scribble-double);
+    mask-image: var(--scribble-double);
+    height: 0.3em;
+  }
+
+  .link-gilt.scribble-slash::after {
+    -webkit-mask-image: var(--scribble-slash);
+    mask-image: var(--scribble-slash);
+  }
+
+  .theme-ivory {
+    @apply bg-ivory text-ink;
+    color-scheme: light;
+  }
+
+  .clip {
+    display: block;
+  }
+
+  .hero-stage {
+    min-height: calc(100svh - var(--header-h));
+    padding-top: 0.7rem;
+    padding-bottom: 1rem;
+  }
+
+  .hero-veil {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgb(17 17 17 / 0.1) 0%, rgb(17 17 17 / 0.55) 100%);
+  }
+
+  .page-cut,
+  .chapter-rail {
+    display: none;
+  }
+
+  .jazz-frame {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.75rem;
+    min-height: 16rem;
+  }
+
+  [data-hero] .jazz-frame {
+    min-height: 13.5rem;
+    height: min(18rem, 34svh);
+    max-height: 34svh;
+  }
+
+  [data-hero] .jazz-frame > figure {
+    height: 100%;
+    min-height: 100%;
+  }
+
+  .hero-still {
+    position: relative;
+    overflow: visible;
+    min-height: 0;
+  }
+
+  .jazz-card {
+    border-radius: 1.5rem;
+    background: white;
+    color: var(--color-ink);
+    padding: 1.6rem 1.5rem 1.7rem;
+    box-shadow: 0 12px 40px rgb(17 17 17 / 0.06);
+    transition:
+      transform 0.25s var(--ease-jazz),
+      box-shadow 0.25s var(--ease-jazz);
+  }
+
+  .jazz-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 48px rgb(32 217 194 / 0.22);
+  }
+
+  .scribble-layer {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .jazz-tape {
+    position: absolute;
+    top: -0.45rem;
+    height: 1.15rem;
+    width: 4.4rem;
+    border-radius: 2px;
+    background: color-mix(in oklab, var(--color-yellow) 90%, white);
+    box-shadow: 0 1px 0 rgb(17 17 17 / 0.08);
+    transform: rotate(-9deg);
+  }
+
+  .jazz-sticker {
+    position: relative;
+    isolation: isolate;
+    border-radius: 1.6rem;
+    padding: 1.75rem 1.5rem 1.85rem;
+    transform: rotate(var(--tilt, 0deg));
+    transition:
+      transform 0.28s var(--ease-jazz),
+      box-shadow 0.28s var(--ease-jazz);
+  }
+
+  .jazz-sticker:hover {
+    z-index: 2;
+    transform: rotate(0deg) translateY(-6px);
+  }
+
+  .why-doodle {
+    position: absolute;
+    top: 0.8rem;
+    right: 0.85rem;
+    width: 2.55rem;
+    height: 2.55rem;
+  }
+
+  .icon-tile {
+    display: flex;
+    height: 3rem;
+    width: 3rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.95rem;
+    color: white;
+  }
+
+  .process-spine {
+    position: relative;
+    width: 4px;
+    margin-top: 2.5rem;
+    height: min(58vh, 28rem);
+    border-radius: 999px;
+    background: color-mix(in oklab, white 12%, transparent);
+  }
+
+  .process-spine > span {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    transform: scaleY(0);
+    transform-origin: top center;
+    background: var(--color-yellow);
+  }
+
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+  }
+
+  .grain {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+  }
+}
+
+@media (min-width: 640px) {
+  .hero-stage {
+    padding-top: 0.85rem;
+    padding-bottom: 1.1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-stage {
+    padding-top: 1rem;
+    padding-bottom: 1.2rem;
+  }
+
+  .jazz-frame {
+    min-height: 24rem;
+  }
+
+  [data-hero] .jazz-frame {
+    min-height: 0;
+    height: min(30rem, calc(100svh - var(--header-h) - 2.25rem));
+    max-height: calc(100svh - var(--header-h) - 2.25rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-primary,
+  .btn-ghost,
+  .btn-ink,
+  .link-gilt,
+  a,
+  button,
+  .jazz-card,
+  .jazz-sticker {
+    transition: none;
+  }
+
+  .brass::after {
+    animation: none;
+    transform: scaleX(1);
+  }
+
+  .jazz-sticker,
+  .jazz-sticker:hover {
+    transform: none;
+  }
+}

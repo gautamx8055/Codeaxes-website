@@ -1,0 +1,283 @@
+---
+import { plates } from "../content/work";
+import AtelierStill from "./AtelierStill.astro";
+import JazzScribble from "./JazzScribble.astro";
+
+const total = String(plates.length).padStart(2, "0");
+---
+
+<section id="work" class="relative overflow-hidden bg-ink" data-lookbook data-chapter="work">
+  <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+    <div class="absolute -right-24 top-20 h-80 w-80 rounded-full bg-turquoise/15 blur-3xl"></div>
+    <JazzScribble tone="dark" />
+  </div>
+
+  <div class="lookbook-mat pointer-events-none" aria-hidden="true"></div>
+
+  <div class="shell relative z-10 py-8 lg:py-6">
+    <div class="lookbook-stage">
+      <div class="lookbook-table" data-lookbook-table>
+        {
+          plates.map((plate, index) => (
+            <article
+              class:list={["lookbook-sheet", index === 0 && "is-active"]}
+              data-lookbook-sheet
+              data-index={index}
+              style={`--stack: ${index}`}
+            >
+              <AtelierStill
+                variant={plate.still}
+                parallax={false}
+                class="h-full min-h-full w-full"
+              />
+              <span class="jazz-tape left-10 top-4" aria-hidden="true"></span>
+              <span class="lookbook-sheet-stamp font-script" aria-hidden="true">{plate.folio.replace("Plate ", "")}</span>
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="lookbook-proof jazz-card relative text-ink">
+        <span class="jazz-tape left-8" aria-hidden="true"></span>
+        <p class="kicker-ink" data-lookbook-folio>01 / {total}</p>
+
+        <div class="lookbook-index" role="tablist" aria-label="Lookbook plates">
+          {
+            plates.map((plate, index) => (
+              <button
+                type="button"
+                class:list={["lookbook-tab", index === 0 && "is-active"]}
+                id={`lookbook-tab-${plate.id}`}
+                role="tab"
+                aria-selected={index === 0 ? "true" : "false"}
+                aria-controls={`lookbook-panel-${plate.id}`}
+                tabindex={index === 0 ? 0 : -1}
+                data-lookbook-tab
+                data-index={index}
+              >
+                <span class="lookbook-tab-n">{String(index + 1).padStart(2, "0")}</span>
+                <span class="lookbook-tab-name">{plate.client}</span>
+              </button>
+            ))
+          }
+        </div>
+
+        {
+          plates.map((plate, index) => (
+            <article
+              class="lookbook-copy"
+              id={`lookbook-panel-${plate.id}`}
+              role="tabpanel"
+              aria-labelledby={`lookbook-tab-${plate.id}`}
+              data-lookbook-copy
+              data-index={index}
+              hidden={index !== 0}
+            >
+              <p class="kicker-ink mt-6">
+                {plate.folio} · {plate.client} · {plate.sector}
+              </p>
+              <h3 class="display mt-4 text-3xl text-ink sm:text-4xl lg:text-5xl">{plate.title}</h3>
+              <p class="mt-5 text-sm leading-relaxed text-ink/70 sm:text-base">{plate.narrative}</p>
+              <dl class="mt-8 grid gap-6 sm:grid-cols-2">
+                <div>
+                  <dt class="kicker-ink">Channels</dt>
+                  <dd class="mt-2 text-sm text-ink/80">{plate.channels.join(" · ")}</dd>
+                </div>
+                <div>
+                  <dt class="kicker-ink">{plate.metricLabel}</dt>
+                  <dd class="mt-2 font-display text-4xl font-extrabold text-orange" data-count={plate.metric}>
+                    {plate.metric}
+                  </dd>
+                </div>
+              </dl>
+              <p class="mt-6 text-sm text-ink/75">{plate.outcome}</p>
+            </article>
+          ))
+        }
+
+        <div class="mt-8 flex items-center gap-3">
+          <button type="button" class="lookbook-step" data-lookbook-prev aria-label="Previous plate">
+            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" aria-hidden="true">
+              <path d="M15 5 8 12l7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </button>
+          <button type="button" class="lookbook-step" data-lookbook-next aria-label="Next plate">
+            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" aria-hidden="true">
+              <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </button>
+          <p class="ml-2 text-xs font-display font-semibold uppercase tracking-[0.14em] text-ink/45">
+            Click a plate on the table
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .lookbook-mat {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(color-mix(in oklab, white 6%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in oklab, white 6%, transparent) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at 30% 50%, black 20%, transparent 72%);
+    opacity: 0.35;
+  }
+
+  .lookbook-stage {
+    display: grid;
+    gap: 1.75rem;
+  }
+
+  .lookbook-table {
+    position: relative;
+    isolation: isolate;
+    min-height: 22rem;
+    height: min(58vh, 28rem);
+  }
+
+  .lookbook-sheet {
+    position: absolute;
+    inset: 6% 18% 10% 4%;
+    overflow: hidden;
+    border-radius: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 18px 50px rgb(0 0 0 / 0.35);
+    transform-origin: 30% 80%;
+    transform: rotate(calc(var(--stack) * 5deg - 2deg)) translate(calc(var(--stack) * 7%), calc(var(--stack) * 5%));
+    z-index: calc(8 - var(--stack));
+    will-change: transform, opacity;
+  }
+
+  .lookbook-sheet :global(figure) {
+    height: 100%;
+    min-height: 100%;
+  }
+
+  .lookbook-sheet .jazz-tape {
+    display: none;
+  }
+
+  .lookbook-sheet.is-active .jazz-tape {
+    display: block;
+  }
+
+  .lookbook-sheet-stamp {
+    position: absolute;
+    right: 1rem;
+    bottom: 0.85rem;
+    z-index: 2;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    line-height: 0.75;
+    color: rgb(255 107 53 / 0.88);
+    pointer-events: none;
+  }
+
+  .lookbook-proof {
+    padding: 1.75rem 1.5rem 1.85rem;
+  }
+
+  .lookbook-index {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-top: 1.25rem;
+  }
+
+  .lookbook-tab {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 999px;
+    padding: 0.35rem 0.85rem 0.35rem 0.55rem;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    background: color-mix(in oklab, var(--color-ink) 6%, white);
+    transition: background 0.2s var(--ease-jazz), color 0.2s var(--ease-jazz);
+  }
+
+  .lookbook-tab-n {
+    display: grid;
+    height: 1.55rem;
+    width: 1.55rem;
+    place-items: center;
+    border-radius: 999px;
+    background: var(--color-ink);
+    color: white;
+    font-size: 0.62rem;
+  }
+
+  .lookbook-tab.is-active {
+    background: var(--color-turquoise);
+  }
+
+  .lookbook-tab.is-active .lookbook-tab-n {
+    background: var(--color-ink);
+    color: var(--color-yellow);
+  }
+
+  .lookbook-tab:hover {
+    background: color-mix(in oklab, var(--color-turquoise) 55%, white);
+  }
+
+  .lookbook-step {
+    display: grid;
+    height: 2.75rem;
+    width: 2.75rem;
+    place-items: center;
+    border-radius: 999px;
+    background: var(--color-ink);
+    color: white;
+  }
+
+  .lookbook-step:hover {
+    background: var(--color-turquoise);
+    color: var(--color-ink);
+  }
+
+  @media (min-width: 1024px) {
+    .lookbook-stage {
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: center;
+      gap: 2.5rem;
+      min-height: min(78vh, 46rem);
+    }
+
+    .lookbook-table {
+      height: min(72vh, 40rem);
+    }
+
+    .lookbook-sheet {
+      inset: 4% 22% 8% 2%;
+    }
+
+    .lookbook-proof {
+      padding: 2.1rem 2rem 2.2rem;
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .lookbook-sheet:not(.is-active) {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .lookbook-sheet.is-active {
+      inset: 0;
+      transform: none !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lookbook-sheet {
+      transition: none;
+    }
+  }
+</style>

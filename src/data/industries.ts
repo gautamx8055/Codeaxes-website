@@ -37,6 +37,23 @@ export const industries: Industry[] = [
       'Shorter path from signed contract to live workspace for enterprise accounts.',
       'Integration catalog that partners can adopt without custom engineering each time.',
     ],
+    faqs: [
+      {
+        question: 'Do you design tenancy before the first enterprise deal?',
+        answer:
+          'Yes. Data boundaries, roles, and billing assumptions are set early so a new customer segment does not force a schema rewrite later.',
+      },
+      {
+        question: 'Can the marketing site and the product share one account model?',
+        answer:
+          'Admin and customer surfaces share an API contract and a design system, so trial signup and enterprise provisioning do not become two products.',
+      },
+      {
+        question: 'How do you handle integration sprawl?',
+        answer:
+          'Integrations are event-driven, with retries and idempotency, and a catalog partners can adopt without a custom project each time.',
+      },
+    ],
   },
   {
     slug: 'healthcare',
@@ -75,6 +92,23 @@ export const industries: Industry[] = [
       'Care teams spend less time reconciling portals, phone calls, and paper intake.',
       'Patients receive clearer next steps after visits, labs, or referrals.',
       'Operations gain a single view of bottlenecks across scheduling and documentation.',
+    ],
+    faqs: [
+      {
+        question: 'Do you replace the EHR?',
+        answer:
+          'No. We build the patient and staff experiences around it, with FHIR-aware adapters where a standard applies and a pragmatic fallback where it does not.',
+      },
+      {
+        question: 'How do you treat patient data?',
+        answer:
+          'Access control, encryption in transit and at rest, audit logs, and minimum-necessary exposure are part of the architecture. Your policies and hosting choices still set the final compliance posture.',
+      },
+      {
+        question: 'Can field or home-care staff work with a weak connection?',
+        answer:
+          'Mobile flows can queue work and sync later, so a dropped connection does not lose an intake or a visit note.',
+      },
     ],
   },
   {
@@ -115,6 +149,23 @@ export const industries: Industry[] = [
       'Ops teams resolve exceptions with case timelines instead of spreadsheet hunts.',
       'Customers see transfer and payout status that matches back-office reality.',
     ],
+    faqs: [
+      {
+        question: 'Can onboarding stay fast and still be reviewable?',
+        answer:
+          'Step-up checks explain a delay without exposing internal risk logic. Edge cases go to a person with the case file attached.',
+      },
+      {
+        question: 'Who owns licensing and regulatory interpretation?',
+        answer:
+          'You do. We engineer for evidence and change, including SOC 2-minded controls and PCI scope reduction where card data is involved.',
+      },
+      {
+        question: 'How do customers see money movement?',
+        answer:
+          'Status and notifications follow the actual pipeline, so the customer view matches what operations sees.',
+      },
+    ],
   },
   {
     slug: 'ecommerce',
@@ -152,6 +203,23 @@ export const industries: Industry[] = [
       'Fewer canceled orders caused by stale inventory signals.',
       'Support teams answer “where is my order” from one timeline, not three tools.',
     ],
+    faqs: [
+      {
+        question: 'Do you replace the storefront or the ERP?',
+        answer:
+          'We connect storefront, inventory, and fulfillment to the systems you already run, with one product and pricing source of truth.',
+      },
+      {
+        question: 'What happens during a traffic spike?',
+        answer:
+          'Checkout, images, and stock sync are built for promotional load, including caching and webhook updates from warehouse and marketplace systems.',
+      },
+      {
+        question: 'Can merchandising launch a campaign without a deploy?',
+        answer:
+          'Campaign surfaces can sit on a CMS tied to live stock and promo rules, so a landing page does not wait on an engineering queue.',
+      },
+    ],
   },
   {
     slug: 'logistics',
@@ -188,6 +256,23 @@ export const industries: Industry[] = [
       'Dispatchers resolve exceptions from a prioritized queue instead of phone tag.',
       'Field teams capture proof-of-delivery even when connectivity drops mid-stop.',
       'Finance sees chargeable events aligned with operational timestamps.',
+    ],
+    faqs: [
+      {
+        question: 'What if a driver loses signal mid-route?',
+        answer:
+          'The mobile app queues scans and proof of delivery, then syncs when the connection returns.',
+      },
+      {
+        question: 'Can a dispatcher override a suggested route?',
+        answer:
+          'Yes. Optimization proposes a plan. Dispatchers can override it, and the override is kept for audit.',
+      },
+      {
+        question: 'How do you connect a legacy transportation system?',
+        answer:
+          'An integration layer normalizes carrier, GPS, and warehouse events so one vendor schema does not block the console.',
+      },
     ],
   },
   {
@@ -228,6 +313,23 @@ export const industries: Industry[] = [
       'Learners always know what is due next and how it connects to outcomes.',
       'Admins onboard new terms without manual CSV gymnastics.',
     ],
+    faqs: [
+      {
+        question: 'Do you support school or university rostering?',
+        answer:
+          'Roster sync can use LTI, SCORM, or a custom student-information adapter, depending on what the institution already runs.',
+      },
+      {
+        question: 'How do you handle student data?',
+        answer:
+          'We minimize what is stored, separate roles for students, instructors, admins, and guardians, and treat WCAG 2.1 AA as the baseline for new screens. Institutional policy sets the final bar.',
+      },
+      {
+        question: 'Can learners keep working offline?',
+        answer:
+          'Video and reading materials can be cached on mobile. Progress syncs when the learner is back online.',
+      },
+    ],
   },
   {
     slug: 'real-estate',
@@ -264,6 +366,23 @@ export const industries: Industry[] = [
       'Marketing sites reflect inventory that matches what leasing teams see internally.',
       'Tenants submit and track maintenance without phone-tree loops.',
       'Owners review portfolio health from one dashboard instead of monthly PDF packs.',
+    ],
+    faqs: [
+      {
+        question: 'Will the public site and the leasing team see the same listings?',
+        answer:
+          'A listing hub with syndication rules is meant to stop the marketing site drifting away from the internal CRM.',
+      },
+      {
+        question: 'Do you provide appraisals or legal advice?',
+        answer:
+          'No. Market summaries support a pricing conversation. They are not appraisals, and fair-housing-aware copy is a product constraint, not a legal opinion.',
+      },
+      {
+        question: 'Can a tenant track a repair?',
+        answer:
+          'A work order assigns a vendor, tracks the service level, and keeps the tenant updated in the same thread.',
+      },
     ],
   },
   {
@@ -302,6 +421,23 @@ export const industries: Industry[] = [
       'Creative and growth teams share one definition of audience and conversion events.',
       'Sites remain responsive when stories break and traffic spikes arrive together.',
     ],
+    faqs: [
+      {
+        question: 'Can editors publish without an engineering ticket?',
+        answer:
+          'A composable CMS with preview, review, and scheduling is how a package goes live. Engineering stays on the platform, not on every headline.',
+      },
+      {
+        question: 'Do you produce campaign films?',
+        answer:
+          'If the piece never enters the product, that is a Kuroaxe conversation. Codeaxes ships the publishing stack, measurement, and in-product motion.',
+      },
+      {
+        question: 'How do you handle a sudden traffic spike?',
+        answer:
+          'Read-heavy pages use static or incremental generation and a CDN so a breaking story does not take the site down.',
+      },
+    ],
   },
   {
     slug: 'manufacturing',
@@ -338,6 +474,23 @@ export const industries: Industry[] = [
       'Supervisors see line status and open issues without walking the floor for every answer.',
       'Quality teams close non-conformances with photos, signatures, and linked lots.',
       'Planners trust inventory and order promise dates that match shop-floor reality.',
+    ],
+    faqs: [
+      {
+        question: 'Do you connect the plant floor to the ERP?',
+        answer:
+          'Middleware turns scans and shop-floor events into ERP-ready transactions, and an edge gateway buffers telemetry when the line loses connectivity.',
+      },
+      {
+        question: 'Can each site run a different process?',
+        answer:
+          'Workflows are configurable per site. The platform core stays shared so a global rollout does not become a separate product at every plant.',
+      },
+      {
+        question: 'How does a quality issue get closed?',
+        answer:
+          'A non-conformance routes with photos, signatures, and linked lots, instead of a paper traveler that never reaches the supervisor.',
+      },
     ],
   },
 ];

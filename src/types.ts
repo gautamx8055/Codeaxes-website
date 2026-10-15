@@ -61,6 +61,7 @@ export type Industry = {
   compliance?: string;
   techApproaches: string[];
   outcomes: string[];
+  faqs: { question: string; answer: string }[];
 };
 
 export type TechCategory =

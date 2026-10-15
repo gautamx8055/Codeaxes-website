@@ -1,0 +1,194 @@
+---
+import BaseLayout from "../../../kuroaxe/layouts/BaseLayout.astro";
+import AtelierStill from "../../../kuroaxe/components/AtelierStill.astro";
+import Plate from "../../../kuroaxe/components/Plate.astro";
+import Faq from "../../../kuroaxe/components/Faq.astro";
+import CtaBand from "../../../kuroaxe/components/CtaBand.astro";
+import { services, type Service } from "../../../kuroaxe/content/services";
+import { kx } from "../../../kuroaxe/lib/paths";
+import { serviceEssays } from "../../../kuroaxe/content/service-essays";
+import { platesForService } from "../../../kuroaxe/content/work";
+import { faqGraph, organizationGraph, serviceGraph } from "../../../kuroaxe/lib/schema";
+
+export function getStaticPaths() {
+  return services.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}
+
+interface Props {
+  service: Service;
+}
+
+const { service } = Astro.props;
+const related = platesForService(service.slug);
+const essay = serviceEssays[service.slug];
+const stillMap = {
+  seo: "seo",
+  smm: "smm",
+  "performance-marketing": "performance",
+  "ar-vr": "arvr",
+  graphics: "graphics",
+  "video-production": "video",
+} as const;
+
+const jewelClass = {
+  sapphire: "text-sapphire",
+  burgundy: "text-burgundy",
+  antique: "text-antique",
+  tealink: "text-tealink",
+  ivory: "text-gilt",
+  crimson: "text-crimson",
+}[service.jewel];
+---
+
+<BaseLayout
+  title={service.title}
+  description={service.description}
+  path={service.href}
+  jsonLd={[organizationGraph(), serviceGraph(service), faqGraph(service.faqs)]}
+>
+  <section class="relative overflow-hidden" data-hero>
+    <div class="absolute inset-0" data-hero-frame>
+      <AtelierStill
+        variant={stillMap[service.slug]}
+        class="h-full min-h-full w-full"
+      />
+      <div class="hero-veil"></div>
+    </div>
+    <div class="shell hero-stage relative z-10 flex flex-col justify-end">
+      <p class="kicker">{service.kicker}</p>
+      <h1 class="display mt-4 max-w-4xl text-[clamp(2.1rem,5.2vw,4.8rem)]">{service.heroLine}</h1>
+      <p class="measure mt-5 text-ivory/80">{service.description}</p>
+      <div class="mt-6">
+        <a class="btn-primary" href={kx("/contact")}>Discuss {service.shortTitle}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="theme-ivory">
+    <div class="shell grid gap-14 py-24 lg:grid-cols-12 lg:py-32">
+      <div class="lg:col-span-4">
+        <p class="kicker-ink">The work, at length</p>
+        <h2 class="display mt-4 text-4xl text-ink">How this discipline is practised here.</h2>
+      </div>
+      <div class="prose-luxe text-base leading-relaxed text-ink/75 lg:col-span-7 lg:col-start-6">
+        {essay.essay.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+      <div class="border-t border-ink/10 pt-10 lg:col-span-5">
+        <h3 class="font-display text-2xl">Who it is for</h3>
+        <p class="mt-3 text-sm leading-relaxed text-ink/65">{essay.who}</p>
+      </div>
+      <div class="border-t border-ink/10 pt-10 lg:col-span-6 lg:col-start-7">
+        <h3 class="font-display text-2xl">What we will not do</h3>
+        <p class="mt-3 text-sm leading-relaxed text-ink/65">{essay.refuse}</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shell grid gap-16 py-24 lg:grid-cols-12">
+      <div class="lg:col-span-4">
+        <p class="kicker">Problems we take</p>
+        <h2 class="display mt-4 text-4xl">What this service quietly repairs.</h2>
+      </div>
+      <ul class="lg:col-span-8">
+        {
+          service.problems.map((item) => (
+            <li class="border-t border-white/10 py-8 last:border-b">
+              <h3 class="font-display text-3xl font-extrabold">{item.title}</h3>
+              <p class="mt-3 max-w-xl text-sm leading-relaxed text-bone">{item.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="bg-charcoal">
+    <div class="shell grid gap-16 py-24 lg:grid-cols-12">
+      <div class="lg:col-span-4">
+        <p class="kicker">Capabilities</p>
+        <h2 class="display mt-4 text-4xl">Delivered, not merely offered.</h2>
+      </div>
+      <ul class="grid gap-x-10 gap-y-4 sm:grid-cols-2 lg:col-span-8">
+        {
+          service.deliverables.map((item) => (
+            <li class="border-t border-white/10 pt-4 text-sm text-ivory/85">{item}</li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section data-process>
+    <div class="shell py-24">
+      <p class="kicker">Process</p>
+      <h2 class="display mt-4 text-4xl sm:text-5xl">How the work proceeds.</h2>
+      <ol class="mt-14">
+        {
+          service.process.map((step, index) => (
+            <li class="border-t border-white/10 py-10 last:border-b" data-process-step>
+              <p class="kicker">0{index + 1}</p>
+              <h3 class="mt-3 font-display text-3xl font-extrabold sm:text-4xl">{step.title}</h3>
+              <p class="mt-3 max-w-2xl text-sm leading-relaxed text-bone sm:text-base">{step.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="theme-ivory">
+    <div class="shell py-24">
+      <p class="kicker-ink">Rooms and instruments</p>
+      <ul class="mt-10 flex flex-wrap gap-x-8 gap-y-4 text-sm text-ink/55">
+        {service.tools.map((tool) => <li>{tool}</li>)}
+      </ul>
+      <ul class="mt-16 grid gap-10 sm:grid-cols-3">
+        {
+          service.outcomes.map((item) => (
+            <li>
+              <p class:list={["font-display text-5xl font-extrabold", jewelClass]}>
+                {item.value}
+              </p>
+              <p class="mt-3 text-sm leading-relaxed text-ink/65">{item.label}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {
+    related.length > 0 && (
+      <section>
+        <div class="shell py-16">
+          <p class="kicker">Related plates</p>
+        </div>
+        <div class="flex flex-col gap-4 px-5 sm:px-8 lg:px-16">
+          {related.map((plate) => (
+            <Plate plate={plate} layout="split" />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <section>
+    <div class="shell py-24">
+      <p class="kicker">Questions</p>
+      <h2 class="display mt-4 text-4xl">Asked, before the first meeting.</h2>
+      <div class="mt-10">
+        <Faq items={service.faqs} />
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title={`Begin with ${service.title.toLowerCase()}.`}
+    body="A strategy session is enough to see whether the standard fits. Bring the constraint. We will bring a point of view."
+    cta="Grow with Kuroaxe"
+  />
+</BaseLayout>

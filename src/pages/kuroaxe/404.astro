@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../../kuroaxe/layouts/BaseLayout.astro";
+import { kx } from "../../kuroaxe/lib/paths";
+---
+
+<BaseLayout title="Page not found" description="This plate is not in the lookbook." path="/404" index={false}>
+  <section class="shell hero-stage flex flex-col justify-center">
+    <p class="kicker">404</p>
+    <h1 class="display mt-4 max-w-3xl text-[clamp(2.2rem,5.6vw,5.4rem)]">This plate is not in the lookbook.</h1>
+    <p class="mt-6 max-w-md text-bone">The page may have moved, or it was never published.</p>
+    <div class="mt-8 flex flex-wrap gap-4">
+      <a class="btn-primary" href={kx("/")}>Return home</a>
+      <a class="link-gilt scribble-hook py-3" href={kx("/contact")}>Enquire</a>
+    </div>
+  </section>
+</BaseLayout>

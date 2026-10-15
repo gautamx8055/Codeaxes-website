@@ -1,0 +1,432 @@
+---
+import BaseLayout from "../../kuroaxe/layouts/BaseLayout.astro";
+import AtelierStill from "../../kuroaxe/components/AtelierStill.astro";
+import Lookbook from "../../kuroaxe/components/Lookbook.astro";
+import CtaBand from "../../kuroaxe/components/CtaBand.astro";
+import DisciplineIcon from "../../kuroaxe/components/DisciplineIcon.astro";
+import JazzScribble from "../../kuroaxe/components/JazzScribble.astro";
+import HeroScribble from "../../kuroaxe/components/HeroScribble.astro";
+import { home } from "../../kuroaxe/content/home";
+import { services } from "../../kuroaxe/content/services";
+import { testimonials } from "../../kuroaxe/content/testimonials";
+import { site } from "../../kuroaxe/content/site";
+import { kx } from "../../kuroaxe/lib/paths";
+import { organizationGraph, creativeWorkGraph } from "../../kuroaxe/lib/schema";
+
+const ticker = [
+  "Creative thinking",
+  "Strategic planning",
+  "Performance tracking",
+  "Exact execution",
+  "Long-term brand",
+  "One house standard",
+];
+
+const [whyLineOne, whyLineTwo] = home.why.manifesto.split(/(?<=\.)\s+/);
+
+const whyStickers = [
+  { tilt: "-2.6deg", tone: "ink", doodle: "star" },
+  { tilt: "2.1deg", tone: "white", doodle: "loop" },
+  { tilt: "-1.4deg", tone: "turquoise", doodle: "arrow" },
+  { tilt: "1.8deg", tone: "ink", doodle: "burst" },
+  { tilt: "-2deg", tone: "white", doodle: "spark" },
+] as const;
+
+const processLooks = [
+  { panel: "bg-charcoal", numeral: "text-turquoise" },
+  { panel: "bg-turquoise text-ink", numeral: "text-ink" },
+  { panel: "bg-charcoal", numeral: "text-orange" },
+  { panel: "bg-ink ring-1 ring-white/10", numeral: "text-turquoise" },
+  { panel: "bg-turquoise text-ink", numeral: "text-ink" },
+] as const;
+
+const engageLooks = [
+  { tilt: "-1.8deg", tone: "ink" },
+  { tilt: "1.6deg", tone: "white" },
+  { tilt: "-1.1deg", tone: "turquoise" },
+] as const;
+
+const resultLooks = [
+  { tilt: "-1.8deg", tone: "turquoise", figure: "text-ink" },
+  { tilt: "1.4deg", tone: "ink", figure: "text-turquoise" },
+  { tilt: "-1deg", tone: "charcoal", figure: "text-yellow" },
+  { tilt: "1.8deg", tone: "ink", figure: "text-orange" },
+  { tilt: "-2deg", tone: "turquoise", figure: "text-ink" },
+  { tilt: "1.2deg", tone: "charcoal", figure: "text-turquoise" },
+] as const;
+
+const voiceLooks = [
+  { tilt: "-1.6deg", tone: "ink" },
+  { tilt: "1.8deg", tone: "white" },
+  { tilt: "-1.2deg", tone: "turquoise" },
+  { tilt: "2deg", tone: "ink" },
+] as const;
+---
+
+<BaseLayout
+  title="Kuroaxe | Make your brand impossible to ignore"
+  description={site.defaultDescription}
+  path="/"
+  jsonLd={[
+    organizationGraph(),
+    creativeWorkGraph({
+      name: "Kuroaxe atelier",
+      description: site.defaultDescription,
+      path: "/",
+    }),
+  ]}
+>
+  <section class="relative overflow-visible bg-ink" data-hero data-chapter="intro">
+    <div class="pointer-events-none absolute -left-24 top-12 h-72 w-72 rounded-full bg-turquoise/40 blur-3xl" aria-hidden="true"></div>
+    <div class="shell hero-stage relative z-10 grid items-start content-start gap-6 lg:grid-cols-12 lg:items-center lg:content-center lg:gap-10">
+      <div class="relative z-0 lg:col-span-6">
+        <p class="kicker">{home.hero.kicker}</p>
+        <h1 class="display mt-3 text-[clamp(2.15rem,5.2vw,5.2rem)]">
+          <span class="block">{home.hero.lineOne}</span>
+          <span class="mt-1 inline-block w-fit max-w-full font-script text-[clamp(2.05rem,5vw,4.35rem)] brass">{home.hero.lineTwo}</span>
+        </h1>
+        <p class="measure mt-5 max-w-xl text-sm text-ivory/80 sm:text-base">{home.hero.lede}</p>
+        <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <a class="btn-primary" href={home.hero.primary.href}>{home.hero.primary.label}</a>
+          <a class="link-gilt scribble-arc px-1 py-3" href={home.hero.secondary.href}>{home.hero.secondary.label}</a>
+        </div>
+      </div>
+      <div class="hero-still isolate z-20 overflow-visible lg:col-span-6" data-hero-still>
+        <div class="jazz-frame relative z-0 rotate-1 shadow-[0_24px_80px_rgb(32_217_194_/_0.35)]">
+          <AtelierStill variant="hero" class="h-full w-full" />
+        </div>
+        <HeroScribble />
+      </div>
+    </div>
+  </section>
+
+  <section class="border-y border-white/10" aria-label="Client trust">
+    <div class="shell py-14 lg:py-16">
+      <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <p class="kicker">{home.trust.kicker}</p>
+        <p class="max-w-2xl text-sm leading-relaxed text-bone">{home.trust.statement}</p>
+      </div>
+      <ul class="mt-10 grid grid-cols-2 gap-y-6 sm:grid-cols-3 lg:grid-cols-6">
+        {
+          home.trust.marks.map((mark) => (
+            <li class="font-display text-xl font-bold text-ivory/80 sm:text-2xl">{mark}</li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <div class="overflow-hidden bg-turquoise py-3" aria-hidden="true">
+    <div class="ticker-track" data-ticker>
+      <p class="flex shrink-0 gap-10 whitespace-nowrap px-8 font-display text-xl font-extrabold text-ink sm:text-2xl">
+        {ticker.map((item) => <span class="shrink-0">{item} <span class="text-ink/40">·</span></span>)}
+      </p>
+      <p class="flex shrink-0 gap-10 whitespace-nowrap px-8 font-display text-xl font-extrabold text-ink sm:text-2xl">
+        {ticker.map((item) => <span class="shrink-0">{item} <span class="text-ink/40">·</span></span>)}
+      </p>
+    </div>
+  </div>
+
+  <section class="theme-ivory relative" id="disciplines" data-chapter="disciplines">
+    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <div class="absolute -right-10 top-8 h-64 w-64 rounded-full bg-turquoise/15 blur-3xl"></div>
+      <JazzScribble />
+    </div>
+    <div class="shell relative z-10 py-24 lg:py-32">
+      <div class="grid gap-10 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="kicker-ink">{home.servicesIntro.kicker}</p>
+          <h2 class="display mt-4 text-5xl text-ink sm:text-6xl lg:text-7xl">{home.servicesIntro.title}</h2>
+        </div>
+        <p class="text-base leading-relaxed text-ink/70 lg:col-span-6 lg:col-start-7 lg:pt-10">
+          {home.servicesIntro.body}
+        </p>
+      </div>
+      <ul class="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          services.map((service) => (
+            <li>
+              <a href={service.href} class="jazz-card group block h-full">
+                <DisciplineIcon slug={service.slug} />
+                <h3 class="mt-6 font-display text-2xl font-extrabold tracking-tight">{service.title}</h3>
+                <p class="mt-3 text-sm leading-relaxed text-ink/65">{service.short}</p>
+                <span class="mt-6 inline-flex text-sm font-semibold text-turquoise group-hover:text-orange">Open</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mt-10">
+        <a class="link-gilt scribble-double" href={kx("/services")}>Read every discipline</a>
+      </p>
+    </div>
+  </section>
+
+  <div class="shell py-16 lg:py-20">
+    <p class="kicker">Lookbook</p>
+    <h2 class="display mt-4 max-w-4xl text-5xl sm:text-6xl lg:text-7xl">Campaigns, curated, not catalogued.</h2>
+    <p class="measure mt-6 text-bone">
+      On a wide screen, keep scrolling: the folio turns sideways, like a private magazine. Each plate names the
+      constraint, the rooms we used, and the number that justified the season.
+    </p>
+  </div>
+
+  <Lookbook />
+
+  <section class="theme-ivory relative scroll-mt-24" data-chapter="standard">
+    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <div class="absolute -left-16 top-10 h-80 w-80 rounded-full bg-turquoise/20 blur-3xl"></div>
+      <div class="absolute right-[-4rem] top-32 h-[22rem] w-[22rem] rounded-full bg-yellow/25 blur-3xl"></div>
+      <div class="absolute bottom-10 left-1/3 h-56 w-56 rounded-full bg-turquoise/15 blur-3xl"></div>
+      <JazzScribble />
+    </div>
+    <div class="shell relative z-10 grid gap-12 py-24 lg:grid-cols-12 lg:gap-16 lg:py-32">
+      <div class="lg:col-span-5">
+        <p class="kicker-ink">{home.why.kicker}</p>
+        <h2 class="mt-5">
+          <span class="display relative inline-block overflow-visible pb-3 text-5xl text-ink sm:text-6xl lg:text-7xl">
+            {whyLineOne}
+            <svg
+              class="pointer-events-none absolute bottom-0 left-[-0.15em] h-4 w-[min(104%,24rem)]"
+              viewBox="0 0 360 22"
+              fill="none"
+              aria-hidden="true"
+              preserveAspectRatio="none"
+            >
+              <path
+                d="M6 14 C 32 6, 58 18, 86 10 C 114 3, 140 19, 170 9 C 198 2, 228 17, 258 8 C 286 2, 318 16, 352 9"
+                stroke="#EBFF3D"
+                stroke-width="5.5"
+                stroke-linecap="round"
+              />
+              <path
+                d="M18 12 C 54 18, 92 7, 128 14 C 166 20, 208 6, 248 13 C 286 18, 326 8, 354 11"
+                stroke="#EBFF3D"
+                stroke-width="2.1"
+                stroke-linecap="round"
+                opacity="0.75"
+              />
+            </svg>
+          </span>
+          <span class="brass brass-orange scribble-hook mt-8 inline-block w-fit max-w-full font-script text-[clamp(2.8rem,6.8vw,5.1rem)]">
+            {whyLineTwo}
+          </span>
+        </h2>
+      </div>
+      <div class="lg:col-span-6 lg:col-start-7 lg:pt-4">
+        <div class="jazz-card relative rotate-1 px-7 py-8 sm:px-9 sm:py-10">
+          <span class="jazz-tape left-8" aria-hidden="true"></span>
+          <span class="jazz-tape left-auto right-10 rotate-12 bg-turquoise" aria-hidden="true"></span>
+          <div class="prose-luxe text-ink/75">
+            {home.why.essay.map((paragraph) => <p>{paragraph}</p>)}
+          </div>
+        </div>
+      </div>
+      <ol class="grid gap-6 sm:grid-cols-2 lg:col-span-12 lg:grid-cols-6 lg:gap-5">
+        {
+          home.why.points.map((point, index) => {
+            const sticker = whyStickers[index];
+            const toneClass =
+              sticker.tone === "turquoise"
+                ? "bg-turquoise text-ink shadow-[0_16px_40px_rgb(32_217_194_/_0.28)]"
+                : sticker.tone === "white"
+                  ? "bg-white text-ink shadow-[0_16px_40px_rgb(17_17_17_/_0.08)] ring-1 ring-ink/8"
+                  : "bg-ink text-ivory shadow-[0_16px_40px_rgb(17_17_17_/_0.18)]";
+            const bodyClass = sticker.tone === "white" || sticker.tone === "turquoise" ? "text-ink/70" : "text-ivory/75";
+            const spanClass = index < 3 ? "lg:col-span-2" : "sm:col-span-1 lg:col-span-3";
+            return (
+              <li class:list={["jazz-sticker", toneClass, spanClass]} style={`--tilt: ${sticker.tilt}`}>
+                <svg class="why-doodle" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                  {sticker.doodle === "star" && (
+                    <path d="M24 4 28.4 16.6 42 18 32 27.2 34.8 41 24 33.8 13.2 41 16 27.2 6 18 19.6 16.6Z" fill="#EBFF3D" />
+                  )}
+                  {sticker.doodle === "loop" && (
+                    <path
+                      d="M14 28 C14 16, 34 14, 34 26 C34 36, 18 38, 18 26 C18 18, 30 20, 30 26"
+                      stroke="#FF6B35"
+                      stroke-width="3.2"
+                      stroke-linecap="round"
+                    />
+                  )}
+                  {sticker.doodle === "arrow" && (
+                    <>
+                      <path d="M8 32 C18 18, 30 22, 40 12" stroke="#EBFF3D" stroke-width="3.2" stroke-linecap="round" />
+                      <path d="M31 10 H40 V19" stroke="#EBFF3D" stroke-width="3.2" stroke-linecap="round" />
+                    </>
+                  )}
+                  {sticker.doodle === "burst" && (
+                    <>
+                      <circle cx="24" cy="24" r="7" fill="#20D9C2" />
+                      <path d="M24 5v8M24 35v8M5 24h8M35 24h8M10 10l6 6M32 32l6 6M38 10l-6 6M16 32l-6 6" stroke="#20D9C2" stroke-width="2.4" stroke-linecap="round" />
+                    </>
+                  )}
+                  {sticker.doodle === "spark" && (
+                    <>
+                      <path d="M8 30 C16 18, 28 34, 40 20" stroke="#FF6B35" stroke-width="3.2" stroke-linecap="round" />
+                      <path d="M34 8 38 16 46 18 40 24 41 32 34 28 27 32 28 24 22 18 30 16Z" fill="#FF6B35" />
+                    </>
+                  )}
+                </svg>
+                <h3 class="max-w-[11ch] font-display text-2xl font-extrabold pr-10">{point.title}</h3>
+                <p class:list={["mt-3 text-sm leading-relaxed", bodyClass]}>{point.body}</p>
+              </li>
+            );
+          })
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="relative overflow-hidden" id="process" data-process data-chapter="process">
+    <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+      <div class="absolute -left-16 top-24 h-80 w-80 rounded-full bg-turquoise/20 blur-3xl"></div>
+      <div class="absolute right-0 bottom-10 h-72 w-72 rounded-full bg-turquoise/30 blur-3xl"></div>
+      <JazzScribble tone="dark" />
+    </div>
+    <div class="shell relative z-10 grid gap-16 py-24 lg:grid-cols-12 lg:py-32">
+      <div class="lg:sticky lg:top-28 lg:col-span-4 lg:self-start">
+        <p class="kicker">Growth process</p>
+        <h2 class="display mt-5 text-5xl sm:text-6xl">From strategy to scale, in order.</h2>
+        <p class="mt-6 max-w-sm text-sm text-bone">
+          This sequence is not decoration. Each stage earns the next. We do not launch what has not been directed, and we
+          do not scale what has not been true.
+        </p>
+        <div class="process-spine hidden lg:block" aria-hidden="true">
+          <span data-process-fill></span>
+        </div>
+      </div>
+      <ol class="space-y-5 lg:col-span-7 lg:col-start-6">
+        {
+          home.process.map((step, index) => {
+            const look = processLooks[index];
+            const onWash = look.panel.includes("bg-turquoise");
+            return (
+              <li class:list={["rounded-3xl p-7 sm:p-9", look.panel, onWash && "text-ink"]} data-process-step>
+                <p class:list={["font-display text-5xl font-extrabold sm:text-6xl", look.numeral]}>{step.n}</p>
+                <h3 class="mt-4 font-display text-3xl font-extrabold sm:text-4xl">{step.title}</h3>
+                <p class:list={["mt-4 max-w-xl text-sm leading-relaxed sm:text-base", onWash ? "text-ink/70" : "text-ivory/75"]}>{step.body}</p>
+              </li>
+            );
+          })
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="theme-ivory relative">
+    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <div class="absolute left-10 top-8 h-64 w-64 rounded-full bg-yellow/20 blur-3xl"></div>
+      <JazzScribble />
+    </div>
+    <div class="shell relative z-10 grid gap-14 py-24 lg:grid-cols-12 lg:py-32">
+      <div class="lg:col-span-5">
+        <p class="kicker-ink">{home.engagement.kicker}</p>
+        <h2 class="display mt-5 text-5xl text-ink sm:text-6xl">{home.engagement.title}</h2>
+        <p class="mt-6 text-base leading-relaxed text-ink/70">{home.engagement.body}</p>
+      </div>
+      <ul class="space-y-5 lg:col-span-6 lg:col-start-7">
+        {
+          home.engagement.items.map((item, index) => {
+            const look = engageLooks[index];
+            const toneClass =
+              look.tone === "turquoise"
+                ? "bg-turquoise text-ink shadow-[0_16px_40px_rgb(32_217_194_/_0.28)]"
+                : look.tone === "white"
+                  ? "bg-white text-ink shadow-[0_16px_40px_rgb(17_17_17_/_0.08)] ring-1 ring-ink/8"
+                  : "bg-ink text-ivory shadow-[0_16px_40px_rgb(17_17_17_/_0.18)]";
+            const bodyClass = look.tone === "white" || look.tone === "turquoise" ? "text-ink/70" : "text-ivory/75";
+            return (
+              <li class:list={["jazz-sticker", toneClass]} style={`--tilt: ${look.tilt}`}>
+                <span class="jazz-tape left-7" aria-hidden="true"></span>
+                <h3 class="font-display text-3xl font-extrabold">{item.title}</h3>
+                <p class:list={["mt-3 text-sm leading-relaxed", bodyClass]}>{item.body}</p>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="relative overflow-hidden bg-ink">
+    <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+      <div class="absolute right-0 top-10 h-80 w-80 rounded-full bg-turquoise/20 blur-3xl"></div>
+      <JazzScribble tone="dark" />
+    </div>
+    <div class="shell relative z-10 py-24 lg:py-32">
+      <p class="kicker">Results</p>
+      <h2 class="display mt-5 max-w-3xl text-5xl sm:text-6xl">Proof, kept few, named honestly.</h2>
+      <p class="measure mt-6 text-bone">
+        Figures are from named seasons with the houses above. They are not a promise of identical returns. They are
+        evidence that restraint and measurement can share a table.
+      </p>
+      <ul class="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          home.results.map((stat, index) => {
+            const look = resultLooks[index];
+            const toneClass =
+              look.tone === "turquoise"
+                ? "bg-turquoise text-ink"
+                : look.tone === "charcoal"
+                  ? "bg-charcoal text-ivory"
+                  : "bg-ink text-ivory ring-1 ring-white/10";
+            const labelClass = look.tone === "turquoise" ? "text-ink/70" : "text-ivory/70";
+            return (
+              <li class:list={["jazz-sticker", toneClass]} style={`--tilt: ${look.tilt}`}>
+                <p class:list={["font-display text-5xl font-extrabold sm:text-6xl", look.figure]} data-count={stat.value}>
+                  {stat.value}
+                </p>
+                <p class:list={["mt-4 max-w-xs text-sm leading-relaxed", labelClass]}>{stat.label}</p>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="theme-ivory relative">
+    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <div class="absolute -left-8 bottom-8 h-72 w-72 rounded-full bg-turquoise/15 blur-3xl"></div>
+      <JazzScribble />
+    </div>
+    <div class="shell relative z-10 py-24 lg:py-32">
+      <p class="kicker-ink">Voices</p>
+      <h2 class="display mt-5 text-5xl text-ink sm:text-6xl">What it is like to be in the work.</h2>
+      <div class="mt-16 grid gap-6 lg:grid-cols-2">
+        {
+          testimonials.map((item, index) => {
+            const look = voiceLooks[index];
+            const toneClass =
+              look.tone === "turquoise"
+                ? "bg-turquoise text-ink"
+                : look.tone === "white"
+                  ? "bg-white text-ink ring-1 ring-ink/8"
+                  : "bg-ink text-ivory";
+            const quoteClass = look.tone === "ink" ? "text-ivory" : "text-ink";
+            const kickerClass = look.tone === "white" ? "text-turquoise" : look.tone === "turquoise" ? "!text-ink" : "";
+            return (
+              <figure class:list={["jazz-sticker p-8 sm:p-10", toneClass]} style={`--tilt: ${look.tilt}`}>
+                <span class="jazz-tape left-8" aria-hidden="true"></span>
+                <p class="font-script text-6xl leading-none text-orange" aria-hidden="true">
+                  “
+                </p>
+                <blockquote>
+                  <p class:list={["font-display text-2xl font-bold leading-snug sm:text-3xl", quoteClass]}>
+                    {item.quote}
+                  </p>
+                </blockquote>
+                <figcaption class="mt-8">
+                  <p class="text-sm font-semibold">{item.name}</p>
+                  <p class:list={["kicker mt-2", kickerClass]}>{item.role}</p>
+                </figcaption>
+              </figure>
+            );
+          })
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand title={home.cta.title} body={home.cta.body} kicker={home.cta.kicker} />
+</BaseLayout>

@@ -21,19 +21,18 @@ Two limits to know:
 
 ## 1. Point the project at your domain
 
-In `astro.config.mjs`, change the site settings before you build on the server:
+The domain is `codeaxes.com`. Codeaxes is served at the root and Kuroaxe is served from the same project at `/kuroaxe`:
 
-```js
-export default defineConfig({
-  site: 'https://yourdomain.com',
-  base: '/',
-  output: 'server',
-  adapter: node({ mode: 'standalone' }),
-  // keep the rest of the file
-});
+- `https://www.codeaxes.com/` is Codeaxes.
+- `https://www.codeaxes.com/kuroaxe` is Kuroaxe, with `/kuroaxe/services`, `/kuroaxe/about`, `/kuroaxe/contact`, and so on.
+
+`astro.config.mjs` already defaults to `site: 'https://www.codeaxes.com'` and `base: '/'`, so no edit is needed for production. To use another domain, set `SITE_URL` when you build:
+
+```bash
+SITE_URL=https://yourdomain.com npm run build
 ```
 
-`output: 'server'` is what turns the contact form, the notes form, and the jobs API on. `base: '/'` is required because the site will live at the domain root, not at `/Codeaxes-website`.
+The Kuroaxe code lives in `src/kuroaxe/` (components, content, styles) and `src/pages/kuroaxe/` (routes). Its static files are in `public/kuroaxe/`. The GitHub Pages workflow sets `SITE_URL` and `BASE_PATH` so the preview still works under `/Codeaxes-website`.
 
 ## 2. Create the free server
 

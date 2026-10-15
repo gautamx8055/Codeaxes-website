@@ -1,0 +1,210 @@
+---
+import type { Plate } from "../content/work";
+import type { Service } from "../content/services";
+
+type Variant =
+  | "hero"
+  | Plate["still"]
+  | Service["jewel"]
+  | "seo"
+  | "smm"
+  | "performance"
+  | "arvr"
+  | "graphics"
+  | "video";
+
+interface Props {
+  variant?: Variant;
+  caption?: string;
+  class?: string;
+  parallax?: boolean;
+}
+
+const { variant = "hero", caption, class: className = "", parallax = true } = Astro.props;
+---
+
+<figure class:list={["relative overflow-hidden bg-charcoal", className]}>
+  <div
+    class="absolute inset-0 will-change-transform"
+    data-still={variant}
+    data-parallax={parallax ? "" : undefined}
+    aria-hidden="true"
+  >
+    <div class="wash"></div>
+    <div class="orb"></div>
+    <svg class="doodles" viewBox="0 0 800 1000" preserveAspectRatio="xMidYMid slice">
+      {
+        variant === "lumen" && (
+          <>
+            <ellipse cx="400" cy="360" rx="150" ry="210" fill="url(#glow)" />
+            <path d="M120 820 C240 700, 420 760, 660 620" fill="none" stroke="#EBFF3D" stroke-width="9" stroke-linecap="round" />
+            <circle cx="160" cy="180" r="18" fill="#EBFF3D" />
+          </>
+        )
+      }
+      {
+        variant === "northline" && (
+          <>
+            <path d="M80 780 L400 180 L720 780" fill="none" stroke="#20D9C2" stroke-width="8" />
+            <path d="M160 780 L400 300 L640 780" fill="none" stroke="#EBFF3D" stroke-width="5" />
+            <circle cx="400" cy="180" r="14" fill="#EBFF3D" />
+          </>
+        )
+      }
+      {
+        variant === "vespera" && (
+          <>
+            <polygon points="400,200 490,360 400,520 310,360" fill="none" stroke="#EBFF3D" stroke-width="8" />
+            <polygon points="400,260 440,360 400,460 360,360" fill="#FF6B35" />
+            <circle cx="400" cy="360" r="150" fill="none" stroke="#20D9C2" stroke-width="4" opacity="0.6" />
+          </>
+        )
+      }
+      {
+        variant === "halcyon" && (
+          <>
+            <path d="M90 620 C240 480, 360 540, 400 580 C520 660, 640 500, 720 470" fill="none" stroke="#FF6B35" stroke-width="10" stroke-linecap="round" />
+            <rect x="70" y="180" width="160" height="10" rx="5" fill="#EBFF3D" />
+          </>
+        )
+      }
+      {
+        (variant === "seo" || variant === "sapphire") && (
+          <polyline fill="none" stroke="#20D9C2" stroke-width="10" stroke-linecap="round" points="80,760 180,620 280,660 400,420 520,360 700,180" />
+        )
+      }
+      {
+        (variant === "smm" || variant === "burgundy") && (
+          <>
+            <rect x="90" y="180" width="280" height="360" rx="28" fill="none" stroke="#EBFF3D" stroke-width="8" />
+            <rect x="360" y="300" width="300" height="420" rx="28" fill="none" stroke="#FF6B35" stroke-width="8" />
+          </>
+        )
+      }
+      {
+        (variant === "performance" || variant === "antique") && (
+          <>
+            <polygon points="80,120 720,120 600,280 200,280" fill="#FF6B35" opacity="0.55" />
+            <polygon points="200,320 600,320 500,500 300,500" fill="#EBFF3D" opacity="0.7" />
+          </>
+        )
+      }
+      {
+        (variant === "arvr" || variant === "tealink") && (
+          <>
+            <rect x="200" y="280" width="400" height="360" rx="80" fill="none" stroke="#20D9C2" stroke-width="10" />
+            <circle cx="400" cy="460" r="90" fill="#FF6B35" />
+          </>
+        )
+      }
+      {
+        (variant === "graphics" || variant === "ivory") && (
+          <>
+            <text x="90" y="280" fill="#EBFF3D" font-size="180" font-family="Sora, sans-serif" font-weight="800">
+              Aa
+            </text>
+            <rect x="90" y="720" width="70" height="70" fill="#EBFF3D" />
+            <rect x="180" y="720" width="70" height="70" fill="#FF6B35" />
+            <rect x="270" y="720" width="70" height="70" fill="#20D9C2" />
+          </>
+        )
+      }
+      {
+        (variant === "video" || variant === "crimson") && (
+          <>
+            <rect x="70" y="240" width="150" height="420" rx="18" fill="none" stroke="#FF6B35" stroke-width="8" />
+            <rect x="250" y="200" width="150" height="500" rx="18" fill="none" stroke="#EBFF3D" stroke-width="8" />
+            <rect x="430" y="280" width="150" height="360" rx="18" fill="none" stroke="#FF6B35" stroke-width="8" />
+            <rect x="610" y="220" width="120" height="460" rx="18" fill="none" stroke="#20D9C2" stroke-width="8" />
+          </>
+        )
+      }
+      <defs>
+        <radialGradient id="glow" cx="50%" cy="40%" r="50%">
+          <stop offset="0%" stop-color="#EBFF3D" stop-opacity="0.7" />
+          <stop offset="70%" stop-color="#FF6B35" stop-opacity="0.15" />
+          <stop offset="100%" stop-color="#111111" stop-opacity="0" />
+        </radialGradient>
+      </defs>
+    </svg>
+  </div>
+  {
+    caption && (
+      <figcaption class="absolute bottom-5 left-5 right-5 z-10 flex items-end justify-between gap-4">
+        <span class="kicker">{caption}</span>
+        <span class="h-1 flex-1 rounded-full bg-yellow/50"></span>
+      </figcaption>
+    )
+  }
+</figure>
+
+<style>
+  [data-still] {
+    position: absolute;
+    inset: 0;
+  }
+
+  .wash {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(90% 70% at 80% 10%, color-mix(in oklab, var(--color-turquoise) 55%, transparent), transparent 52%),
+      linear-gradient(180deg, #102428 0%, #111111 70%);
+  }
+
+  [data-still="northline"] .wash,
+  [data-still="seo"] .wash,
+  [data-still="sapphire"] .wash {
+    background:
+      radial-gradient(80% 70% at 20% 80%, color-mix(in oklab, var(--color-turquoise) 45%, transparent), transparent 50%),
+      linear-gradient(180deg, #102428 0%, #111111 100%);
+  }
+
+  [data-still="vespera"] .wash,
+  [data-still="smm"] .wash,
+  [data-still="burgundy"] .wash {
+    background:
+      radial-gradient(80% 70% at 70% 30%, color-mix(in oklab, var(--color-turquoise) 60%, transparent), transparent 52%),
+      linear-gradient(180deg, #102428 0%, #111111 100%);
+  }
+
+  [data-still="arvr"] .wash,
+  [data-still="tealink"] .wash {
+    background:
+      radial-gradient(70% 70% at 50% 50%, color-mix(in oklab, var(--color-turquoise) 50%, transparent), transparent 55%),
+      linear-gradient(180deg, #10222a 0%, #111111 100%);
+  }
+
+  [data-still="video"] .wash,
+  [data-still="halcyon"] .wash,
+  [data-still="crimson"] .wash {
+    background:
+      radial-gradient(80% 60% at 30% 20%, color-mix(in oklab, var(--color-turquoise) 40%, transparent), transparent 50%),
+      linear-gradient(180deg, #102428 0%, #111111 100%);
+  }
+
+  [data-still="performance"] .wash,
+  [data-still="antique"] .wash {
+    background:
+      radial-gradient(80% 60% at 80% 20%, color-mix(in oklab, var(--color-yellow) 35%, transparent), transparent 50%),
+      linear-gradient(180deg, #1c1a10 0%, #111111 100%);
+  }
+
+  .orb {
+    position: absolute;
+    width: 48%;
+    height: 48%;
+    right: 4%;
+    top: 6%;
+    border-radius: 999px;
+    background: radial-gradient(circle, color-mix(in oklab, var(--color-yellow) 28%, transparent), transparent 70%);
+    filter: blur(8px);
+  }
+
+  .doodles {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>

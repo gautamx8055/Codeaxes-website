@@ -348,6 +348,45 @@ export const faqCategories: FaqCategory[] = [
   },
 ];
 
+function itemsFrom(id: string, include?: (question: string) => boolean) {
+  const category = faqCategories.find((item) => item.id === id);
+  if (!category) return [];
+  return include ? category.items.filter((item) => include(item.question)) : category.items;
+}
+
+export function extraFaqsForService(slug: string) {
+  switch (slug) {
+    case 'ai-automation':
+      return itemsFrom('ai-automation');
+    case 'mobile-apps':
+      return itemsFrom('web-and-mobile');
+    case 'custom-development':
+      return itemsFrom('web-and-mobile', (question) => /web|both|accessibility|redesign/i.test(question));
+    case 'saas-development':
+      return itemsFrom('saas-and-paas', (question) => !/developer portal/i.test(question));
+    case 'paas-development':
+      return itemsFrom('saas-and-paas', (question) => /PaaS|developer portal|scale|difference/i.test(question));
+    case 'qa-testing':
+      return itemsFrom('qa-and-maintenance');
+    case 'blockchain':
+      return itemsFrom('blockchain-data-and-cloud', (question) => /blockchain/i.test(question));
+    case 'project-data':
+      return itemsFrom('blockchain-data-and-cloud', (question) => /Project Data/i.test(question));
+    case 'cloud-computing':
+      return itemsFrom('blockchain-data-and-cloud', (question) => /migrate|AWS|Cloud/i.test(question));
+    case 'devops':
+      return itemsFrom('blockchain-data-and-cloud', (question) => /DevOps|Terraform|CI/i.test(question));
+    case 'game-development':
+      return itemsFrom('games-and-animation', (question) => /game/i.test(question));
+    case '2d-animations':
+      return itemsFrom('games-and-animation', (question) => /animation|artist|2D/i.test(question));
+    case 'product-development':
+      return [...itemsFrom('working-with-codeaxes'), ...itemsFrom('project-timelines'), ...itemsFrom('pricing-and-engagement')];
+    default:
+      return [];
+  }
+}
+
 export const allFaqs = faqCategories.flatMap((category) =>
   category.items.map((item) => ({
     categoryId: category.id,

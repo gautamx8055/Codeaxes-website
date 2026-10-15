@@ -43,11 +43,9 @@ export const primaryNav: NavItem[] = [
   },
   { label: 'Careers', href: '/careers' },
   { label: 'Contact Us', href: '/contact' },
-  { label: 'FAQ', href: '/faq' },
   {
     label: 'Kuroaxe',
     href: site.kuroaxe.url,
-    external: true,
     note: site.kuroaxe.label,
   },
 ];
@@ -58,5 +56,4 @@ export const footerNav = [
   { label: 'Case studies', href: '/about/case-studies' },
   { label: 'Careers', href: '/careers' },
   { label: 'Contact', href: '/contact' },
-  { label: 'FAQ', href: '/faq' },
 ];

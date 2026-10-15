@@ -27,7 +27,7 @@ export function buildKnowledge(): KnowledgeDoc[] {
         site.tagline,
         'Codeaxes combines product strategy, design, engineering, quality assurance, data, cloud, interactive media, and AI to help businesses turn complex ideas into reliable digital products.',
         whyCodeaxes.map((item) => `${item.title}. ${item.body}`).join(' '),
-        `Contact ${site.email}. ${site.kuroaxe.name} is a partner brand for marketing services at ${site.kuroaxe.url}.`,
+        `Contact ${site.email}. ${site.kuroaxe.name} is a partner brand for marketing services at ${site.kuroaxe.absoluteUrl}.`,
       ]),
     },
     {
@@ -91,6 +91,7 @@ export function buildKnowledge(): KnowledgeDoc[] {
         industry.compliance,
         industry.techApproaches.join(' '),
         industry.outcomes.join(' '),
+        industry.faqs.map((item) => `${item.question} ${item.answer}`).join(' '),
       ]),
     });
   }

@@ -10,6 +10,7 @@ import ServiceVisual from '../../components/visuals/ServiceVisual.astro';
 import { getService, services } from '../../data/services';
 import { getCaseStudiesBySlug } from '../../data/case-studies';
 import { site } from '../../data/site';
+import { extraFaqsForService } from '../../data/faqs';
 import { findTechnology } from '../../data/technologies';
 import { withBase } from '../../lib/seo';
 
@@ -21,6 +22,13 @@ const service = getService(Astro.params.slug ?? '');
 if (!service) throw new Error('Unknown service');
 
 const related = getCaseStudiesBySlug(service.relatedCaseStudies);
+const seenQuestions = new Set<string>();
+const faqs = [...service.faqs, ...extraFaqsForService(service.slug)].filter((item) => {
+  const key = item.question.toLowerCase();
+  if (seenQuestions.has(key)) return false;
+  seenQuestions.add(key);
+  return true;
+});
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Service',
@@ -152,7 +160,7 @@ const jsonLd = {
   }
 
   <Section index="08" eyebrow="FAQ" title={`Questions about ${service.shortName}.`}>
-    <Accordion items={service.faqs} name={service.slug} />
+    <Accordion items={faqs} name={service.slug} />
   </Section>
 
   <CtaBand title={`Start a ${service.shortName} conversation.`} primary={site.cta.primary} secondary={{ label: 'All services', href: '/services' }} />

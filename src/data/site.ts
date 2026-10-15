@@ -1,8 +1,12 @@
+const origin = (import.meta.env.SITE || 'https://www.codeaxes.com').replace(/\/$/, '');
+const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+const siteUrl = `${origin}${base}`;
+
 export const site = {
   name: 'Codeaxes',
   legalName: 'Codeaxes',
   tagline: 'Engineering ambitious digital products.',
-  url: 'https://gautamx8055.github.io/Codeaxes-website',
+  url: siteUrl,
   locale: 'en_US',
   email: 'hello@codeaxes.com',
   phone: '+1 (415) 555-0148',
@@ -22,7 +26,10 @@ export const site = {
   },
   kuroaxe: {
     name: 'Kuroaxe',
-    url: 'https://kuroaxe.com',
+    // In-site link (works on localhost, previews and production).
+    url: `${base}/kuroaxe`,
+    // Full URL for structured data and plain-text mentions.
+    absoluteUrl: `${siteUrl}/kuroaxe`,
     label: 'Marketing services by our partner brand',
   },
   cta: {

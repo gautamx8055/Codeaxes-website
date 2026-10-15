@@ -3,7 +3,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/ui/PageHero.astro';
 import Section from '../../components/ui/Section.astro';
 import CtaBand from '../../components/ui/CtaBand.astro';
+import Accordion from '../../components/ui/Accordion.astro';
 import { industries } from '../../data/industries';
+import { faqCategories } from '../../data/faqs';
+
+const security = faqCategories.find((category) => category.id === 'security-and-ownership');
 import { site } from '../../data/site';
 ---
 
@@ -58,8 +62,19 @@ import { site } from '../../data/site';
             <ul class="space-y-2 text-paper">{industry.outcomes.map((item) => <li>{item}</li>)}</ul>
           </div>
         </div>
+        <h3 class="font-display mt-12 text-2xl text-paper">Questions</h3>
+        <div class="mt-4">
+          <Accordion items={industry.faqs} name={`industry-${industry.slug}`} />
+        </div>
       </Section>
     ))
+  }
+  {
+    security && (
+      <Section eyebrow="FAQ" title="Security and ownership.">
+        <Accordion items={security.items} name="industry-security" />
+      </Section>
+    )
   }
   <CtaBand title="Bring the constraint from your industry." primary={site.cta.primary} />
 </BaseLayout>

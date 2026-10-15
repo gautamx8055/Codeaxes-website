@@ -1,0 +1,137 @@
+---
+import BaseLayout from "../../kuroaxe/layouts/BaseLayout.astro";
+import AtelierStill from "../../kuroaxe/components/AtelierStill.astro";
+import CtaBand from "../../kuroaxe/components/CtaBand.astro";
+import JazzScribble from "../../kuroaxe/components/JazzScribble.astro";
+import { about } from "../../kuroaxe/content/about";
+import { home } from "../../kuroaxe/content/home";
+import { organizationGraph } from "../../kuroaxe/lib/schema";
+---
+
+<BaseLayout
+  title="About"
+  description="Kuroaxe is a premium creative growth house: strategists, designers, marketers, and makers under one editorial standard."
+  path="/about"
+  jsonLd={organizationGraph()}
+>
+  <section class="relative overflow-hidden bg-ink" data-hero>
+    <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+      <div class="absolute -left-16 top-16 h-72 w-72 rounded-full bg-turquoise/20 blur-3xl"></div>
+      <JazzScribble tone="dark" />
+    </div>
+    <div class="shell hero-stage relative z-10 grid items-start content-start gap-8 lg:grid-cols-12 lg:items-center lg:content-center lg:gap-10">
+      <div class="lg:col-span-6">
+        <p class="kicker">{about.kicker}</p>
+        <h1 class="display mt-4 max-w-5xl text-[clamp(2.2rem,5.4vw,5.4rem)]">
+          {about.heroLine}
+        </h1>
+        <p class="mt-6 max-w-2xl text-lg leading-snug text-ivory/85 sm:text-xl">{about.mission}</p>
+      </div>
+      <div class="lg:col-span-6">
+        <div class="jazz-frame -rotate-1">
+          <AtelierStill variant="graphics" class="h-full w-full" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="theme-ivory relative">
+    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <JazzScribble />
+    </div>
+    <div class="shell relative z-10 grid gap-12 py-24 lg:grid-cols-12 lg:py-32">
+      <p class="kicker-ink lg:col-span-3">Story</p>
+      <div class="prose-luxe text-ink/80 lg:col-span-8">
+        {about.story.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="relative overflow-hidden">
+    <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+      <JazzScribble tone="dark" />
+    </div>
+    <div class="shell relative z-10 py-24 lg:py-32">
+      <p class="kicker">Values</p>
+      <h2 class="display mt-5 max-w-3xl text-4xl sm:text-5xl">Five words we will not use as decoration.</h2>
+      <ul class="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+        {
+          about.values.map((value, index) => (
+            <li
+              class:list={[
+                "jazz-sticker p-6",
+                index % 2 === 0 ? "bg-turquoise text-ink" : "bg-charcoal",
+              ]}
+              style={`--tilt: ${index % 2 === 0 ? "-1.6deg" : "1.4deg"}`}
+            >
+              <h3 class="font-display text-3xl font-extrabold">{value.title}</h3>
+              <p class:list={["mt-3 text-sm leading-relaxed", index % 2 === 0 ? "text-ink/70" : "text-ivory/75"]}>{value.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="theme-ivory relative">
+    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <JazzScribble />
+    </div>
+    <div class="shell relative z-10 grid gap-12 py-24 lg:grid-cols-12 lg:py-32">
+      <div class="lg:col-span-5">
+        <p class="kicker-ink">Philosophy</p>
+        <h2 class="display mt-5 text-4xl text-ink sm:text-5xl">Creative meets performance in the edit.</h2>
+      </div>
+      <div class="lg:col-span-6 lg:col-start-7">
+        <p class="text-base leading-relaxed text-ink/70">{about.philosophy}</p>
+        <ul class="mt-10 space-y-4">
+          {
+            about.whyClients.map((item) => (
+              <li class="border-t border-ink/10 pt-4 text-sm leading-relaxed text-ink/75">{item}</li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shell py-24 lg:py-32">
+      <p class="kicker">Roster</p>
+      <h2 class="display mt-5 max-w-3xl text-5xl">The people in the pitch stay on the work.</h2>
+      <ul class="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          about.team.map((person) => (
+            <li class="jazz-sticker bg-charcoal p-8 lg:p-10" style={`--tilt: ${person.name.length % 2 === 0 ? "-1.2deg" : "1.3deg"}`}>
+              <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-yellow font-display text-lg font-extrabold text-ink">
+                {person.initials}
+              </span>
+              <p class="mt-6 font-display text-2xl font-extrabold">{person.name}</p>
+              <p class="kicker mt-2">{person.role}</p>
+              <p class="mt-4 text-sm leading-relaxed text-bone">{person.bio}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mt-8 text-xs text-bone">{about.note}</p>
+    </div>
+  </section>
+
+  <section class="border-y border-white/10">
+    <div class="shell py-16">
+      <p class="kicker">Selected houses</p>
+      <ul class="mt-8 grid grid-cols-2 gap-y-5 sm:grid-cols-3 lg:grid-cols-6">
+        {
+          home.trust.marks.map((mark) => (
+            <li class="font-display text-2xl font-bold text-ivory/80">{mark}</li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand
+    title="If the standard fits, write to the house."
+    body="A short roster. Long seasons. A strategy session is the usual first step."
+  />
+</BaseLayout>

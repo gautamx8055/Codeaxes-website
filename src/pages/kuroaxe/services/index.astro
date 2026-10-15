@@ -1,0 +1,65 @@
+---
+import BaseLayout from "../../../kuroaxe/layouts/BaseLayout.astro";
+import CtaBand from "../../../kuroaxe/components/CtaBand.astro";
+import DisciplineIcon from "../../../kuroaxe/components/DisciplineIcon.astro";
+import JazzScribble from "../../../kuroaxe/components/JazzScribble.astro";
+import { services } from "../../../kuroaxe/content/services";
+import { organizationGraph } from "../../../kuroaxe/lib/schema";
+
+const description =
+  "Search, social, performance, AR/VR, graphics, and film: six Kuroaxe disciplines under one editorial standard.";
+---
+
+<BaseLayout
+  title="Services"
+  description={description}
+  path="/services"
+  jsonLd={organizationGraph()}
+>
+  <section class="relative overflow-hidden">
+    <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+      <div class="absolute right-0 top-10 h-72 w-72 rounded-full bg-turquoise/20 blur-3xl"></div>
+      <JazzScribble tone="dark" />
+    </div>
+    <div class="shell hero-stage relative z-10 flex max-w-4xl flex-col justify-center">
+    <p class="kicker">Contents</p>
+    <h1 class="display mt-4 max-w-4xl text-[clamp(2.2rem,5.6vw,5.6rem)]">The house, by discipline.</h1>
+    <p class="mt-6 max-w-2xl text-lg leading-snug text-ivory/85 sm:text-xl">
+      Six rooms. One grammar. Most houses only need two or three open at once.
+    </p>
+    <p class="measure mt-5 text-base leading-relaxed text-bone">
+      Every service has its own visual climate. The grammar does not change: restraint, craft, and a number that
+      matters. Read them as chapters of one standard, not as a catalogue of add-ons. A strategy session is how we decide
+      which doors to open, and which to leave closed.
+    </p>
+    </div>
+  </section>
+
+  <section class="theme-ivory relative">
+    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <JazzScribble />
+    </div>
+    <div class="shell relative z-10 py-16 lg:py-24">
+      <ol class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          services.map((service) => (
+            <li>
+              <a href={service.href} class="jazz-card group block h-full">
+                <DisciplineIcon slug={service.slug} />
+                <p class="kicker-ink mt-6">{service.kicker}</p>
+                <h2 class="mt-2 font-display text-4xl font-extrabold tracking-tight text-ink">{service.title}</h2>
+                <p class="mt-4 max-w-lg text-sm leading-relaxed text-ink/65">{service.short}</p>
+                <span class="mt-6 inline-flex text-sm font-semibold text-turquoise group-hover:text-orange">Open</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Tell us which discipline the brief needs."
+    body="Most engagements begin as a conversation, not a menu. If several rooms are required, we will say so, and what we would leave closed."
+  />
+</BaseLayout>
