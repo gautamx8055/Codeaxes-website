@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import node from '@astrojs/node';
+import netlify from '@astrojs/netlify';
 import tailwindcss from '@tailwindcss/vite';
 
 // Production serves Codeaxes at the domain root and Kuroaxe at /kuroaxe:
@@ -15,7 +16,8 @@ export default defineConfig({
   site: siteUrl,
   base: basePath,
   output: 'static',
-  adapter: node({ mode: 'standalone' }),
+  // Netlify sets NETLIFY=true during its builds; everywhere else (own server, local) uses the Node adapter.
+  adapter: process.env.NETLIFY ? netlify() : node({ mode: 'standalone' }),
   integrations: [
     sitemap({
       customPages: [`${siteUrl}${basePath === '/' ? '' : basePath.replace(/\/$/, '')}/careers`],

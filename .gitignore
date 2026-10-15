@@ -25,3 +25,6 @@ data/inbox/*.json
 
 # jetbrains setting folder
 .idea/
+
+# Netlify build cache
+.netlify/
