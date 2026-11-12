@@ -1,284 +1,57 @@
 ---
+import BrandHeader from './BrandHeader.astro';
 import Logo from './Logo.astro';
-import Button from '../ui/Button.astro';
+import KuroaxeMark from '../../kuroaxe/components/Mark.astro';
+import { serviceGroups, getServicesByGroup, services } from '../../data/services';
+import { industries } from '../../data/industries';
+import { engineeringPractices, technologyCatalogue } from '../../data/catalogue';
 import { primaryNav } from '../../data/navigation';
+import { findTechnology } from '../../data/technologies';
 import { site } from '../../data/site';
-import { withBase, withoutBase } from '../../lib/seo';
+import { withBase } from '../../lib/seo';
+import type { HeaderNavItem, HeaderSearchEntry } from './header-types';
 
-const path = withoutBase(Astro.url.pathname);
-const currentHref = primaryNav
-  .map((item) => item.href)
-  .filter((href): href is string => Boolean(href) && href !== '/')
-  .filter((href) => path === href || path.startsWith(`${href}/`))
-  .sort((a, b) => b.length - a.length)[0];
+const technologyLinks = technologyCatalogue.map((category) => ({ label: category.name, href: withBase(`/about/technologies#${category.id}`) }));
+const nav: HeaderNavItem[] = [
+  {
+    id: 'services', label: 'Services', href: withBase('/services'),
+    groups: serviceGroups.map((group) => ({
+      id: group.id, label: group.name, description: group.summary,
+      href: withBase(`/services#${group.id}`),
+      links: getServicesByGroup(group.id).map((service) => ({ label: service.name, href: withBase(`/services/${service.slug}`) })),
+    })),
+  },
+  {
+    id: 'industries', label: 'Industries', href: withBase('/about/industries'),
+    groups: [
+      { id: 'industries', label: 'Industries', description: 'Enterprise engineering shaped around your operating environment.', href: withBase('/about/industries'), links: industries.map((industry) => ({ label: industry.name, href: withBase(`/about/industries#${industry.slug}`) })) },
+      { id: 'practices', label: 'Engineering practices', description: 'Connected expertise that supports delivery across industries.', href: withBase('/about/industries#cross-industry-practices'), links: engineeringPractices.map((label) => ({ label, href: withBase('/about/industries#cross-industry-practices') })) },
+      { id: 'technology', label: 'Technology ecosystem', description: 'The languages, tools, and platforms behind our engineering work.', href: withBase('/about/technologies'), links: technologyLinks },
+    ],
+  },
+  {
+    id: 'about', label: 'About', href: withBase('/about'),
+    groups: [{
+      id: 'company', label: 'Our company', description: 'Meet Codeaxes, explore our work, and hear from the teams we work with.', href: withBase('/about'),
+      links: [{ label: 'About Codeaxes', href: withBase('/about') }, ...(primaryNav.find((item) => item.label === 'About')?.children ?? []).map((item) => ({ label: item.label, href: withBase(item.href) }))],
+    }],
+  },
+  { id: 'careers', label: 'Careers', href: withBase('/careers') },
+];
+const searchEntries: HeaderSearchEntry[] = [
+  ...nav.map((item) => ({ label: item.label, href: item.href, category: 'Explore Codeaxes' })),
+  { label: 'Contact Codeaxes', href: withBase('/contact'), category: 'Start a conversation' },
+  ...services.map((service) => ({ label: service.name, href: withBase(`/services/${service.slug}`), category: 'Services', keywords: service.stack.join(' ') })),
+  ...industries.map((industry) => ({ label: industry.name, href: withBase(`/about/industries#${industry.slug}`), category: 'Industries', keywords: industry.solutions.join(' ') })),
+  ...technologyCatalogue.flatMap((category) => category.sections.flatMap((section) => section.items.map((label) => {
+    const tech = findTechnology(label);
+    return { label, href: withBase(tech ? `/about/technologies/${tech.slug}` : `/about/technologies#${category.id}`), category: category.name };
+  }))),
+  ...nav.flatMap((item) => item.groups?.flatMap((group) => group.links.map((link) => ({ ...link, category: group.label }))) ?? []),
+];
 ---
 
-<div class="header-offset" data-header-offset aria-hidden="true"></div>
-<header class="glass site-header">
-  <div class="header-shell">
-  <div class="header-bar mx-auto flex items-center justify-between gap-3 px-3 py-2 sm:gap-4 sm:px-4 sm:py-2.5 md:px-5" data-header-bar>
-    <Logo />
-    <nav class="hidden items-center xl:flex" aria-label="Primary">
-      {
-        primaryNav.map((item) =>
-          item.children ? (
-            <div class="group/nav relative z-10" data-nav-item>
-              <a
-                href={item.href ? withBase(item.href) : undefined}
-                class:list={[
-                  'relative z-20 inline-flex items-center gap-1 px-3 py-2 text-[14px] font-medium tracking-normal text-mist transition-colors duration-300 hover:text-axis',
-                  item.href === currentHref && 'text-axis',
-                ]}
-                aria-haspopup="true"
-                aria-expanded="false"
-                data-nav-trigger
-              >
-                {item.label}
-                <span aria-hidden="true" class="text-mist">
-                  ▾
-                </span>
-              </a>
-              <div
-                class:list={[
-                  'nav-sub absolute left-0 top-full z-10 pt-3',
-                  (item.children?.length ?? 0) > 5 ? 'w-[min(44rem,calc(100vw-2rem))]' : 'w-[min(22rem,calc(100vw-2rem))]',
-                ]}
-                data-submenu
-              >
-                <div class="nav-sub-panel max-h-[70dvh] overflow-y-auto rounded-2xl border border-line bg-ink p-3 shadow-glow">
-                  <ul class:list={['grid gap-1', (item.children?.length ?? 0) > 5 && 'sm:grid-cols-2']}>
-                    {item.children.map((child) => (
-                      <li>
-                        <a href={withBase(child.href)} class="block rounded-xl px-3 py-2 hover:bg-slate">
-                          <span class="block text-base text-paper">{child.label}</span>
-                          {child.description && <span class="block text-sm text-mist">{child.description}</span>}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          ) : item.external ? (
-            <a
-              href={item.href}
-              class="inline-flex items-center gap-1 px-3 py-2 text-[14px] font-medium tracking-normal text-mist transition-colors duration-300 hover:text-axis"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {item.label}
-              <span class="font-mono text-xs text-axis">↗</span>
-            </a>
-          ) : (
-            <a
-              href={item.href ? withBase(item.href) : undefined}
-              class:list={[
-                'px-3 py-2 text-[14px] font-medium tracking-normal text-mist transition-colors duration-300 hover:text-axis',
-                (item.href === '/' ? path === '/' : item.href === currentHref) && 'text-axis',
-              ]}
-            >
-              {item.label}
-            </a>
-          ),
-        )
-      }
-    </nav>
-    <div class="flex items-center gap-2">
-      <Button href={site.cta.primary.href} variant="secondary" class="!hidden xl:!inline-flex">{site.cta.primary.label}</Button>
-      <button
-        type="button"
-        class="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-line text-paper xl:hidden"
-        data-nav-toggle
-        aria-expanded="false"
-        aria-controls="mobile-nav"
-      >
-        <span class="sr-only">Open menu</span>
-        <span aria-hidden="true">☰</span>
-      </button>
-    </div>
-  </div>
-  <div id="mobile-nav" class="hidden max-h-[calc(100dvh-4.75rem)] overflow-y-auto overscroll-contain border-t border-line bg-ink xl:hidden" data-mobile-nav>
-    <nav class="mx-auto max-w-6xl px-5 py-4" aria-label="Mobile">
-      {
-        primaryNav.map((item, index) => (
-          <div class="border-b border-line py-3" data-mobile-group>
-            {item.external ? (
-              <a href={item.href} class="flex min-h-11 items-center text-lg font-semibold text-paper" target="_blank" rel="noopener noreferrer">
-                {item.label} ↗
-              </a>
-            ) : item.children ? (
-              <div class="flex items-center justify-between gap-2">
-                <a href={item.href ? withBase(item.href) : undefined} class="flex min-h-11 flex-1 items-center text-lg font-semibold text-paper">
-                  {item.label}
-                </a>
-                <button
-                  type="button"
-                  class="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-xl text-mist hover:text-axis"
-                  aria-expanded="false"
-                  aria-controls={`mobile-sub-${index}`}
-                  aria-label={`Show ${item.label} pages`}
-                  data-mobile-sub-toggle
-                >
-                  <svg class="h-4 w-4 transition-transform duration-200" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <path d="m3.5 6 4.5 4.5L12.5 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-                  </svg>
-                </button>
-              </div>
-            ) : (
-              <a href={item.href ? withBase(item.href) : undefined} class="flex min-h-11 items-center text-lg font-semibold text-paper">
-                {item.label}
-              </a>
-            )}
-            {item.note && <p class="mt-1 text-xs text-mist">{item.note}</p>}
-            {item.children && (
-              <ul id={`mobile-sub-${index}`} class="mt-1 hidden" data-mobile-sub>
-                {item.children.map((child) => (
-                  <li>
-                    <a href={withBase(child.href)} class="flex min-h-11 items-center text-base font-medium text-mist hover:text-axis">
-                      {child.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        ))
-      }
-      <Button href={site.cta.primary.href} class="mt-4 w-full">{site.cta.primary.label}</Button>
-    </nav>
-  </div>
-  </div>
-</header>
-
-<style>
-  [data-nav-item].is-open,
-  [data-nav-item]:focus-within {
-    z-index: 40;
-  }
-
-  [data-nav-item]::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 100%;
-    height: 0.85rem;
-    pointer-events: none;
-  }
-
-  [data-nav-item].is-open::after,
-  [data-nav-item]:focus-within::after {
-    pointer-events: auto;
-  }
-
-  .nav-sub {
-    pointer-events: none;
-    opacity: 0;
-    visibility: hidden;
-    transition:
-      opacity 120ms ease,
-      visibility 0s linear 80ms;
-  }
-
-  .nav-sub-panel {
-    pointer-events: none;
-  }
-
-  [data-nav-item].is-open .nav-sub,
-  [data-nav-item]:focus-within .nav-sub {
-    visibility: visible;
-    opacity: 1;
-    transition-delay: 0s;
-  }
-
-  [data-nav-item].is-open .nav-sub-panel,
-  [data-nav-item]:focus-within .nav-sub-panel {
-    pointer-events: auto;
-  }
-</style>
-
-<script>
-  const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
-  const panel = document.querySelector<HTMLElement>('[data-mobile-nav]');
-  const header = document.querySelector<HTMLElement>('header.glass');
-  const offset = document.querySelector<HTMLElement>('[data-header-offset]');
-  const bar = document.querySelector<HTMLElement>('[data-header-bar]');
-
-  const syncOffset = () => {
-    if (!offset || !bar) return;
-    const height = Math.ceil(bar.getBoundingClientRect().height) + 16;
-    offset.style.height = `${height}px`;
-    document.documentElement.style.setProperty('--site-header-h', `${height}px`);
-  };
-  syncOffset();
-  window.addEventListener('resize', syncOffset);
-
-  const setMobileNav = (open: boolean) => {
-    panel?.classList.toggle('hidden', !open);
-    toggle?.setAttribute('aria-expanded', String(open));
-    const label = toggle?.querySelector('.sr-only');
-    if (label) label.textContent = open ? 'Close menu' : 'Open menu';
-    header?.classList.toggle('is-menu-open', open);
-    document.body.style.overflow = open ? 'hidden' : '';
-    document.dispatchEvent(new Event('codeaxes:header-show'));
-  };
-
-  toggle?.addEventListener('click', () => {
-    setMobileNav(toggle.getAttribute('aria-expanded') !== 'true');
-  });
-
-  panel?.addEventListener('click', (event) => {
-    // Group links can target the current page. Close before the browser follows
-    // the fragment so the destination is visible and scrolling is restored.
-    if (event.target instanceof Element && event.target.closest('a')) setMobileNav(false);
-  });
-
-  document.querySelectorAll<HTMLElement>('[data-mobile-group]').forEach((group) => {
-    const button = group.querySelector<HTMLButtonElement>('[data-mobile-sub-toggle]');
-    const list = group.querySelector<HTMLElement>('[data-mobile-sub]');
-    if (!button || !list) return;
-    button.addEventListener('click', () => {
-      const open = list.classList.toggle('hidden') === false;
-      button.setAttribute('aria-expanded', String(open));
-      button.querySelector('svg')?.classList.toggle('rotate-180', open);
-    });
-  });
-
-  const navItems = [...document.querySelectorAll<HTMLElement>('[data-nav-item]')];
-  let closeNav: number | undefined;
-  let openNav: HTMLElement | undefined;
-
-  const setOpenNav = (next?: HTMLElement) => {
-    window.clearTimeout(closeNav);
-    openNav = next;
-    navItems.forEach((item) => {
-      const on = item === next;
-      item.classList.toggle('is-open', on);
-      item.querySelector('[data-nav-trigger]')?.setAttribute('aria-expanded', String(on));
-    });
-  };
-
-  navItems.forEach((item) => {
-    item.addEventListener('mouseenter', () => setOpenNav(item));
-    item.addEventListener('mouseleave', () => {
-      closeNav = window.setTimeout(() => {
-        if (openNav === item) setOpenNav(undefined);
-      }, 120);
-    });
-    item.addEventListener('focusin', () => setOpenNav(item));
-    item.addEventListener('focusout', () => {
-      closeNav = window.setTimeout(() => {
-        if (!item.contains(document.activeElement)) setOpenNav(undefined);
-      }, 0);
-    });
-  });
-
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-      setOpenNav(undefined);
-      setMobileNav(false);
-      const active = document.activeElement;
-      if (active instanceof HTMLElement && active.closest('[data-nav-item]')) active.blur();
-    }
-  });
-</script>
+<BrandHeader brand="codeaxes" name="Codeaxes" nav={nav} contactHref={withBase('/contact')} partner={{ name: 'Kuroaxe', href: site.kuroaxe.url }} searchEntries={searchEntries} searchPlaceholder="Search services, industries, technologies…">
+  <Logo slot="logo" />
+  <KuroaxeMark slot="partner-mark" />
+</BrandHeader>

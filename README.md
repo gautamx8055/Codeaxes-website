@@ -47,7 +47,9 @@ You do not need to hunt through page templates for copy. Change these modules:
 | File | What it drives |
 | --- | --- |
 | `src/data/site.ts` | Brand, contact, social, Kuroaxe URL |
-| `src/data/navigation.ts` | Header and footer |
+| `src/data/navigation.ts` | Footer navigation |
+| `src/components/chrome/Header.astro` | Codeaxes header categories and search index |
+| `src/kuroaxe/components/Header.astro` | Kuroaxe header categories and search index |
 | `src/data/client-catalogue.json` | Client's six service groups, 31 services, 18 industry solution lists, ten practices, and 24 technology categories |
 | `src/data/service-content.ts` | Descriptions, capabilities, and stacks for all service landing pages |
 | `src/data/services.ts` | Service groups and shared catalogue helpers |

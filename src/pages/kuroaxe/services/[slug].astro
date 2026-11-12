@@ -49,20 +49,22 @@ const jewelClass = {
   path={service.href}
   jsonLd={[organizationGraph(), serviceGraph(service), faqGraph(service.faqs)]}
 >
-  <section class="relative overflow-hidden" data-hero>
-    <div class="absolute inset-0" data-hero-frame>
-      <AtelierStill
-        variant={stillMap[service.slug]}
-        class="h-full min-h-full w-full"
-      />
-      <div class="hero-veil"></div>
-    </div>
-    <div class="shell hero-stage relative z-10 flex flex-col justify-end">
-      <p class="kicker">{service.kicker}</p>
-      <h1 class="display mt-4 max-w-4xl text-[clamp(2.1rem,5.2vw,4.8rem)]">{service.heroLine}</h1>
-      <p class="measure mt-5 text-ivory/80">{service.description}</p>
-      <div class="mt-6">
-        <a class="btn-primary" href={kx("/contact")}>Discuss {service.shortTitle}</a>
+  <section class="service-hero" data-hero>
+    <div class="shell service-hero-layout">
+      <div class="service-hero-copy">
+        <p class="kicker">{service.kicker}</p>
+        <h1 class="display service-hero-title">{service.heroLine}</h1>
+        <p class="service-hero-description">{service.description}</p>
+        <div class="service-hero-actions">
+          <a class="btn-primary" href={kx("/contact")}>Discuss {service.shortTitle}</a>
+        </div>
+      </div>
+      <div class="service-hero-art" aria-hidden="true">
+        <AtelierStill
+          variant={stillMap[service.slug]}
+          class="h-full w-full"
+          parallax={false}
+        />
       </div>
     </div>
   </section>
@@ -192,3 +194,66 @@ const jewelClass = {
     cta="Grow with Kuroaxe"
   />
 </BaseLayout>
+
+<style>
+  .service-hero {
+    overflow: hidden;
+    border-bottom: 1px solid rgb(255 255 255 / 10%);
+  }
+
+  .service-hero-layout {
+    display: grid;
+    align-items: center;
+    gap: 2.5rem;
+    padding-block: clamp(2.5rem, 5vw, 5rem);
+  }
+
+  .service-hero-copy {
+    min-width: 0;
+    max-width: 48rem;
+  }
+
+  .service-hero-title {
+    margin-top: 1rem;
+    font-size: clamp(2.25rem, 4.6vw, 4.5rem);
+    line-height: 1.1;
+    text-wrap: balance;
+    overflow-wrap: break-word;
+  }
+
+  .service-hero-description {
+    max-width: 58ch;
+    margin-top: 1.5rem;
+    color: rgb(255 255 255 / 80%);
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
+  .service-hero-actions {
+    margin-top: 1.75rem;
+  }
+
+  .service-hero-art {
+    min-width: 0;
+    height: clamp(15rem, 65vw, 24rem);
+    overflow: hidden;
+    border: 1px solid rgb(255 255 255 / 10%);
+    border-radius: 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .service-hero-layout {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      min-height: min(46rem, calc(100svh - var(--brand-header-height)));
+      gap: clamp(2.5rem, 5vw, 5rem);
+    }
+
+    .service-hero-description {
+      font-size: 1.0625rem;
+    }
+
+    .service-hero-art {
+      height: clamp(22rem, 35vw, 32rem);
+    }
+  }
+</style>

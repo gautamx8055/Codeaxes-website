@@ -8,56 +8,19 @@
 <script>
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const bar = document.querySelector<HTMLElement>('[data-scroll-progress] span');
-  const header = document.querySelector<HTMLElement>('header.glass');
-  let lastY = Math.max(0, window.scrollY);
-  let hidden = false;
-  let scrolled = false;
   let frame = 0;
-  let max = 0;
-
-  const measure = () => {
-    max = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-  };
-
-  const setHeaderHidden = (next: boolean) => {
-    if (!header) return;
-    const hide = next && !reduce;
-    if (hide === hidden) return;
-    hidden = hide;
-    header.classList.toggle('is-hidden', hide);
-    header.style.setProperty('translate', hide ? '0 -110%' : '0px', 'important');
-  };
-
   const paint = () => {
     frame = 0;
+    const max = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
     const y = Math.max(0, window.scrollY);
     if (bar) bar.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
-
-    const nextScrolled = y > 16;
-    if (header && nextScrolled !== scrolled) {
-      scrolled = nextScrolled;
-      header.classList.toggle('is-scrolled', nextScrolled);
-    }
-
-    const menuOpen = header?.classList.contains('is-menu-open');
-    const delta = y - lastY;
-    if (reduce || menuOpen || y < 48) setHeaderHidden(false);
-    else if (delta > 8) setHeaderHidden(true);
-    else if (delta < -8) setHeaderHidden(false);
-    lastY = y;
   };
-
   const onScroll = () => {
-    if (frame) return;
-    frame = requestAnimationFrame(paint);
+    if (!frame) frame = requestAnimationFrame(paint);
   };
-
-  measure();
   paint();
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', measure, { passive: true });
-  header?.addEventListener('focusin', () => setHeaderHidden(false));
-  document.addEventListener('codeaxes:header-show', () => setHeaderHidden(false));
+  window.addEventListener('resize', onScroll, { passive: true });
 
   const reveal = document.querySelectorAll('[data-reveal], [data-reveal-stagger]');
   if (reduce) {

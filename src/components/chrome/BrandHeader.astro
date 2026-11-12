@@ -1,0 +1,105 @@
+---
+import './brand-header.css';
+import type { HeaderNavItem, HeaderSearchEntry } from './header-types';
+
+type Props = {
+  brand: 'codeaxes' | 'kuroaxe';
+  name: string;
+  nav: HeaderNavItem[];
+  contactHref: string;
+  partner: { name: string; href: string };
+  searchEntries: HeaderSearchEntry[];
+  searchPlaceholder: string;
+};
+
+const { brand, name, nav, contactHref, partner, searchEntries, searchPlaceholder } = Astro.props;
+const prefix = `${brand}-header`;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const currentHref = nav.filter((item) => !item.href.includes('#') && (path === item.href.replace(/\/$/, '') || path.startsWith(`${item.href.replace(/\/$/, '')}/`))).sort((a, b) => b.href.length - a.href.length)[0]?.href;
+const active = (href: string) => href === currentHref;
+const searchIndex = [...new Map(searchEntries.map((entry) => [`${entry.href}|${entry.label}`, entry])).values()];
+---
+
+<div class="bh-offset" aria-hidden="true"></div>
+<button type="button" class="bh-backdrop" data-header-backdrop data-brand={brand} aria-label="Close navigation" tabindex="-1" hidden></button>
+<header class="bh-header" data-brand-header data-brand={brand}>
+  <div class="bh-bar">
+    <div class="bh-logo"><slot name="logo" /></div>
+    <nav class="bh-desktop-nav" aria-label="Primary">
+      {nav.map((item) => item.groups ? (
+        <button type="button" class:list={['bh-nav-link', active(item.href) && 'is-current']} data-mega-trigger={item.id} aria-expanded="false" aria-controls={`${prefix}-${item.id}`}>
+          {item.label}
+          <svg class="bh-chevron" viewBox="0 0 16 16" width="12" height="12" fill="none" aria-hidden="true"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </button>
+      ) : <a href={item.href} class:list={['bh-nav-link', active(item.href) && 'is-current']} aria-current={active(item.href) ? 'page' : undefined}>{item.label}</a>)}
+    </nav>
+    <div class="bh-actions">
+      <a href={contactHref} class="bh-contact bh-desktop-contact"><span>Contact Us</span></a>
+      <button type="button" class="bh-icon-button" data-header-search-toggle aria-label={`Search ${name}`} aria-expanded="false" aria-controls={`${prefix}-search`}>
+        <svg viewBox="0 0 24 24" width="25" height="25" fill="none" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.8" stroke="currentColor" stroke-width="1.6" /><path d="m16 16 5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg>
+      </button>
+      <a href={partner.href} class="bh-partner bh-desktop-partner" aria-label={partner.name}>
+        <slot name="partner-mark" />
+        <span>{partner.name}</span>
+      </a>
+      <button type="button" class="bh-icon-button bh-mobile-toggle" data-header-mobile-toggle aria-label="Open menu" aria-expanded="false" aria-controls={`${prefix}-mobile`}>
+        <span class="bh-menu-lines" aria-hidden="true"><span></span><span></span></span>
+      </button>
+    </div>
+  </div>
+
+  {nav.filter((item) => item.groups).map((item) => (
+    <section id={`${prefix}-${item.id}`} class="bh-mega" data-header-panel data-mega-panel={item.id} aria-label={item.label} hidden inert>
+      <div class="bh-mega-layout">
+        <div class="bh-category-rail" role="tablist" aria-label={`${item.label} categories`} aria-orientation="vertical">
+          {item.groups!.map((group, index) => <button type="button" role="tab" class="bh-category" id={`${prefix}-${item.id}-tab-${group.id}`} aria-controls={`${prefix}-${item.id}-group-${group.id}`} aria-selected={index === 0 ? 'true' : 'false'} tabindex={index === 0 ? 0 : -1} data-mega-category={group.id}>{group.label}</button>)}
+        </div>
+        <div class="bh-category-content">
+          {item.groups!.map((group, index) => (
+            <div id={`${prefix}-${item.id}-group-${group.id}`} class="bh-group-panel" role="tabpanel" aria-labelledby={`${prefix}-${item.id}-tab-${group.id}`} data-mega-group={group.id} hidden={index !== 0} inert={index !== 0}>
+              <ul class="bh-link-grid">
+                {group.links.map((link) => <li data-mega-entry><a href={link.href} class="bh-menu-link"><span>{link.label}</span>{link.description && <small>{link.description}</small>}</a></li>)}
+              </ul>
+              <div class="bh-group-footer"><p>{group.description}</p><a href={group.href}>Explore {group.label}<span aria-hidden="true"> ↗</span></a></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section id={`${prefix}-search`} class="bh-mega bh-search-panel" data-header-panel data-header-search-panel aria-label={`Search ${name}`} hidden inert>
+    <div class="bh-search-inner">
+      <div class="bh-search-heading"><label for={`${prefix}-query`}>Search {name}</label><button type="button" class="bh-icon-button" data-header-close aria-label="Close search"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /></svg></button></div>
+      <input id={`${prefix}-query`} type="search" autocomplete="off" placeholder={searchPlaceholder} data-header-query />
+      <p class="bh-search-status" data-header-search-status role="status" aria-live="polite"></p>
+      <ul class="bh-search-results" data-header-search-results></ul>
+    </div>
+  </section>
+
+  <div id={`${prefix}-mobile`} class="bh-mobile-panel" data-header-panel data-header-mobile-panel hidden inert>
+    <nav aria-label="Mobile">
+      {nav.map((item) => (
+        <div class="bh-mobile-section">
+          <div class="bh-mobile-row"><a href={item.href} aria-current={active(item.href) ? 'page' : undefined}>{item.label}</a>{item.groups && <button type="button" class="bh-icon-button" data-mobile-disclosure aria-label={`Show ${item.label} pages`} aria-expanded="false" aria-controls={`${prefix}-mobile-${item.id}`}><svg class="bh-chevron" viewBox="0 0 16 16" width="16" height="16" fill="none" aria-hidden="true"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></button>}</div>
+          {item.groups && <div id={`${prefix}-mobile-${item.id}`} class="bh-mobile-disclosure" hidden inert>
+            {item.groups.map((group) => (
+              <div class="bh-mobile-category">
+                <button type="button" data-mobile-disclosure aria-expanded="false" aria-controls={`${prefix}-mobile-${item.id}-${group.id}`}><span>{group.label}</span><span class="bh-disclosure-symbol" aria-hidden="true"></span></button>
+                <ul id={`${prefix}-mobile-${item.id}-${group.id}`} class="bh-mobile-disclosure bh-mobile-links" hidden inert>{group.links.map((link) => <li><a href={link.href}>{link.label}</a></li>)}</ul>
+              </div>
+            ))}
+          </div>}
+        </div>
+      ))}
+      <a href={contactHref} class="bh-contact bh-mobile-contact"><span>Contact Us</span></a>
+      <a href={partner.href} class="bh-mobile-partner"><slot name="partner-label">{partner.name}</slot><span aria-hidden="true">↗</span></a>
+    </nav>
+  </div>
+  <script type="application/json" data-header-search-index set:html={JSON.stringify(searchIndex).replace(/</g, '\\u003c')} />
+</header>
+
+<script>
+  import { initBrandHeader } from './brand-header';
+  document.querySelectorAll<HTMLElement>('[data-brand-header]').forEach(initBrandHeader);
+</script>

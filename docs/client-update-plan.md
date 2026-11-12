@@ -79,11 +79,16 @@ The new explanatory descriptions are ready for the client's editorial review.
 
 ## Follow-up: matching brand headers
 
-At the client's request, Kuroaxe now follows the Codeaxes header layout: floating
-rounded frame, matching typography and spacing, service dropdown, scroll behavior,
-and an expandable mobile panel. Its charcoal surface, yellow accents, Kuroaxe
-mark, marketing navigation, and enquiry destination retain the brand's identity.
+Both brands now use a shared full-width header based on the supplied reference:
+logo at the left, navigation and an outlined Contact Us action at the right,
+working search, and a link to the other brand. Codeaxes keeps its white surface
+with blue/green accents; Kuroaxe keeps charcoal with yellow/turquoise accents.
 
-The desktop appearance was reviewed in Chrome. Astro diagnostics, production
-build, and catalogue/link checks pass. A live mobile review was deferred while
-the browser was in use.
+Wide dropdowns have a vertical category rail, a divider, and three columns of
+links with gradient underlines. Opening and closing use fade/slide transitions,
+with staggered link entry and support for reduced motion. The mobile version
+uses nested animated accordions, accessible controls, and scrollable panels.
+
+Chrome review covered desktop and 390px mobile layouts for both brands, keyboard
+category selection, Escape, search, and service navigation. Astro diagnostics,
+production build, catalogue/link checks, and rapid animation reversal checks pass.
