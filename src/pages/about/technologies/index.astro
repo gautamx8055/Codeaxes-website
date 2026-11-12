@@ -2,44 +2,50 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import PageHero from '../../../components/ui/PageHero.astro';
 import Section from '../../../components/ui/Section.astro';
-import { techCategories, getTechnologiesByCategory } from '../../../data/technologies';
+import CatalogueFilter from '../../../components/ui/CatalogueFilter.astro';
+import { findTechnology, technologies } from '../../../data/technologies';
+import { technologyCatalogue, catalogueCounts } from '../../../data/catalogue';
 import { withBase } from '../../../lib/seo';
 import CtaBand from '../../../components/ui/CtaBand.astro';
 import { site } from '../../../data/site';
+
+const legacyAnchors: Record<string, string> = {
+  frontend: 'frontend-web-technologies', backend: 'backend-application-frameworks',
+  mobile: 'mobile-application-technologies', cloud: 'cloud-computing-infrastructure',
+  data: 'data-engineering-analytics', testing: 'testing-validation-quality-engineering',
+};
 ---
 
-<BaseLayout
-  title="Technologies"
-  description="The Codeaxes technology ecosystem: frontend, backend, mobile, cloud, data and AI, and testing."
-  path="/about/technologies"
->
-  <PageHero
-    eyebrow="Technologies"
-    title="A stack we can defend in a design review."
-    body="Every technology has its own page: why we use it, where it fits, and where it does not."
-    layout="rail"
-  />
-  {
-    techCategories.map((category, index) => (
-      <Section
-        id={category.id}
-        index={String(index + 1).padStart(2, '0')}
-        tone={index % 2 === 0 ? 'muted' : 'ink'}
-        eyebrow={category.id}
-        title={category.name}
-        kicker={category.summary}
-        split
-      >
-        <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-          {getTechnologiesByCategory(category.id).map((tech) => (
-            <a href={withBase(`/about/technologies/${tech.slug}`)} class="rounded-2xl border border-line p-5 transition hover:border-axis hover:shadow-glow">
-              <h3 class="font-display text-xl text-paper">{tech.name}</h3>
-              <p class="mt-2 text-sm text-mist">{tech.summary}</p>
-            </a>
-          ))}
-        </div>
-      </Section>
-    ))
-  }
-  <CtaBand title="Need a stack recommendation?" primary={site.cta.primary} />
+<BaseLayout title="Technologies" description="The complete Codeaxes technology stack across 24 categories: software, AI, data, cloud, enterprise platforms, cybersecurity, embedded systems, robotics, simulation, and advanced computing." path="/about/technologies">
+  <PageHero eyebrow="Technology ecosystem" title="The tools behind every axis." body={`${catalogueCounts.technologyCategories} categories spanning software, enterprise, and advanced engineering. Explore the technologies and platforms that support our work.`} layout="rail" />
+  <nav class="catalogue-jump" aria-label="Technology categories">
+    {technologyCatalogue.map((category, index) => <a href={`#${category.id}`}><span>{String(index + 1).padStart(2, '0')}</span>{category.name}</a>)}
+  </nav>
+  <CatalogueFilter label="Find a technology or platform" placeholder="Search Python, SAP, robotics, quantum…" />
+  <div class="catalogue-grid mx-auto grid max-w-6xl gap-5 px-4 py-10 sm:px-5 md:grid-cols-2 md:px-8 md:py-16">
+    {technologyCatalogue.map((category, index) => (
+      <article id={category.id} data-catalogue-entry class="catalogue-panel">
+        {Object.entries(legacyAnchors).filter(([, target]) => target === category.id).map(([old]) => <span id={old} class="catalogue-anchor" aria-hidden="true" />)}
+        <p class="kicker mb-4">{String(index + 1).padStart(2, '0')} / Technology</p>
+        <h2 class="font-display mb-6 text-2xl text-paper sm:text-3xl">{category.name}</h2>
+        {category.sections.map((section) => (
+          <div class="mt-5 first:mt-0">
+            {section.name && <h3 class="mb-3 text-sm font-semibold text-axis">{section.name}</h3>}
+            <ul class="catalogue-chips">
+              {section.items.map((name) => {
+                const tech = findTechnology(name);
+                return <li>{tech ? <a href={withBase(`/about/technologies/${tech.slug}`)}>{name}<span aria-hidden="true"> ↗</span></a> : <span>{name}</span>}</li>;
+              })}
+            </ul>
+          </div>
+        ))}
+      </article>
+    ))}
+  </div>
+  <Section id="engineering-notes" eyebrow="Engineering notes" title="A closer look at the stack." kicker="Read our existing technology guides for architecture choices, use cases, benefits, and trade-offs." tone="muted" split>
+    <ul class="catalogue-chips">
+      {technologies.map((tech) => <li><a href={withBase(`/about/technologies/${tech.slug}`)}>{tech.name}<span aria-hidden="true"> ↗</span></a></li>)}
+    </ul>
+  </Section>
+  <CtaBand title="Choose the stack around the problem." primary={site.cta.primary} />
 </BaseLayout>

@@ -14,40 +14,47 @@ export type NavItem = {
 };
 
 export type ServiceSlug =
-  | 'ai-automation'
-  | 'mobile-apps'
-  | 'saas-development'
-  | 'paas-development'
-  | 'qa-testing'
-  | 'custom-development'
-  | 'product-development'
-  | 'blockchain'
-  | 'project-data'
-  | 'game-development'
-  | 'cloud-computing'
-  | '2d-animations'
-  | 'devops';
+  | 'artificial-intelligence'
+  | 'generative-ai-llm-engineering'
+  | 'agentic-ai-ai-automation'
+  | 'data-transformation'
+  | 'data-analytics-intelligence'
+  | 'software-engineering'
+  | 'web-application-development'
+  | 'mobile-application-development'
+  | 'saas-platform-engineering'
+  | 'api-development-system-integration'
+  | 'enterprise-product-development'
+  | 'enterprise-solutions'
+  | 'erp-crm-solutions'
+  | 'digital-transformation'
+  | 'platform-modernisation'
+  | 'managed-engineering-services'
+  | 'ui-ux-design'
+  | 'product-design'
+  | 'research-insights'
+  | 'service-design'
+  | '3d-digital-experience'
+  | 'cloud-engineering'
+  | 'cybersecurity-digital-trust'
+  | 'devops-mlops'
+  | 'quality-engineering'
+  | 'digital-platforms-integration'
+  | 'industrial-iot-industry-4-0'
+  | 'embedded-systems-firmware-engineering'
+  | 'industrial-automation-robotics'
+  | 'digital-twins-simulation'
+  | 'drones-autonomous-systems';
+
+export type ServiceGroupId = 'ai-first' | 'product-engineering' | 'enterprise' | 'experience-design' | 'digital-engineering' | 'advanced-engineering';
 
 export type Service = {
   slug: ServiceSlug;
   name: string;
-  shortName: string;
-  tagline: string;
+  groupId: ServiceGroupId;
   summary: string;
-  heroEyebrow: string;
-  heroTitle: string;
-  heroBody: string;
-  explanation: string;
-  problems: string[];
   capabilities: { title: string; body: string }[];
-  deliverables: string[];
-  process: { title: string; body: string }[];
-  industries: string[];
   stack: string[];
-  useCases: { title: string; body: string }[];
-  benefits: string[];
-  relatedCaseStudies: string[];
-  faqs: { question: string; answer: string }[];
   visual: 'workflow' | 'devices' | 'dashboard' | 'architecture' | 'pipeline' | 'systems' | 'lifecycle';
 };
 
@@ -55,22 +62,34 @@ export type Industry = {
   slug: string;
   name: string;
   summary: string;
-  challenges: string[];
   solutions: string[];
-  automation: string[];
-  compliance?: string;
-  techApproaches: string[];
-  outcomes: string[];
-  faqs: { question: string; answer: string }[];
 };
 
 export type TechCategory =
-  | 'frontend'
-  | 'backend'
-  | 'mobile'
-  | 'cloud'
-  | 'data'
-  | 'testing';
+  | 'programming-languages-core-technologies'
+  | 'frontend-web-technologies'
+  | 'backend-application-frameworks'
+  | 'mobile-application-technologies'
+  | 'artificial-intelligence-machine-learning'
+  | 'generative-ai-llm-agentic-ai'
+  | 'data-engineering-analytics'
+  | 'databases-data-storage'
+  | 'cloud-computing-infrastructure'
+  | 'devops-platform-engineering'
+  | 'api-middleware-enterprise-integration'
+  | 'enterprise-platforms-business-systems'
+  | 'cybersecurity-digital-trust'
+  | 'blockchain-distributed-ledger-technologies'
+  | 'internet-of-things-industrial-connectivity'
+  | 'embedded-systems-firmware-engineering'
+  | 'robotics-drones-autonomous-systems'
+  | 'digital-twins-simulation-spatial-computing'
+  | 'automotive-mobility-engineering'
+  | 'semiconductor-electronics-engineering'
+  | 'testing-validation-quality-engineering'
+  | 'product-design-engineering-tools'
+  | 'quantum-advanced-computing'
+  | 'major-technology-ecosystems';
 
 export type Technology = {
   slug: string;

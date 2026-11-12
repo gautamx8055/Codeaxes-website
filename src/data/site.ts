@@ -5,7 +5,7 @@ const siteUrl = `${origin}${base}`;
 export const site = {
   name: 'Codeaxes',
   legalName: 'Codeaxes',
-  tagline: 'Engineering ambitious digital products.',
+  tagline: 'Enterprise engineering. Intelligent systems.',
   url: siteUrl,
   locale: 'en_US',
   email: 'hello@codeaxes.com',

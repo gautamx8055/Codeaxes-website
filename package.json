@@ -10,6 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
+    "verify:catalogue": "python3 scripts/verify-client-catalogue.py && node scripts/verify-catalogue-behavior.mjs",
     "astro": "astro"
   },
   "dependencies": {

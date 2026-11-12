@@ -1,8 +1,9 @@
 # Codeaxes website
 
-Premium multi-page site for **Codeaxes**, *Engineering ambitious digital products.* Built with Astro, TypeScript, and Tailwind CSS.
+Multi-page site for **Codeaxes**, *Enterprise engineering. Intelligent systems.* Built with Astro, TypeScript, and Tailwind CSS, with Kuroaxe at `/kuroaxe` on the same domain.
 
 The execution plan for this build lives in [`EXECUTION_PLAN.md`](./EXECUTION_PLAN.md).
+The November 2026 client catalogue update is documented in [`docs/client-update-plan.md`](./docs/client-update-plan.md).
 
 ## Setup
 
@@ -11,15 +12,19 @@ Requires Node.js 22.12 or later.
 ```bash
 npm install
 cp .env.example .env
-npm run dev
+npm run dev -- --background
 ```
 
 Open `http://localhost:4321`.
+If the port is occupied, use the address printed by Astro. Manage the background
+server with `npm run astro -- dev status`, `npm run astro -- dev logs`, and
+`npm run astro -- dev stop`.
 
 ```bash
 npm run check    # TypeScript + Astro diagnostics
 npm run build    # Production build
 npm run preview  # Preview the Node adapter build
+npm run verify:catalogue # After build: source coverage, links, assistant, forms, filters (requires Python 3)
 ```
 
 ## Project structure
@@ -43,9 +48,12 @@ You do not need to hunt through page templates for copy. Change these modules:
 | --- | --- |
 | `src/data/site.ts` | Brand, contact, social, Kuroaxe URL |
 | `src/data/navigation.ts` | Header and footer |
-| `src/data/services.ts` | Thirteen service landing pages |
-| `src/data/industries.ts` | Industries chapters |
-| `src/data/technologies.ts` | Ecosystem + every technology page |
+| `src/data/client-catalogue.json` | Client's six service groups, 31 services, 18 industry solution lists, ten practices, and 24 technology categories |
+| `src/data/service-content.ts` | Descriptions, capabilities, and stacks for all service landing pages |
+| `src/data/services.ts` | Service groups and shared catalogue helpers |
+| `src/data/industries.ts` | Industry introductions and legacy anchors |
+| `src/data/technologies.ts` | Existing detailed technology guides and catalogue name aliases |
+| `src/data/service-redirects.json` | Previous service URLs and their current destinations |
 | `src/data/case-studies.ts` | Case study index and detail pages |
 | `src/data/clients.ts` | Client showcase |
 | `src/data/testimonials.ts` | Testimonials page and home slider |
@@ -134,7 +142,10 @@ Live job create/update needs the Node adapter. GitHub Pages only serves the last
 
 ## Kuroaxe
 
-Kuroaxe is an **external** partner link (`https://kuroaxe.com`) in navigation and footer. It is not an internal route. Update the URL in `src/data/site.ts`.
+Kuroaxe is the partner brand hosted at `/kuroaxe` on the same domain. Its pages,
+content, components, and styles are isolated in `src/pages/kuroaxe`, `src/kuroaxe`,
+and `public/kuroaxe`. The Codeaxes catalogue update preserves those files and
+the links between both brands. Site links also support the GitHub Pages base path.
 
 ## Routes
 

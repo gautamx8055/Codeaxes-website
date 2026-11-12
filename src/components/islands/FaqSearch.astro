@@ -1,8 +1,8 @@
 ---
-import { faqCategories } from '../../data/faqs';
+import { faqCategories, legacyFaqCategories } from '../../data/faqs';
 ---
 
-<div data-faq-search>
+<div id="all" data-faq-search data-category-aliases={JSON.stringify(legacyFaqCategories)}>
   <div class="mb-10 grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
     <div>
       <label class="mb-2 block text-sm text-paper" for="faq-query">Search questions</label>
@@ -16,7 +16,7 @@ import { faqCategories } from '../../data/faqs';
     </div>
     <p class="font-mono text-[11px] text-mist" data-faq-count aria-live="polite"></p>
   </div>
-  <div class="mb-8 flex flex-wrap gap-2" role="tablist" aria-label="FAQ categories">
+  <nav class="mb-8 flex flex-wrap gap-2" aria-label="FAQ categories">
     <a href="#all" class="faq-chip border border-pulse px-3 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-pulse" data-faq-chip data-id="all">All</a>
     {
       faqCategories.map((category) => (
@@ -30,10 +30,11 @@ import { faqCategories } from '../../data/faqs';
         </a>
       ))
     }
-  </div>
+  </nav>
   {
     faqCategories.map((category) => (
       <section id={category.id} class="mb-12" data-faq-section data-id={category.id}>
+        {Object.entries(legacyFaqCategories).filter(([, target]) => target === category.id).map(([id]) => <span id={id} aria-hidden="true" />)}
         <h2 class="font-display mb-4 text-2xl text-paper">{category.title}</h2>
         <div class="divide-y divide-line border-y border-line">
           {category.items.map((item) => (
@@ -62,7 +63,13 @@ import { faqCategories } from '../../data/faqs';
     const empty = root.querySelector('[data-faq-empty]');
     const count = root.querySelector('[data-faq-count]');
     const chips = [...root.querySelectorAll<HTMLAnchorElement>('[data-faq-chip]')];
-    let category = location.hash.replace('#', '') || 'all';
+    const aliases = JSON.parse(root.getAttribute('data-category-aliases') || '{}') as Record<string, string>;
+    const resolveCategory = () => {
+      const id = location.hash.replace('#', '');
+      const resolved = aliases[id] ?? id;
+      return sections.some((section) => section.dataset.id === resolved) ? resolved : 'all';
+    };
+    let category = resolveCategory();
 
     const apply = () => {
       const q = query?.value.trim().toLowerCase() ?? '';
@@ -99,7 +106,7 @@ import { faqCategories } from '../../data/faqs';
       });
     });
     window.addEventListener('hashchange', () => {
-      category = location.hash.replace('#', '') || 'all';
+      category = resolveCategory();
       apply();
     });
     apply();

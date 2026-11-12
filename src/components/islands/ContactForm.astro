@@ -1,5 +1,5 @@
 ---
-import { services } from '../../data/services';
+import { serviceGroups, getServicesByGroup } from '../../data/services';
 ---
 
 <form class="grid gap-5" data-contact-form novalidate>
@@ -28,7 +28,11 @@ import { services } from '../../data/services';
       <label class="mb-2 block text-sm text-paper" for="service">Service interest</label>
       <select id="service" name="service" required class="w-full rounded-xl border border-line bg-void px-3 py-3 text-paper">
         <option value="">Select a service</option>
-        {services.map((service) => <option value={service.slug}>{service.name}</option>)}
+        {serviceGroups.map((group) => (
+          <optgroup label={group.name}>
+            {getServicesByGroup(group.id).map((service) => <option value={service.slug}>{service.name}</option>)}
+          </optgroup>
+        ))}
         <option value="not-sure">Not sure yet</option>
       </select>
       <p class="mt-1 hidden text-sm text-danger" data-error-for="service"></p>

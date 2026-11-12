@@ -1,135 +1,254 @@
 ---
 import { nav, site } from "../content/site";
+import { services } from "../content/services";
 import Mark from "./Mark.astro";
 import { fromMount, kx } from "../lib/paths";
+import type { NavItem } from "../../types";
 
 const raw = fromMount(Astro.url.pathname).replace(/\/$/, "") || "/";
+const primaryNav: NavItem[] = [
+  ...nav.map((item) => ({
+    ...item,
+    ...(item.href === kx("/services") ? {
+      children: services.map((service) => ({
+        label: service.shortTitle,
+        href: service.href,
+        description: service.kicker,
+      })),
+    } : {}),
+  })),
+  { label: "Codeaxes", href: site.codeaxes.url, note: site.codeaxes.note },
+];
 
-function isActive(href: string) {
-  if (href.includes("#")) return false;
+function isActive(href?: string) {
+  if (!href || href.includes("#") || href === site.codeaxes.url) return false;
   const local = fromMount(href);
-  if (local === "/services") return raw === "/services" || raw.startsWith("/services/");
-  return raw === local;
+  return raw === local || (local !== "/" && raw.startsWith(`${local}/`));
 }
 ---
 
-<header class="glass-nav sticky top-0 z-50">
-  <div class="pointer-events-none absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-yellow" data-page-progress aria-hidden="true"></div>
-  <div class="shell flex h-[var(--header-h)] items-center justify-between gap-6">
-    <a href={kx("/")} class="group flex items-center gap-3 text-ivory" data-astro-prefetch>
-      <span class="flex h-9 w-9 items-center justify-center text-yellow transition-colors duration-300 group-hover:text-ivory">
-        <Mark class="h-8 w-8" />
-      </span>
-      <span class="font-display text-[1.2rem] font-extrabold tracking-tight">Kuroaxe</span>
-    </a>
-
-    <nav class="hidden items-center gap-8 lg:flex" aria-label="Primary">
-      {
-        nav.map((item) => (
-          <a
-            href={item.href}
-            class:list={[
-              "font-display text-[0.78rem] font-semibold tracking-[-0.01em] transition-colors duration-300",
-              isActive(item.href) ? "text-yellow" : "text-ivory/80 hover:text-ivory",
-            ]}
-            aria-current={isActive(item.href) ? "page" : undefined}
-            data-astro-prefetch
-          >
-            {item.label}
-          </a>
-        ))
-      }
-      <a
-        href={site.codeaxes.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-flex items-center gap-1.5 font-display text-[0.78rem] font-semibold tracking-[-0.01em] text-ivory/80 transition-colors duration-300 hover:text-turquoise"
-      >
-        Codeaxes
-        <span class="sr-only">(opens in a new tab)</span>
-        <svg class="h-3 w-3" viewBox="0 0 12 12" aria-hidden="true" fill="none">
-          <path d="M3.5 8.5 8.5 3.5M5 3.5h3.5V7" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"></path>
-        </svg>
+<div class="kx-header-offset" data-kx-header-offset aria-hidden="true"></div>
+<div class="kx-page-progress" data-page-progress aria-hidden="true"></div>
+<header class="kx-header" data-kx-header>
+  <div class="kx-header-shell">
+    <div class="kx-header-bar" data-kx-header-bar>
+      <a href={kx("/")} class="kx-brand" aria-label="Kuroaxe home" data-astro-prefetch>
+        <Mark class="kx-brand-mark" />
+        <span>Kuroaxe</span>
       </a>
-      <a href={kx("/contact")} class="btn-primary !min-h-10 !px-5 !py-2" data-astro-prefetch>Enquire</a>
-    </nav>
-
-    <button
-      type="button"
-      class="inline-flex min-h-11 min-w-11 items-center justify-center text-ivory lg:hidden"
-      aria-expanded="false"
-      aria-controls="mobile-menu"
-      aria-label="Open menu"
-      data-menu-toggle
-    >
-      <span class="sr-only">Open menu</span>
-      <span class="flex flex-col gap-1.5" aria-hidden="true">
-        <span class="block h-0.5 w-6 rounded-full bg-current"></span>
-        <span class="block h-0.5 w-4 rounded-full bg-current"></span>
-      </span>
-    </button>
+      <nav class="kx-desktop-nav" aria-label="Primary">
+        {primaryNav.map((item) => item.children ? (
+          <div class="kx-nav-item" data-kx-nav-item>
+            <a href={item.href} class:list={["kx-nav-link", isActive(item.href) && "is-active"]} aria-haspopup="true" aria-expanded="false" aria-current={isActive(item.href) ? "page" : undefined} data-kx-nav-trigger data-astro-prefetch>
+              {item.label}<span aria-hidden="true">▾</span>
+            </a>
+            <div class="kx-nav-sub">
+              <div class="kx-nav-sub-panel">
+                <ul class:list={[item.children.length > 5 && "is-wide"]}>
+                  {item.children.map((child) => (
+                    <li><a href={child.href} data-astro-prefetch><span>{child.label}</span>{child.description && <small>{child.description}</small>}</a></li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <a href={item.href} class:list={["kx-nav-link", isActive(item.href) && "is-active"]} aria-current={isActive(item.href) ? "page" : undefined} data-astro-prefetch>{item.label}</a>
+        ))}
+      </nav>
+      <div class="kx-header-actions">
+        <a href={kx("/contact")} class="kx-header-cta kx-desktop-cta" data-astro-prefetch>Enquire</a>
+        <button type="button" class="kx-menu-toggle" data-kx-menu-toggle aria-expanded="false" aria-controls="kx-mobile-nav" aria-label="Open menu">
+          <svg viewBox="0 0 20 20" width="18" height="18" fill="none" aria-hidden="true"><path d="M5 6h10M5 10h10M5 14h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /></svg>
+        </button>
+      </div>
+    </div>
+    <div id="kx-mobile-nav" class="kx-mobile-panel" data-kx-mobile-nav hidden>
+      <nav aria-label="Mobile">
+        {primaryNav.map((item, index) => (
+          <div class="kx-mobile-group">
+            <div class="kx-mobile-row">
+              <a href={item.href} aria-current={isActive(item.href) ? "page" : undefined} data-astro-prefetch>{item.label}</a>
+              {item.children && <button type="button" data-kx-sub-toggle aria-expanded="false" aria-controls={`kx-mobile-sub-${index}`} aria-label={`Show ${item.label} pages`}>
+                <svg viewBox="0 0 16 16" width="16" height="16" fill="none" aria-hidden="true"><path d="m3.5 6 4.5 4.5L12.5 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              </button>}
+            </div>
+            {item.note && <p class="kx-mobile-note">{item.note}</p>}
+            {item.children && <ul id={`kx-mobile-sub-${index}`} class="kx-mobile-sub" hidden>
+              {item.children.map((child) => <li><a href={child.href} data-astro-prefetch>{child.label}</a></li>)}
+            </ul>}
+          </div>
+        ))}
+        <a href={kx("/contact")} class="kx-header-cta kx-mobile-cta" data-astro-prefetch>Enquire</a>
+      </nav>
+    </div>
   </div>
 </header>
 
-<div
-  id="mobile-menu"
-  class="fixed inset-0 z-40 hidden bg-ink/96 lg:hidden"
-  hidden
-  role="dialog"
-  aria-modal="true"
-  aria-label="Menu"
->
-  <div class="flex h-full flex-col px-6 pb-10 pt-24">
-    <nav class="flex flex-1 flex-col gap-2" aria-label="Mobile">
-      {
-        nav.map((item) => (
-          <a href={item.href} class="font-display text-5xl font-extrabold tracking-[-0.03em] text-ivory" data-astro-prefetch>
-            {item.label}
-          </a>
-        ))
-      }
-      <a
-        href={site.codeaxes.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="mt-4 font-display text-5xl font-extrabold tracking-[-0.03em] text-yellow"
-      >
-        Codeaxes
-        <span class="sr-only">(opens in a new tab)</span>
-      </a>
-    </nav>
-    <a href={kx("/contact")} class="btn-primary w-full">Grow with Kuroaxe</a>
-  </div>
-</div>
+<style>
+  /* Match the Codeaxes frame and spacing, with Kuroaxe's own palette. */
+  .kx-header-offset { height: 5.25rem; }
+  .kx-header {
+    --header-surface: var(--color-charcoal);
+    --header-text: var(--color-ivory);
+    --header-muted: color-mix(in oklab, var(--color-ivory) 75%, var(--color-charcoal));
+    --header-line: color-mix(in oklab, var(--color-ivory) 14%, var(--color-charcoal));
+    position: fixed;
+    z-index: 50;
+    inset: 0 0 auto;
+    padding-inline: env(safe-area-inset-left) env(safe-area-inset-right);
+    font-family: "Manrope Variable", Manrope, ui-sans-serif, system-ui, sans-serif;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+    transition: translate 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .kx-header [hidden] { display: none !important; }
+  .kx-header.is-hidden { pointer-events: none; }
+  .kx-header-shell {
+    width: calc(100% - 1.5rem);
+    max-width: 72rem;
+    margin: 0.75rem auto 0;
+    border: 1px solid var(--header-line);
+    border-radius: 1.15rem;
+    background: var(--header-surface);
+    box-shadow: 0 8px 30px rgb(0 0 0 / 12%);
+  }
+  .kx-header.is-scrolled .kx-header-shell { box-shadow: 0 12px 36px rgb(0 0 0 / 24%); }
+  .kx-header-bar { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.5rem 0.75rem; }
+  .kx-brand { display: inline-flex; flex-shrink: 0; align-items: center; gap: 0.75rem; color: var(--header-text); }
+  .kx-brand :global(svg) { width: 2rem; height: 2rem; color: var(--color-yellow); }
+  .kx-brand span { font-size: 1.35rem; font-weight: 700; line-height: 1; letter-spacing: -0.04em; }
+  .kx-desktop-nav { display: none; align-items: center; }
+  .kx-nav-link { display: inline-flex; min-height: 2.75rem; align-items: center; gap: 0.25rem; padding: 0.5rem 0.75rem; color: var(--header-muted); font-size: 14px; font-weight: 500; letter-spacing: normal; transition: color 0.3s; }
+  .kx-nav-link:hover, .kx-nav-link.is-active { color: var(--color-yellow); }
+  .kx-header-actions { display: flex; align-items: center; gap: 0.5rem; }
+  .kx-header-cta { display: inline-flex; min-height: 2.75rem; align-items: center; justify-content: center; border: 1px solid var(--header-line); border-radius: 0.75rem; padding: 0.5rem 1.5rem; color: var(--header-text); font-size: 15px; font-weight: 500; letter-spacing: normal; transition: border-color 0.3s, color 0.3s, background 0.3s; }
+  .kx-header-cta:hover { border-color: var(--color-yellow); color: var(--color-yellow); }
+  .kx-desktop-cta { display: none; }
+  .kx-menu-toggle { display: inline-flex; width: 2.75rem; height: 2.75rem; align-items: center; justify-content: center; border: 1px solid var(--header-line); border-radius: 0.5rem; color: var(--header-text); background: transparent; }
+  .kx-menu-toggle:hover { color: var(--color-yellow); border-color: var(--color-yellow); }
+  .kx-nav-item { position: relative; z-index: 10; }
+  .kx-nav-item.is-open, .kx-nav-item:focus-within { z-index: 40; }
+  .kx-nav-item::after { content: ""; position: absolute; inset: 100% 0 auto; height: 0.85rem; pointer-events: none; }
+  .kx-nav-item.is-open::after, .kx-nav-item:focus-within::after { pointer-events: auto; }
+  .kx-nav-sub { position: absolute; left: 0; top: 100%; width: min(44rem, calc(100vw - 2rem)); padding-top: 0.75rem; pointer-events: none; opacity: 0; visibility: hidden; transition: opacity 120ms ease, visibility 0s linear 80ms; }
+  .kx-nav-sub-panel { max-height: 70dvh; overflow-y: auto; border: 1px solid var(--header-line); border-radius: 1rem; padding: 0.75rem; background: var(--header-surface); box-shadow: 0 12px 32px rgb(0 0 0 / 24%); pointer-events: none; }
+  .kx-nav-sub ul { display: grid; gap: 0.25rem; }
+  .kx-nav-sub ul.is-wide { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kx-nav-sub a { display: block; border-radius: 0.75rem; padding: 0.5rem 0.75rem; }
+  .kx-nav-sub a:hover { background: color-mix(in oklab, var(--color-ivory) 6%, var(--header-surface)); }
+  .kx-nav-sub a > span { display: block; color: var(--header-text); font-size: 1rem; }
+  .kx-nav-sub small { display: block; color: var(--header-muted); font-size: 0.875rem; }
+  .kx-nav-item.is-open .kx-nav-sub, .kx-nav-item:focus-within .kx-nav-sub { visibility: visible; opacity: 1; transition-delay: 0s; }
+  .kx-nav-item.is-open .kx-nav-sub-panel, .kx-nav-item:focus-within .kx-nav-sub-panel { pointer-events: auto; }
+  .kx-mobile-panel { max-height: calc(100dvh - var(--header-h) - 1rem); overflow-y: auto; overscroll-behavior: contain; border-top: 1px solid var(--header-line); border-radius: 0 0 1.15rem 1.15rem; }
+  .kx-mobile-panel nav { padding: 1rem 1.25rem; }
+  .kx-mobile-group { border-bottom: 1px solid var(--header-line); padding-block: 0.75rem; }
+  .kx-mobile-row { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+  .kx-mobile-row > a { display: flex; min-height: 2.75rem; flex: 1; align-items: center; color: var(--header-text); font-size: 1.125rem; font-weight: 600; }
+  .kx-mobile-row > a[aria-current="page"] { color: var(--color-yellow); }
+  .kx-mobile-row button { display: flex; width: 2.75rem; height: 2.75rem; flex-shrink: 0; align-items: center; justify-content: center; color: var(--header-muted); }
+  .kx-mobile-row button svg { transition: transform 0.2s; }
+  .kx-mobile-row button[aria-expanded="true"] svg { transform: rotate(180deg); }
+  .kx-mobile-note { margin-top: 0.25rem; color: var(--header-muted); font-size: 0.75rem; }
+  .kx-mobile-sub { margin-top: 0.25rem; }
+  .kx-mobile-sub a { display: flex; min-height: 2.75rem; align-items: center; color: var(--header-muted); font-size: 1rem; font-weight: 500; }
+  .kx-mobile-sub a:hover { color: var(--color-yellow); }
+  .kx-mobile-cta { display: flex; margin-top: 1rem; background: var(--color-yellow); border-color: var(--color-yellow); color: var(--color-ink); }
+  .kx-mobile-cta:hover { background: color-mix(in oklab, var(--color-yellow) 80%, var(--color-orange)); color: var(--color-ink); }
+  .kx-page-progress { position: fixed; z-index: 70; inset: 0 0 auto; height: 2px; background: var(--color-yellow); transform: scaleX(0); transform-origin: left; pointer-events: none; }
+  @media (min-width: 640px) { .kx-header-bar { gap: 1rem; padding: 0.625rem 1rem; } }
+  @media (min-width: 768px) { .kx-header-bar { padding-inline: 1.25rem; } }
+  @media (min-width: 1280px) { .kx-desktop-nav, .kx-desktop-cta { display: flex; } .kx-menu-toggle, .kx-mobile-panel { display: none; } }
+  @media (prefers-reduced-motion: reduce) { .kx-header, .kx-header * { transition: none; } }
+</style>
 
 <script>
-  const toggle = document.querySelector("[data-menu-toggle]");
-  const menu = document.getElementById("mobile-menu");
-  if (toggle instanceof HTMLButtonElement && menu) {
-    const label = toggle.querySelector(".sr-only");
-    const open = () => {
-      menu.hidden = false;
-      menu.classList.remove("hidden");
-      toggle.setAttribute("aria-expanded", "true");
-      toggle.setAttribute("aria-label", "Close menu");
-      if (label) label.textContent = "Close menu";
-      document.body.style.overflow = "hidden";
-    };
-    const close = () => {
-      menu.hidden = true;
-      menu.classList.add("hidden");
-      toggle.setAttribute("aria-expanded", "false");
-      toggle.setAttribute("aria-label", "Open menu");
-      if (label) label.textContent = "Open menu";
-      document.body.style.overflow = "";
-    };
-    toggle.addEventListener("click", () => {
-      const expanded = toggle.getAttribute("aria-expanded") === "true";
-      expanded ? close() : open();
+  const header = document.querySelector<HTMLElement>("[data-kx-header]");
+  const bar = document.querySelector<HTMLElement>("[data-kx-header-bar]");
+  const offset = document.querySelector<HTMLElement>("[data-kx-header-offset]");
+  const toggle = document.querySelector<HTMLButtonElement>("[data-kx-menu-toggle]");
+  const panel = document.querySelector<HTMLElement>("[data-kx-mobile-nav]");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const desktop = window.matchMedia("(min-width: 1280px)");
+  let lastY = Math.max(0, window.scrollY);
+  let frame = 0;
+
+  const showHeader = () => {
+    header?.classList.remove("is-hidden");
+    header?.style.setProperty("translate", "0px");
+  };
+  const setMobileNav = (open: boolean) => {
+    if (panel) panel.hidden = !open;
+    toggle?.setAttribute("aria-expanded", String(open));
+    toggle?.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    header?.classList.toggle("is-menu-open", open);
+    document.body.style.overflow = open ? "hidden" : "";
+    showHeader();
+  };
+  const syncOffset = () => {
+    if (!offset || !bar) return;
+    const height = Math.ceil(bar.getBoundingClientRect().height) + 16;
+    offset.style.height = `${height}px`;
+    document.documentElement.style.setProperty("--header-h", `${height}px`);
+    if (desktop.matches && toggle?.getAttribute("aria-expanded") === "true") setMobileNav(false);
+  };
+  syncOffset();
+  window.addEventListener("resize", syncOffset, { passive: true });
+
+  toggle?.addEventListener("click", () => setMobileNav(toggle.getAttribute("aria-expanded") !== "true"));
+  panel?.addEventListener("click", (event) => {
+    if (event.target instanceof Element && event.target.closest("a")) setMobileNav(false);
+  });
+  document.querySelectorAll<HTMLButtonElement>("[data-kx-sub-toggle]").forEach((button) => {
+    const list = document.getElementById(button.getAttribute("aria-controls") ?? "");
+    button.addEventListener("click", () => {
+      const open = button.getAttribute("aria-expanded") !== "true";
+      if (list) list.hidden = !open;
+      button.setAttribute("aria-expanded", String(open));
     });
-    menu.querySelectorAll("a").forEach((link) => link.addEventListener("click", close));
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") close();
+  });
+
+  const navItems = [...document.querySelectorAll<HTMLElement>("[data-kx-nav-item]")];
+  let closeNav: number | undefined;
+  const setOpenNav = (next?: HTMLElement) => {
+    window.clearTimeout(closeNav);
+    navItems.forEach((item) => {
+      item.classList.toggle("is-open", item === next);
+      item.querySelector("[data-kx-nav-trigger]")?.setAttribute("aria-expanded", String(item === next));
     });
-  }
+  };
+  navItems.forEach((item) => {
+    item.addEventListener("mouseenter", () => setOpenNav(item));
+    item.addEventListener("mouseleave", () => { closeNav = window.setTimeout(() => setOpenNav(), 120); });
+    item.addEventListener("focusin", () => setOpenNav(item));
+    item.addEventListener("focusout", () => {
+      closeNav = window.setTimeout(() => { if (!item.contains(document.activeElement)) setOpenNav(); }, 0);
+    });
+  });
+  header?.addEventListener("focusin", showHeader);
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    const open = toggle?.getAttribute("aria-expanded") === "true";
+    setOpenNav();
+    setMobileNav(false);
+    if (open) toggle?.focus();
+    else if (document.activeElement instanceof HTMLElement && document.activeElement.closest("[data-kx-nav-item]")) document.activeElement.blur();
+  });
+
+  window.addEventListener("scroll", () => {
+    if (frame) return;
+    frame = requestAnimationFrame(() => {
+      frame = 0;
+      const y = Math.max(0, window.scrollY);
+      header?.classList.toggle("is-scrolled", y > 16);
+      const delta = y - lastY;
+      if (reduce.matches || header?.classList.contains("is-menu-open") || y < 48) showHeader();
+      else if (delta > 8) {
+        header?.classList.add("is-hidden");
+        header?.style.setProperty("translate", "0 -110%");
+      } else if (delta < -8) showHeader();
+      lastY = y;
+    });
+  }, { passive: true });
 </script>

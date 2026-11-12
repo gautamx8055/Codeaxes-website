@@ -1,11 +1,12 @@
 ---
 import { site } from '../data/site';
-import { services } from '../data/services';
+import { serviceGroups } from '../data/services';
+import { technologyCatalogue } from '../data/catalogue';
 import { clients } from '../data/clients';
 import { caseStudies } from '../data/case-studies';
 import { testimonials } from '../data/testimonials';
 import { whyCodeaxes } from '../data/why';
-import { getTechnologiesByCategory, techCategories } from '../data/technologies';
+import { findTechnology } from '../data/technologies';
 import { withBase } from '../lib/seo';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/ui/Button.astro';
@@ -23,7 +24,7 @@ import ServiceVisual from '../components/visuals/ServiceVisual.astro';
 
 <BaseLayout
   title={site.name}
-  description="Codeaxes designs and engineers scalable web, mobile, AI, and cloud products for ambitious teams."
+  description="Codeaxes connects AI, product engineering, enterprise solutions, experience design, digital engineering, and advanced engineering across 18 industries."
   path="/"
 >
   <section class="mission-hero" data-hero>
@@ -33,7 +34,7 @@ import ServiceVisual from '../components/visuals/ServiceVisual.astro';
         Build what the next decade runs on.
       </h1>
       <p class="mx-auto mt-6 max-w-xl text-base leading-relaxed text-mist sm:text-lg">
-        Codeaxes designs and engineers scalable web, mobile, AI, and cloud products. These are platforms that operators can run, auditors can trust, and teams can extend.
+        Codeaxes connects AI, product engineering, enterprise solutions, and advanced engineering to build the products, platforms, and intelligent systems your business runs on.
       </p>
       <div class="mt-8 flex w-full flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center">
         <Button href={site.cta.primary.href} class="w-full sm:w-auto">{site.cta.primary.label}</Button>
@@ -44,13 +45,13 @@ import ServiceVisual from '../components/visuals/ServiceVisual.astro';
 
   <LogoStrip clients={clients} />
 
-  <Section id="services" index="01" eyebrow="Services" title="Thirteen practices. One delivery axis." kicker="Each service is a dedicated landing page. Start with the problem you actually have." split>
+  <Section id="services" index="01" eyebrow="Services" title="Six disciplines. One engineering partner." kicker="From AI and enterprise platforms to connected products and autonomous systems. Explore the capabilities behind your next move." split>
     <CoverDeck label="Services" emphasis>
       {
-        services.map((service) => (
-          <a href={withBase(`/services/${service.slug}`)} data-cover-card data-cover-id={service.slug}>
-            <CoverFace kicker="Service" title={service.name} body={service.tagline}>
-              <ServiceVisual kind={service.visual} />
+        serviceGroups.map((group) => (
+          <a href={withBase(`/services#${group.id}`)} data-cover-card data-cover-id={group.id}>
+            <CoverFace kicker={`${group.services.length} services`} title={group.name} body={group.summary}>
+              <ServiceVisual kind={group.visual} />
             </CoverFace>
           </a>
         ))
@@ -87,26 +88,21 @@ import ServiceVisual from '../components/visuals/ServiceVisual.astro';
     <ProcessTimeline />
   </Section>
 
-  <Section id="stack" index="05" tone="ink" eyebrow="Technology" title="An ecosystem we can actually operate." kicker="Every tool below has its own page: what it is, when we use it, and where it stops being the right choice." split>
+  <Section id="stack" index="05" tone="ink" eyebrow="Technology" title="An ecosystem we can actually operate." kicker="A connected technology ecosystem across 24 categories. Explore a few of the foundations, or browse the complete catalogue." split>
     <div class="tech-groups">
       {
-        techCategories.map((category) => (
+        technologyCatalogue.filter((category) => ['frontend-web-technologies', 'generative-ai-llm-agentic-ai', 'data-engineering-analytics', 'cloud-computing-infrastructure', 'embedded-systems-firmware-engineering', 'digital-twins-simulation-spatial-computing'].includes(category.id)).map((category) => (
           <article class="tech-group">
             <header>
               <h3>
                 <a href={withBase(`/about/technologies#${category.id}`)}>{category.name}</a>
               </h3>
-              <p>{category.summary}</p>
             </header>
             <ul>
-              {getTechnologiesByCategory(category.id).map((tech) => (
-                <li>
-                  <a href={withBase(`/about/technologies/${tech.slug}`)}>
-                    <strong>{tech.name}</strong>
-                    <span>{tech.summary}</span>
-                  </a>
-                </li>
-              ))}
+              {category.sections.flatMap((section) => section.items).slice(0, 4).map((name) => {
+                const tech = findTechnology(name);
+                return <li><a href={withBase(tech ? `/about/technologies/${tech.slug}` : `/about/technologies#${category.id}`)}><strong>{name}</strong></a></li>;
+              })}
             </ul>
           </article>
         ))

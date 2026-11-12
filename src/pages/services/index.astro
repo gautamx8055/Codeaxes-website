@@ -4,29 +4,34 @@ import Section from '../../components/ui/Section.astro';
 import ServiceCard from '../../components/ui/ServiceCard.astro';
 import CtaBand from '../../components/ui/CtaBand.astro';
 import PageHero from '../../components/ui/PageHero.astro';
+import CatalogueFilter from '../../components/ui/CatalogueFilter.astro';
 import Button from '../../components/ui/Button.astro';
-import { services } from '../../data/services';
+import { serviceGroups, getServicesByGroup } from '../../data/services';
+import { catalogueCounts } from '../../data/catalogue';
 import { site } from '../../data/site';
 ---
 
-<BaseLayout
-  title="Services"
-  description="Codeaxes services: AI automation, mobile, SaaS, PaaS, QA, custom and product development, blockchain, project data, games, cloud, 2D animation, and DevOps."
-  path="/services"
->
-  <PageHero
-    eyebrow="Services"
-    title="Pick the axis your product is missing."
-    body="Thirteen practices, shared engineering standards. Every page explains problems, delivery, stack, and how we measure done."
-    layout="rail"
-  >
+<BaseLayout title="Services" description="Explore Codeaxes services across AI First, Product Engineering, Enterprise, Experience Design, Digital Engineering, and Advanced Engineering." path="/services">
+  <PageHero eyebrow="Services" title="Engineering across every axis." body={`${catalogueCounts.services} services. ${catalogueCounts.groups} connected disciplines. From intelligent software and enterprise platforms to the systems that connect the physical world.`} layout="rail">
     <Button slot="actions" href="/contact">Book consultation</Button>
-    <Button slot="actions" href="/about/case-studies" variant="secondary">See related work</Button>
+    <Button slot="actions" href="/about/industries" variant="secondary">Explore industry solutions</Button>
   </PageHero>
-  <Section tone="muted">
-    <div class="grid gap-4 md:grid-cols-2" data-reveal-stagger>
-      {services.map((service, index) => <ServiceCard service={service} index={String(index + 1).padStart(2, '0')} />)}
+  <nav class="catalogue-jump" aria-label="Service groups">
+    {serviceGroups.map((group, index) => <a href={`#${group.id}`}><span>{String(index + 1).padStart(2, '0')}</span>{group.name}</a>)}
+  </nav>
+  <CatalogueFilter label="Find a service" placeholder="Search AI, product design, embedded systems…" />
+  {serviceGroups.map((group, index) => (
+    <div data-catalogue-group>
+      <Section id={group.id} index={String(index + 1).padStart(2, '0')} tone={index % 2 === 0 ? 'muted' : 'ink'} eyebrow="Service group" title={group.name} kicker={group.summary} split>
+        <div class="grid gap-4 md:grid-cols-2" data-reveal-stagger>
+          {getServicesByGroup(group.id).map((service) => (
+            <div data-catalogue-entry data-search={`${group.name} ${service.name} ${service.summary} ${service.stack.join(' ')}`}>
+              <ServiceCard service={service} />
+            </div>
+          ))}
+        </div>
+      </Section>
     </div>
-  </Section>
-  <CtaBand title="Not sure where to start?" body="Tell us the operational bottleneck. We’ll map it to a service." primary={site.cta.primary} />
+  ))}
+  <CtaBand title="Where should we start?" body="Share your business challenge. We’ll connect it to the right engineering disciplines." primary={site.cta.primary} />
 </BaseLayout>

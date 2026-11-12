@@ -1,0 +1,43 @@
+---
+type Props = { label: string; placeholder: string };
+const { label, placeholder } = Astro.props;
+---
+
+<div class="mx-auto hidden max-w-6xl px-4 pt-8 sm:px-5 md:px-8" data-catalogue-filter>
+  <label for="catalogue-search" class="mb-2 block text-sm font-semibold text-paper">{label}</label>
+  <input id="catalogue-search" type="search" placeholder={placeholder} class="min-h-12 w-full rounded-xl border border-line bg-ink px-4 text-paper sm:max-w-xl" />
+  <p class="mt-2 text-sm text-mist" data-catalogue-status aria-live="polite" aria-atomic="true"></p>
+</div>
+
+<script>
+  const filter = document.querySelector<HTMLElement>('[data-catalogue-filter]');
+  const input = filter?.querySelector<HTMLInputElement>('input');
+  const status = filter?.querySelector<HTMLElement>('[data-catalogue-status]');
+  const entries = Array.from(document.querySelectorAll<HTMLElement>('[data-catalogue-entry]'));
+  const groups = Array.from(document.querySelectorAll<HTMLElement>('[data-catalogue-group]'));
+  const normalize = (value: string) => value.toLocaleLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+  if (filter && input && status && entries.length) {
+    filter.classList.remove('hidden');
+    const update = () => {
+      const terms = normalize(input.value).split(/\s+/).filter(Boolean);
+      let visible = 0;
+      entries.forEach((entry) => {
+        const text = normalize(entry.dataset.search ?? entry.textContent ?? '');
+        entry.hidden = !terms.every((term) => text.includes(term));
+        if (!entry.hidden) visible++;
+      });
+      groups.forEach((group) => {
+        group.hidden = !Array.from(group.querySelectorAll<HTMLElement>('[data-catalogue-entry]')).some((entry) => !entry.hidden);
+      });
+      status.textContent = visible ? `${visible} of ${entries.length} results shown.` : 'No matches. Try another term or clear the search.';
+    };
+    input.addEventListener('input', update);
+    document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((link) => {
+      link.addEventListener('click', () => { input.value = ''; update(); });
+    });
+    window.addEventListener('hashchange', () => {
+      if (location.hash) { input.value = ''; update(); }
+    });
+    update();
+  }
+</script>

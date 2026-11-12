@@ -1,5 +1,6 @@
 import { site } from './site';
-import { services } from './services';
+import { services, serviceGroups } from './services';
+import { technologyCatalogue, engineeringPractices, catalogueCounts } from './catalogue';
 import { industries } from './industries';
 import { technologies } from './technologies';
 import { faqCategories } from './faqs';
@@ -25,7 +26,7 @@ export function buildKnowledge(): KnowledgeDoc[] {
       body: join([
         site.name,
         site.tagline,
-        'Codeaxes combines product strategy, design, engineering, quality assurance, data, cloud, interactive media, and AI to help businesses turn complex ideas into reliable digital products.',
+        `Codeaxes connects ${serviceGroups.map((group) => group.name).join(', ')} across ${catalogueCounts.industries} industries.`,
         whyCodeaxes.map((item) => `${item.title}. ${item.body}`).join(' '),
         `Contact ${site.email}. ${site.kuroaxe.name} is a partner brand for marketing services at ${site.kuroaxe.absoluteUrl}.`,
       ]),
@@ -62,16 +63,10 @@ export function buildKnowledge(): KnowledgeDoc[] {
       title: service.name,
       url: `/services/${service.slug}`,
       category: 'service',
-      tags: [service.name, service.slug, ...service.stack, ...service.industries],
+      tags: [service.name, service.slug, service.groupId, ...service.stack],
       body: join([
-        service.tagline,
         service.summary,
-        service.explanation,
-        service.problems.join(' '),
         service.capabilities.map((item) => `${item.title}: ${item.body}`).join(' '),
-        service.useCases.map((item) => `${item.title}: ${item.body}`).join(' '),
-        service.benefits.join(' '),
-        service.faqs.map((item) => `${item.question} ${item.answer}`).join(' '),
       ]),
     });
   }
@@ -85,14 +80,30 @@ export function buildKnowledge(): KnowledgeDoc[] {
       tags: [industry.name, industry.slug],
       body: join([
         industry.summary,
-        industry.challenges.join(' '),
         industry.solutions.join(' '),
-        industry.automation.join(' '),
-        industry.compliance,
-        industry.techApproaches.join(' '),
-        industry.outcomes.join(' '),
-        industry.faqs.map((item) => `${item.question} ${item.answer}`).join(' '),
       ]),
+    });
+  }
+
+  for (const group of serviceGroups) {
+    docs.push({
+      id: `practice-${group.id}`, title: group.name, url: `/services#${group.id}`,
+      category: 'service-group', tags: [group.name, ...group.services.map((service) => service.name)],
+      body: `${group.summary} Services: ${group.services.map((service) => service.name).join('; ')}.`,
+    });
+  }
+
+  docs.push({
+    id: 'cross-industry-practices', title: 'Cross-Industry Enterprise Engineering Practices',
+    url: '/about/industries#cross-industry-practices', category: 'industry',
+    tags: ['cross-industry', 'practices', 'engineering'], body: engineeringPractices.join('. '),
+  });
+
+  for (const category of technologyCatalogue) {
+    docs.push({
+      id: `technology-category-${category.id}`, title: category.name,
+      url: `/about/technologies#${category.id}`, category: 'technology', tags: [category.name],
+      body: category.sections.map((section) => `${section.name ? `${section.name}: ` : ''}${section.items.join(', ')}.`).join(' '),
     });
   }
 

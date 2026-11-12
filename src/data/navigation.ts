@@ -1,5 +1,6 @@
 import { industries } from './industries';
 import { site } from './site';
+import { serviceGroups } from './services';
 import type { NavItem } from '../types';
 
 export const primaryNav: NavItem[] = [
@@ -7,21 +8,11 @@ export const primaryNav: NavItem[] = [
   {
     label: 'Services',
     href: '/services',
-    children: [
-      { label: 'AI Automation', href: '/services/ai-automation', description: 'Workflows, assistants, and knowledge systems' },
-      { label: 'Mobile Apps', href: '/services/mobile-apps', description: 'iOS, Android, and cross-platform products' },
-      { label: 'SaaS Development', href: '/services/saas-development', description: 'Multi-tenant platforms and billing' },
-      { label: 'PaaS Development', href: '/services/paas-development', description: 'Developer platforms and APIs' },
-      { label: 'QA Testing', href: '/services/qa-testing', description: 'Manual, automated, and performance quality' },
-      { label: 'Custom Development', href: '/services/custom-development', description: 'Web, APIs, and modernization' },
-      { label: 'Product Development', href: '/services/product-development', description: 'From discovery through launch' },
-      { label: 'Blockchain', href: '/services/blockchain', description: 'Contracts, wallets, and on-chain products' },
-      { label: 'Project Data', href: '/services/project-data', description: 'Pipelines, warehouses, and analytics' },
-      { label: 'Game Development', href: '/services/game-development', description: 'Unity, live ops, and store-ready builds' },
-      { label: 'Cloud Computing', href: '/services/cloud-computing', description: 'Landing zones, migration, and FinOps' },
-      { label: '2D Animations', href: '/services/2d-animations', description: 'Product motion, Lottie, and Rive' },
-      { label: 'DevOps', href: '/services/devops', description: 'CI/CD, GitOps, and platform reliability' },
-    ],
+    children: serviceGroups.map((group) => ({
+      label: group.name,
+      href: `/services#${group.id}`,
+      description: group.summary,
+    })),
   },
   {
     label: 'Industries',
@@ -53,6 +44,8 @@ export const primaryNav: NavItem[] = [
 export const footerNav = [
   { label: 'About', href: '/about' },
   { label: 'Services', href: '/services' },
+  { label: 'Industries', href: '/about/industries' },
+  { label: 'Technologies', href: '/about/technologies' },
   { label: 'Case studies', href: '/about/case-studies' },
   { label: 'Careers', href: '/careers' },
   { label: 'Contact', href: '/contact' },

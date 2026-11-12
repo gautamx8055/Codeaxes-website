@@ -1,6 +1,7 @@
 import type { FaqCategory } from '../types';
+import { serviceGroups, getService } from './services';
 
-export const faqCategories: FaqCategory[] = [
+const generalCategories: FaqCategory[] = [
   {
     id: 'working-with-codeaxes',
     title: 'Working with Codeaxes',
@@ -115,202 +116,6 @@ export const faqCategories: FaqCategory[] = [
     ],
   },
   {
-    id: 'ai-automation',
-    title: 'AI automation',
-    items: [
-      {
-        question: 'What kind of AI automation does Codeaxes build?',
-        answer:
-          'We build workflow automation, document processing pipelines, support triage, internal copilots, and decision-support tools grounded in your data and policies, not generic chat widgets pasted onto legacy forms.',
-      },
-      {
-        question: 'How do you decide whether AI is appropriate?',
-        answer:
-          'We evaluate task frequency, error cost, data availability, and human review requirements. If a deterministic rules engine or better UX solves the problem, we say so. AI enters when ambiguity, language, or unstructured inputs make classical automation brittle.',
-      },
-      {
-        question: 'How do you handle hallucinations and unsafe outputs?',
-        answer:
-          'Production systems use retrieval over approved sources, structured outputs, validation layers, and human-in-the-loop review for high-stakes decisions. We design fallbacks when confidence is low and log prompts and responses for audit where required.',
-      },
-      {
-        question: 'Can you integrate with our existing LLM vendor?',
-        answer:
-          'Yes. We work with major cloud model APIs and self-hosted options where data residency demands it. Architecture keeps vendor swap feasible through abstraction at the orchestration layer.',
-      },
-      {
-        question: 'What data do you need to get started?',
-        answer:
-          'Representative documents, ticket histories, or workflow examples, sanitized if necessary, plus clarity on what “correct” looks like and who approves edge cases. We never assume production data access on day one.',
-      },
-      {
-        question: 'How is AI work priced?',
-        answer:
-          'Pricing reflects integration depth, evaluation harness design, and ongoing inference costs, not token counts on a public rate card. We estimate after understanding volume, latency targets, and review workflows.',
-      },
-    ],
-  },
-  {
-    id: 'web-and-mobile',
-    title: 'Web and mobile development',
-    items: [
-      {
-        question: 'Do you build web apps, mobile apps, or both?',
-        answer:
-          'Both. We choose native, cross-platform, or responsive web based on offline needs, device capabilities, release cadence, and team maintenance capacity, not ideology.',
-      },
-      {
-        question: 'Which mobile approach do you recommend?',
-        answer:
-          'Native Swift and Kotlin when platform APIs, performance, or long-term platform features dominate. React Native or Flutter when shared logic and faster iteration outweigh platform-specific polish. We document trade-offs for your specific product.',
-      },
-      {
-        question: 'How do you approach accessibility?',
-        answer:
-          'Accessibility is part of definition of done: semantic markup, keyboard flows, contrast, screen reader labels, and testing with assistive technology on critical journeys. Regulated and public-facing products receive stricter checkpoints.',
-      },
-      {
-        question: 'Can you redesign an existing app without a full rewrite?',
-        answer:
-          'Often yes, via strangler patterns: new surfaces on modern stacks, shared APIs, and phased retirement of legacy UI. We assess whether the backend can carry the new experience or needs hardening first.',
-      },
-      {
-        question: 'How do you handle app store releases?',
-        answer:
-          'We set up signing, CI pipelines, staged rollouts, crash reporting, and release notes workflows. Mobile releases are planned alongside backend compatibility and feature flags where instant rollback is needed.',
-      },
-    ],
-  },
-  {
-    id: 'saas-and-paas',
-    title: 'SaaS and PaaS development',
-    items: [
-      {
-        question: 'What is the difference between SaaS and PaaS work at Codeaxes?',
-        answer:
-          'SaaS engagements focus on end-customer products, tenancy, billing, onboarding, and product analytics. PaaS engagements emphasize platforms other builders extend: APIs, developer portals, usage metering, and sandbox environments.',
-      },
-      {
-        question: 'How do you design multi-tenancy?',
-        answer:
-          'We select isolation models, shared schema with tenant keys, schema-per-tenant, or dedicated resources, for your compliance, scale, and operational cost profile. The choice is documented and tested, not accidental.',
-      },
-      {
-        question: 'Do you implement billing and subscriptions?',
-        answer:
-          'We integrate with established billing providers and implement entitlement logic in your product layer. Complex usage-based models receive metering pipelines and reconciliation tooling so finance and product see the same numbers.',
-      },
-      {
-        question: 'Can you build a developer portal and public API?',
-        answer:
-          'Yes. That includes authentication, rate limits, versioning, SDKs, sandbox keys, and documentation generated from OpenAPI or equivalent contracts so partners are not guessing at behavior.',
-      },
-      {
-        question: 'How do you plan for scale before it arrives?',
-        answer:
-          'Load testing on critical paths, database indexing strategy, caching boundaries, and observability SLOs are part of early architecture, not post-launch firefighting. We scale infrastructure with measured bottlenecks, not premature complexity.',
-      },
-      {
-        question: 'What does a SaaS MVP include?',
-        answer:
-          'At minimum: secure auth, core workflow, admin visibility, deployment pipeline, and analytics on activation, not every enterprise checkbox. Discovery defines which enterprise requirements belong in v1 versus a fast-follow enterprise tier.',
-      },
-    ],
-  },
-  {
-    id: 'qa-and-maintenance',
-    title: 'QA and maintenance',
-    items: [
-      {
-        question: 'How does Codeaxes approach quality assurance?',
-        answer:
-          'QA is embedded in delivery: unit and integration tests on critical logic, contract tests for integrations, exploratory testing on user journeys, and automated regression on release candidates. Definition of done includes test evidence, not a separate QA phase at the end.',
-      },
-      {
-        question: 'Do you offer QA-only engagements?',
-        answer:
-          'We can augment teams with QA engineers who build automation frameworks, improve release gates, and document test strategies. Lasting impact usually requires collaboration with engineering on testability and CI integration.',
-      },
-      {
-        question: 'What happens after launch?',
-        answer:
-          'Maintenance covers defect triage, dependency updates, performance tuning, and small enhancements. We prefer structured retainers with a visible backlog rather than ad-hoc hourly firefighting without priorities.',
-      },
-      {
-        question: 'How do you handle production incidents?',
-        answer:
-          'We establish on-call runbooks, alerting, and escalation paths during launch readiness. For retained clients, response expectations, hours, severity tiers, are agreed in advance rather than assumed.',
-      },
-      {
-        question: 'Can you improve an app with high defect volume?',
-        answer:
-          'Yes, starting with defect taxonomy, flaky test cleanup, and stabilizing the noisiest modules. We balance stopping bleeding with continuing necessary feature work so the product does not stall.',
-      },
-      {
-        question: 'How is maintenance priced?',
-        answer:
-          'Maintenance is scoped to agreed capacity and service levels after we understand system complexity and incident history. Estimates follow a technical review, we do not quote flat monthly fees without context.',
-      },
-    ],
-  },
-  {
-    id: 'blockchain-data-and-cloud',
-    title: 'Blockchain, data, cloud, and DevOps',
-    items: [
-      {
-        question: 'Do you build production blockchain products or only prototypes?',
-        answer:
-          'We ship contracts, wallets, and the off-chain systems around them, with tests and an upgrade or freeze policy. A demo contract without keys, indexing, or incident runbooks is not a complete engagement.',
-      },
-      {
-        question: 'What is Project Data at Codeaxes?',
-        answer:
-          'It is the warehouse, pipeline, and metric layer for how a product or program is performing. We model grain, tests, and owners so teams stop arguing from disconnected spreadsheets. It is not the same as AI automation, though automation often depends on this layer.',
-      },
-      {
-        question: 'Do you migrate workloads to AWS, Google Cloud, or Azure?',
-        answer:
-          'Yes. Cloud computing covers landing zones, identity, sequenced migration, recovery tests, and FinOps. We will not default to Kubernetes if a managed container or serverless shape fits the workload and the team.',
-      },
-      {
-        question: 'How do DevOps engagements differ from cloud or QA work?',
-        answer:
-          'Cloud is where systems run. DevOps is how code gets there and how you see it: pipelines, IaC, secrets, promotion, and alerts. QA designs the cases and risk coverage those pipelines should enforce. They complement each other.',
-      },
-      {
-        question: 'Can you take over an existing Terraform or CI setup?',
-        answer:
-          'Usually. We start with how a real release happens today, including unofficial steps, then stabilize state, secrets, and flaky jobs before adding platform features.',
-      },
-    ],
-  },
-  {
-    id: 'games-and-animation',
-    title: 'Games and 2D animation',
-    items: [
-      {
-        question: 'What kinds of games do you build?',
-        answer:
-          'Product games, serious games, and interactive experiences with a pipeline more than one person can maintain. We are explicit when a request is actually a large cinematic Unreal production, that is a different shape of team.',
-      },
-      {
-        question: 'Do 2D animations ship inside the product?',
-        answer:
-          'That is the point. We deliver Lottie, Rive, Spine, or sprites with runtime integration, performance budgets, and reduced-motion fallbacks. Campaign films that never enter the product are a Kuroaxe conversation.',
-      },
-      {
-        question: 'Can our artists keep working in After Effects?',
-        answer:
-          'Yes, with export presets into a runtime the app can play. If the composition cannot loop, localize, or stay under budget, we flag that before a full production pass.',
-      },
-      {
-        question: 'Do you handle store submission for games?',
-        answer:
-          'Yes. Signing, ratings, platform SDKs, and a first-patch process are part of game delivery, not a surprise in the last week.',
-      },
-    ],
-  },
-  {
     id: 'security-and-ownership',
     title: 'Security and ownership',
     items: [
@@ -348,50 +153,42 @@ export const faqCategories: FaqCategory[] = [
   },
 ];
 
-function itemsFrom(id: string, include?: (question: string) => boolean) {
-  const category = faqCategories.find((item) => item.id === id);
-  if (!category) return [];
-  return include ? category.items.filter((item) => include(item.question)) : category.items;
-}
+const practiceQuestions: Record<string, { question: string; answer: string }> = {
+  'ai-first': { question: 'How do you choose between predictive AI, generative AI, and agents?', answer: 'Start with the task and the evidence of success. Predictive models estimate outcomes, generative models produce content, and agents coordinate actions across tools. Data readiness, evaluation, permissions, and human review shape the choice.' },
+  'product-engineering': { question: 'Can a product include web, mobile, and enterprise integrations?', answer: 'Yes. We define shared identity, data ownership, and API contracts before implementing the web, mobile, and platform surfaces. The delivery plan follows the dependencies between them.' },
+  enterprise: { question: 'Can you modernise systems without replacing everything at once?', answer: 'We assess dependencies and business continuity first, then sequence configuration, integration, refactoring, or replacement. Migration, reconciliation, parallel operation, and rollback are planned for the affected systems.' },
+  'experience-design': { question: 'How does design connect to engineering?', answer: 'Research and prototypes inform the product scope. Design decisions are documented as interaction states, component rules, accessibility requirements, and specifications that engineering can implement and review.' },
+  'digital-engineering': { question: 'How do cloud, security, DevOps, MLOps, and quality work together?', answer: 'Cloud provides the operating foundation; security defines trust and controls; DevOps and MLOps govern how software and models reach production; quality engineering supplies the evidence used for release decisions.' },
+  'advanced-engineering': { question: 'How do you validate systems that interact with hardware?', answer: 'Define the operating environment and system boundaries first. Use simulation, integration testing, hardware/software validation, and controlled trials appropriate to the system, with failure modes and handover requirements agreed in the project scope.' },
+};
+
+export const faqCategories: FaqCategory[] = [
+  ...generalCategories.filter((category) => category.id !== 'security-and-ownership'),
+  ...serviceGroups.map((group) => ({
+    id: group.id,
+    title: group.name,
+    items: [
+      { question: `What does ${group.name} cover?`, answer: `${group.summary} Services include ${group.services.map((service) => service.name).join('; ')}.` },
+      practiceQuestions[group.id],
+    ],
+  })),
+  ...generalCategories.filter((category) => category.id === 'security-and-ownership'),
+];
+
+export const legacyFaqCategories: Record<string, string> = {
+  'ai-automation': 'ai-first',
+  'web-and-mobile': 'product-engineering',
+  'saas-and-paas': 'product-engineering',
+  'qa-and-maintenance': 'digital-engineering',
+  'blockchain-data-and-cloud': 'digital-engineering',
+  'games-and-animation': 'experience-design',
+};
 
 export function extraFaqsForService(slug: string) {
-  switch (slug) {
-    case 'ai-automation':
-      return itemsFrom('ai-automation');
-    case 'mobile-apps':
-      return itemsFrom('web-and-mobile');
-    case 'custom-development':
-      return itemsFrom('web-and-mobile', (question) => /web|both|accessibility|redesign/i.test(question));
-    case 'saas-development':
-      return itemsFrom('saas-and-paas', (question) => !/developer portal/i.test(question));
-    case 'paas-development':
-      return itemsFrom('saas-and-paas', (question) => /PaaS|developer portal|scale|difference/i.test(question));
-    case 'qa-testing':
-      return itemsFrom('qa-and-maintenance');
-    case 'blockchain':
-      return itemsFrom('blockchain-data-and-cloud', (question) => /blockchain/i.test(question));
-    case 'project-data':
-      return itemsFrom('blockchain-data-and-cloud', (question) => /Project Data/i.test(question));
-    case 'cloud-computing':
-      return itemsFrom('blockchain-data-and-cloud', (question) => /migrate|AWS|Cloud/i.test(question));
-    case 'devops':
-      return itemsFrom('blockchain-data-and-cloud', (question) => /DevOps|Terraform|CI/i.test(question));
-    case 'game-development':
-      return itemsFrom('games-and-animation', (question) => /game/i.test(question));
-    case '2d-animations':
-      return itemsFrom('games-and-animation', (question) => /animation|artist|2D/i.test(question));
-    case 'product-development':
-      return [...itemsFrom('working-with-codeaxes'), ...itemsFrom('project-timelines'), ...itemsFrom('pricing-and-engagement')];
-    default:
-      return [];
-  }
+  const service = getService(slug);
+  return service ? faqCategories.find((category) => category.id === service.groupId)?.items ?? [] : [];
 }
 
 export const allFaqs = faqCategories.flatMap((category) =>
-  category.items.map((item) => ({
-    categoryId: category.id,
-    categoryTitle: category.title,
-    question: item.question,
-    answer: item.answer,
-  })),
+  category.items.map((item) => ({ categoryId: category.id, categoryTitle: category.title, ...item })),
 );

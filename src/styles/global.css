@@ -98,6 +98,66 @@ h2.font-display,
   font-family: var(--font-display);
 }
 
+/* Shared catalogue navigation and content; all entries remain readable without JS. */
+[hidden] { display: none !important; }
+
+.catalogue-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding: 1.5rem 1rem;
+  border-block: 1px solid var(--line);
+}
+.catalogue-jump a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 2.75rem;
+  max-width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 0.7rem;
+  padding: 0.5rem 0.85rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+.catalogue-jump a span { color: var(--axis); font-family: var(--font-mono); font-size: 0.7rem; }
+.catalogue-jump a:hover { border-color: var(--axis); color: var(--axis); }
+.catalogue-grid { align-items: start; }
+.catalogue-panel {
+  position: relative;
+  min-width: 0;
+  height: 100%;
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  background: var(--ink);
+  padding: clamp(1.25rem, 3vw, 2rem);
+  scroll-margin-top: 1rem;
+}
+.catalogue-anchor { position: absolute; top: 0; }
+.catalogue-solutions { display: grid; gap: 0.75rem; padding-left: 1.1rem; list-style: disc; }
+.catalogue-solutions li { padding-left: 0.25rem; font-size: 0.95rem; color: var(--paper); }
+.catalogue-solutions li::marker { color: var(--axis); }
+.catalogue-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.catalogue-chips li { min-width: 0; max-width: 100%; }
+.catalogue-chips li > a, .catalogue-chips li > span {
+  display: inline-block;
+  min-height: 2.75rem;
+  border: 1px solid var(--line);
+  border-radius: 0.65rem;
+  padding: 0.6rem 0.8rem;
+  background: var(--void);
+  color: var(--paper);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.catalogue-chips li > a:hover { border-color: var(--axis); color: var(--axis); }
+@media (min-width: 768px) { .catalogue-jump { padding-inline: 2rem; } }
+
 .font-mono {
   font-family: var(--font-mono);
   font-weight: 500;

@@ -1,24 +1,44 @@
 import type { KnowledgeDoc } from '../types';
-import { services } from '../data/services';
+import { services, serviceGroups } from '../data/services';
+import { catalogueCounts } from '../data/catalogue';
+import { industries } from '../data/industries';
 import { site } from '../data/site';
 import { searchKnowledge, tokenize } from './search';
 
 export type ChatTurn = { role: string; content: string };
 
 const SERVICE_HINTS: { slug: (typeof services)[number]['slug']; keys: string[] }[] = [
-  { slug: 'ai-automation', keys: ['ai', 'automation', 'llm', 'chatbot', 'copilot', 'rag', 'assistant', 'gpt', 'openai'] },
-  { slug: 'mobile-apps', keys: ['mobile', 'ios', 'android', 'iphone', 'app', 'apps', 'flutter', 'react native'] },
-  { slug: 'saas-development', keys: ['saas', 'subscription', 'tenant', 'multi-tenant', 'billing'] },
-  { slug: 'paas-development', keys: ['paas', 'platform as a service', 'developer portal'] },
-  { slug: 'qa-testing', keys: ['qa', 'testing', 'test', 'quality', 'regression'] },
-  { slug: 'custom-development', keys: ['custom', 'bespoke', 'legacy', 'integration'] },
-  { slug: 'product-development', keys: ['product development', 'mvp', 'prototype', 'discovery'] },
-  { slug: 'blockchain', keys: ['blockchain', 'web3', 'smart contract', 'token', 'wallet', 'on-chain'] },
-  { slug: 'project-data', keys: ['data', 'analytics', 'warehouse', 'pipeline', 'dashboard', 'metrics'] },
-  { slug: 'game-development', keys: ['game', 'games', 'unity', 'multiplayer'] },
-  { slug: 'cloud-computing', keys: ['cloud', 'aws', 'azure', 'gcp', 'landing zone', 'finops'] },
-  { slug: '2d-animations', keys: ['animation', '2d', 'lottie', 'rive', 'motion'] },
-  { slug: 'devops', keys: ['devops', 'ci', 'cd', 'cicd', 'gitops', 'kubernetes', 'pipeline'] },
+  { slug: 'artificial-intelligence', keys: ['artificial intelligence', 'machine learning', 'predictive', 'computer vision'] },
+  { slug: 'generative-ai-llm-engineering', keys: ['generative', 'llm', 'rag', 'chatbot', 'copilot', 'gpt', 'openai'] },
+  { slug: 'agentic-ai-ai-automation', keys: ['agentic', 'agents', 'agent', 'automation', 'workflow automation'] },
+  { slug: 'data-transformation', keys: ['data engineering', 'data transformation', 'warehouse', 'ingestion', 'etl'] },
+  { slug: 'data-analytics-intelligence', keys: ['analytics', 'dashboard', 'metrics', 'business intelligence', 'reporting'] },
+  { slug: 'software-engineering', keys: ['software', 'bespoke', 'custom development'] },
+  { slug: 'web-application-development', keys: ['web app', 'web application', 'website', 'frontend'] },
+  { slug: 'mobile-application-development', keys: ['mobile', 'ios', 'android', 'iphone', 'flutter', 'react native'] },
+  { slug: 'saas-platform-engineering', keys: ['saas', 'paas', 'subscription', 'tenant', 'billing'] },
+  { slug: 'api-development-system-integration', keys: ['api', 'apis', 'system integration', 'middleware'] },
+  { slug: 'enterprise-product-development', keys: ['enterprise product', 'enterprise application'] },
+  { slug: 'enterprise-solutions', keys: ['enterprise solutions', 'business systems'] },
+  { slug: 'erp-crm-solutions', keys: ['erp', 'crm', 'sap', 'salesforce', 'odoo'] },
+  { slug: 'digital-transformation', keys: ['digital transformation', 'transformation roadmap'] },
+  { slug: 'platform-modernisation', keys: ['modernisation', 'modernization', 'legacy', 'replatform'] },
+  { slug: 'managed-engineering-services', keys: ['managed engineering', 'maintenance', 'retainer', 'dedicated team'] },
+  { slug: 'ui-ux-design', keys: ['ui', 'ux', 'interface', 'design system'] },
+  { slug: 'product-design', keys: ['product design', 'mvp', 'prototype', 'discovery'] },
+  { slug: 'research-insights', keys: ['user research', 'usability', 'research', 'insights'] },
+  { slug: 'service-design', keys: ['service design', 'service blueprint', 'journey mapping'] },
+  { slug: '3d-digital-experience', keys: ['3d', 'immersive', 'spatial', 'webgl', 'ar', 'vr'] },
+  { slug: 'cloud-engineering', keys: ['cloud', 'aws', 'azure', 'gcp', 'landing zone', 'finops'] },
+  { slug: 'cybersecurity-digital-trust', keys: ['cybersecurity', 'security', 'digital trust', 'zero trust'] },
+  { slug: 'devops-mlops', keys: ['devops', 'mlops', 'cicd', 'gitops', 'kubernetes', 'ci/cd'] },
+  { slug: 'quality-engineering', keys: ['qa', 'testing', 'quality', 'regression', 'validation'] },
+  { slug: 'digital-platforms-integration', keys: ['digital platform', 'platform integration', 'integration architecture'] },
+  { slug: 'industrial-iot-industry-4-0', keys: ['iot', 'industry 4', 'industrial connectivity', 'smart factory'] },
+  { slug: 'embedded-systems-firmware-engineering', keys: ['embedded', 'firmware', 'rtos', 'microcontroller'] },
+  { slug: 'industrial-automation-robotics', keys: ['industrial automation', 'robotics', 'robot', 'robots'] },
+  { slug: 'digital-twins-simulation', keys: ['digital twin', 'twins', 'simulation', 'simulink'] },
+  { slug: 'drones-autonomous-systems', keys: ['drone', 'drones', 'autonomous', 'autonomy', 'uav'] },
 ];
 
 const bySlug = new Map(services.map((service) => [service.slug, service]));
@@ -64,9 +84,11 @@ const hasKey = (haystack: string, key: string) => {
 
 const matchService = (query: string) => {
   const lower = query.toLowerCase();
+  const exact = services.find((service) => hasKey(lower, service.name.toLowerCase()));
+  if (exact) return exact;
   let best: { service: (typeof services)[number]; hits: number } | undefined;
   for (const hint of SERVICE_HINTS) {
-    const hits = hint.keys.filter((key) => hasKey(lower, key)).length;
+    const hits = hint.keys.reduce((total, key) => total + (hasKey(lower, key) ? key.length : 0), 0);
     if (!hits) continue;
     const service = bySlug.get(hint.slug);
     if (!service) continue;
@@ -98,7 +120,7 @@ export function composeAssistantReply(
 
   if (/^(hi|hello|hey|yo|howdy|good (morning|afternoon|evening))\b/i.test(text) && isShort(text)) {
     return {
-      answer: `Hi. I'm Codeaxes AI, the on-site guide for this website. I can walk you through the thirteen services, the stack, industries, case studies, or how to start a project. What are you trying to ship?`,
+      answer: `Hi. I'm Codeaxes AI, the on-site guide for this website. I can walk you through ${catalogueCounts.services} services across ${catalogueCounts.groups} groups, the stack, industries, case studies, or how to start a project. What are you trying to ship?`,
       sources: [],
     };
   }
@@ -167,6 +189,14 @@ export function composeAssistantReply(
   }
 
   const mentioned = matchService(text);
+  const group = serviceGroups.find((item) => hasKey(lower, item.name.toLowerCase()));
+  if (group && !mentioned) {
+    return {
+      answer: `${group.name}: ${group.summary} Services include ${group.services.map((service) => service.name).join('; ')}. Browse /services#${group.id}.`,
+      sources: [{ title: group.name, url: `/services#${group.id}` }],
+    };
+  }
+
   const askingIfWeBuild = /do you (build|do|offer|make|ship|handle)|can you (build|do|make)|have you (built|done)/i.test(
     lower,
   );
@@ -176,7 +206,7 @@ export function composeAssistantReply(
 
   if (askingIfWeBuild && mentioned) {
     return {
-      answer: `Yes. ${mentioned.summary}\n\n${mentioned.tagline} Details and delivery model: /services/${mentioned.slug}. I can also surface a related case study if you tell me the industry.`,
+      answer: `Yes. ${mentioned.summary}\n\nDetails and delivery model: /services/${mentioned.slug}. I can also surface a related case study if you tell me the industry.`,
       sources: [{ title: mentioned.name, url: `/services/${mentioned.slug}` }],
     };
   }
@@ -184,37 +214,33 @@ export function composeAssistantReply(
   if (whichService || (/startup|mvp|early stage/.test(lower) && !mentioned)) {
     if (mentioned) {
       return {
-        answer: `If that's the problem, start with ${mentioned.name}. ${mentioned.summary}\n\nRead /services/${mentioned.slug}. If the product is still being validated, Product Development is the broader wrapper: /services/product-development.`,
+        answer: `If that's the problem, start with ${mentioned.name}. ${mentioned.summary}\n\nRead /services/${mentioned.slug}. If the product is still being validated, start with Product Design: /services/product-design.`,
         sources: [
           { title: mentioned.name, url: `/services/${mentioned.slug}` },
-          { title: 'Product Development', url: '/services/product-development' },
+          { title: 'Product Design', url: '/services/product-design' },
         ],
       };
     }
     return {
-      answer: `For a startup, the usual split is: Product Development if the problem is still being validated, SaaS Development if you already know you're selling a multi-tenant product, and Mobile App Development if the first surface is iOS/Android. There are thirteen practices on /services. Tell me whether you need a first product, a mobile client, or automation inside an existing team and I'll narrow it.`,
+      answer: `For a startup, the usual split is: Product Design if the problem is still being validated, SaaS & Platform Engineering for a multi-tenant product, and Mobile Application Development for iOS/Android. There are ${catalogueCounts.services} services across ${catalogueCounts.groups} groups on /services. Tell me whether you need a first product, a mobile client, or automation inside an existing team and I'll narrow it.`,
       sources: [
-        { title: 'Product Development', url: '/services/product-development' },
-        { title: 'SaaS Development', url: '/services/saas-development' },
-        { title: 'Mobile App Development', url: '/services/mobile-apps' },
+        { title: 'Product Design', url: '/services/product-design' },
+        { title: 'SaaS & Platform Engineering', url: '/services/saas-platform-engineering' },
+        { title: 'Mobile Application Development', url: '/services/mobile-application-development' },
       ],
     };
   }
 
   if (mentioned && /service|build|need|looking for|want/.test(lower)) {
     return {
-      answer: `${mentioned.name} is one of the thirteen practices. ${mentioned.summary}\n\n${mentioned.tagline} Page: /services/${mentioned.slug}.`,
+      answer: `${mentioned.name} is part of our ${catalogueCounts.services}-service catalogue. ${mentioned.summary}\n\nPage: /services/${mentioned.slug}.`,
       sources: [{ title: mentioned.name, url: `/services/${mentioned.slug}` }],
     };
   }
 
-  if (/what (do you|services|can you)|thirteen practices|list (your )?services|offerings/i.test(lower)) {
-    const lead = services
-      .slice(0, 5)
-      .map((service) => `${service.name} (${service.tagline.replace(/\.$/, '')})`)
-      .join('; ');
+  if (/what (do you|services|can you)|service groups|list (your )?services|offerings/i.test(lower)) {
     return {
-      answer: `Codeaxes is a product engineering firm: strategy, design, build, QA, data, cloud, and AI, shipped as software operators can run. Thirteen practices sit on /services, including ${lead}. Which of those is closest to the bottleneck you have?`,
+      answer: `Codeaxes connects ${serviceGroups.map((group) => group.name).join(', ')}. There are ${catalogueCounts.services} services across these ${catalogueCounts.groups} groups on /services. Which business or engineering challenge are you working on?`,
       sources: [{ title: 'Services', url: '/services' }],
     };
   }
@@ -233,12 +259,12 @@ export function composeAssistantReply(
     const techs = hits.filter((hit) => hit.doc.category === 'technology').slice(0, 4);
     const pool = techs.length ? techs : searchKnowledge('typescript react node aws', docs, 4);
     return {
-      answer: `The stack is documented per technology: why we use it, where it fits, and where it does not. ${pool.map((hit) => hit.doc.title).join(', ')} are a sample. Browse /about/technologies or name a layer (frontend, cloud, data) and I'll point at the pages.`,
+      answer: `The complete stack spans ${catalogueCounts.technologyCategories} categories, with detailed engineering notes for selected technologies. ${pool.map((hit) => hit.doc.title).join(', ')} are a sample. Browse /about/technologies or name a layer (frontend, cloud, data) and I'll point at the pages.`,
       sources: [{ title: 'Technologies', url: '/about/technologies' }, ...pool.map((hit) => ({ title: hit.doc.title, url: hit.doc.url }))],
     };
   }
 
-  if (/industr(y|ies)|healthcare|fintech|ecommerce|logistics|edtech|manufacturing/i.test(lower) && !askingIfWeBuild) {
+  if ((/industr(y|ies)|healthcare|fintech|ecommerce|logistics|edtech|manufacturing/i.test(lower) || industries.some((industry) => industry.name.toLowerCase().split(/[^a-z]+/).some((word) => word.length > 3 && hasKey(lower, word)))) && !askingIfWeBuild) {
     const industryHits = hits.filter((hit) => hit.doc.category === 'industry').slice(0, 2);
     if (industryHits.length) {
       const top = industryHits[0].doc;

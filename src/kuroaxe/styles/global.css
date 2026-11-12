@@ -1,4 +1,5 @@
 @import "tailwindcss" source(none);
+@import "@fontsource-variable/manrope";
 @import "@fontsource/sora/latin-400.css";
 @import "@fontsource/sora/latin-500.css";
 @import "@fontsource/sora/latin-600.css";
@@ -213,13 +214,6 @@
 
   .shell {
     @apply mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-16;
-  }
-
-  .glass-nav {
-    background: color-mix(in oklab, var(--color-ink) 88%, transparent);
-    backdrop-filter: blur(18px) saturate(1.15);
-    -webkit-backdrop-filter: blur(18px) saturate(1.15);
-    border-bottom: 1px solid color-mix(in oklab, white 8%, transparent);
   }
 
   .btn-primary,

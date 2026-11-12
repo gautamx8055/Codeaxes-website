@@ -3,78 +3,38 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/ui/PageHero.astro';
 import Section from '../../components/ui/Section.astro';
 import CtaBand from '../../components/ui/CtaBand.astro';
-import Accordion from '../../components/ui/Accordion.astro';
-import { industries } from '../../data/industries';
-import { faqCategories } from '../../data/faqs';
-
-const security = faqCategories.find((category) => category.id === 'security-and-ownership');
+import CatalogueFilter from '../../components/ui/CatalogueFilter.astro';
+import { industries, legacyIndustryAnchors } from '../../data/industries';
+import { engineeringPractices, catalogueCounts } from '../../data/catalogue';
 import { site } from '../../data/site';
 ---
 
-<BaseLayout
-  title="Industries"
-  description="How Codeaxes builds digital products for SaaS, healthcare, fintech, ecommerce, logistics, education, real estate, media, and manufacturing."
-  path="/about/industries"
->
-  <PageHero
-    eyebrow="Industries"
-    title="The same engineering standard, different constraints."
-    body="Each chapter covers the operational problems we see, the products that tend to work, automation opportunities, and the compliance load that cannot be ignored."
-    layout="rail"
-  />
-  <div class="mx-auto flex max-w-6xl flex-wrap gap-2 px-4 pt-8 sm:px-5 sm:pt-10 md:px-8">
-    {
-      industries.map((industry) => (
-        <a href={`#${industry.slug}`} class="rounded-full border border-line px-3 py-1 font-mono text-[11px] uppercase tracking-[0.12em] text-mist hover:border-axis hover:text-axis">
-          {industry.name}
-        </a>
-      ))
-    }
+<BaseLayout title="Industries" description="Enterprise engineering and technology solutions across 18 industries, from aerospace and automotive to healthcare, manufacturing, energy, and agriculture." path="/about/industries">
+  <PageHero eyebrow="Industry solutions" title="Built for the world you operate in." body={`${catalogueCounts.industries} industries. Connected engineering practices. Explore the systems, platforms, and intelligent operations we can help you develop.`} layout="rail" />
+  <nav class="catalogue-jump" aria-label="Industry directory">
+    {industries.map((industry) => <a href={`#${industry.slug}`}>{industry.name}</a>)}
+    <a href="#cross-industry-practices">Cross-industry practices</a>
+  </nav>
+  <CatalogueFilter label="Find an industry or solution" placeholder="Search rail, digital twins, medical devices…" />
+  <div class="catalogue-grid mx-auto grid max-w-6xl gap-5 px-4 py-10 sm:px-5 md:grid-cols-2 md:px-8 md:py-16">
+    {industries.map((industry, index) => (
+      <article id={industry.slug} data-catalogue-entry class="catalogue-panel">
+        {Object.entries(legacyIndustryAnchors).filter(([, target]) => target === industry.slug).map(([old]) => <span id={old} class="catalogue-anchor" aria-hidden="true" />)}
+        <p class="kicker mb-4">{String(index + 1).padStart(2, '0')} / Industry</p>
+        <h2 class="font-display text-2xl text-paper sm:text-3xl">{industry.name}</h2>
+        <p class="mt-3 text-sm text-mist">{industry.summary}</p>
+        <h3 class="mb-3 mt-6 text-sm font-semibold text-axis">Enterprise engineering & technology solutions</h3>
+        <ul class="catalogue-solutions">{industry.solutions.map((solution) => <li>{solution}</li>)}</ul>
+      </article>
+    ))}
   </div>
-  {
-    industries.map((industry, index) => (
-      <Section
-        id={industry.slug}
-        index={String(index + 1).padStart(2, '0')}
-        tone={index % 2 === 0 ? 'muted' : 'ink'}
-        eyebrow={industry.name}
-        title={industry.summary}
-      >
-        <div class="grid gap-10 lg:grid-cols-2">
-          <div>
-            <h3 class="font-mono mb-3 text-[11px] uppercase tracking-[0.16em] text-pulse">Challenges</h3>
-            <ul class="space-y-2 text-mist">{industry.challenges.map((item) => <li>{item}</li>)}</ul>
-            <h3 class="font-mono mb-3 mt-8 text-[11px] uppercase tracking-[0.16em] text-pulse">Products we build</h3>
-            <ul class="space-y-2 text-mist">{industry.solutions.map((item) => <li>{item}</li>)}</ul>
-          </div>
-          <div>
-            <h3 class="font-mono mb-3 text-[11px] uppercase tracking-[0.16em] text-pulse">AI automation</h3>
-            <ul class="space-y-2 text-mist">{industry.automation.map((item) => <li>{item}</li>)}</ul>
-            {industry.compliance && (
-              <>
-                <h3 class="font-mono mb-3 mt-8 text-[11px] uppercase tracking-[0.16em] text-pulse">Compliance & security</h3>
-                <p class="text-mist">{industry.compliance}</p>
-              </>
-            )}
-            <h3 class="font-mono mb-3 mt-8 text-[11px] uppercase tracking-[0.16em] text-pulse">Technology approach</h3>
-            <ul class="space-y-2 text-mist">{industry.techApproaches.map((item) => <li>{item}</li>)}</ul>
-            <h3 class="font-mono mb-3 mt-8 text-[11px] uppercase tracking-[0.16em] text-pulse">Outcomes to aim for</h3>
-            <ul class="space-y-2 text-paper">{industry.outcomes.map((item) => <li>{item}</li>)}</ul>
-          </div>
-        </div>
-        <h3 class="font-display mt-12 text-2xl text-paper">Questions</h3>
-        <div class="mt-4">
-          <Accordion items={industry.faqs} name={`industry-${industry.slug}`} />
-        </div>
-      </Section>
-    ))
-  }
-  {
-    security && (
-      <Section eyebrow="FAQ" title="Security and ownership.">
-        <Accordion items={security.items} name="industry-security" />
-      </Section>
-    )
-  }
-  <CtaBand title="Bring the constraint from your industry." primary={site.cta.primary} />
+  <Section id="cross-industry-practices" eyebrow="Connected expertise" title="Engineering practices across industries." kicker="These common practices support delivery across multiple industries, bringing product, systems, operations, and experience together." tone="muted" split>
+    <span id="saas-technology" aria-hidden="true" />
+    <ol class="grid gap-x-10 gap-y-4 md:grid-cols-2">
+      {engineeringPractices.map((practice, index) => (
+        <li class="flex items-start gap-4 border-t border-line pt-4 text-paper"><span class="font-mono text-sm text-axis">{String(index + 1).padStart(2, '0')}</span>{practice}</li>
+      ))}
+    </ol>
+  </Section>
+  <CtaBand title="Bring your industry's next challenge." body="Let’s connect the right engineering practices to your operating environment." primary={site.cta.primary} />
 </BaseLayout>

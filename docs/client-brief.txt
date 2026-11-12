@@ -1,0 +1,636 @@
+Services of Codeaxes-
+1. AI First
+1. Artificial Intelligence
+2. Generative AI &amp; LLM Engineering
+3. Agentic AI &amp; AI Automation
+4. Data Transformation
+5. Data Analytics &amp; Intelligence
+2. Product Engineering
+1. Software Engineering
+2. Web Application Development
+3. Mobile Application Development
+4. SaaS &amp; Platform Engineering
+5. API Development &amp; System Integration
+6. Enterprise Product Development
+3. Enterprise
+1. Enterprise Solutions
+2. ERP &amp; CRM Solutions
+3. Digital Transformation
+4. Platform Modernisation
+5. Managed Engineering Services
+4. Experience Design
+1. UI/UX Design
+2. Product Design
+3. Research &amp; Insights
+4. Service Design
+5. 3D &amp; Digital Experience
+5. Digital Engineering
+1. Cloud Engineering
+
+2. Cybersecurity &amp; Digital Trust
+3. DevOps &amp; MLOps
+4. Quality Engineering
+5. Digital Platforms &amp; Integration
+6. Advanced Engineering
+1. Industrial IoT &amp; Industry 4.0
+2. Embedded Systems &amp; Firmware Engineering
+3. Industrial Automation &amp; Robotics
+4. Digital Twins &amp; Simulation
+5. Drones &amp; Autonomous Systems
+
+Industry List-
+1. Aerospace &amp; Defence
+2. Appliances &amp; Consumer Goods
+3. Automotive &amp; Mobility
+4. Banking &amp; Financial Services
+5. Communications &amp; Telecom
+6. Construction &amp; Infrastructure
+7. Education &amp; EdTech
+8. Energy &amp; Utilities
+9. Healthcare &amp; Life Sciences
+10. Insurance
+11. Industrial &amp; Manufacturing
+12. Logistics &amp; Supply Chain
+
+13. Media &amp; Entertainment
+14. Mining, Oil &amp; Gas
+15. Rail &amp; Transportation
+16. Retail &amp; E-commerce
+17. Semiconductor &amp; Electronics
+18. Agriculture &amp; Food
+
+CODEAXES — Enterprise Industry Solutions Catalogue
+Enterprise Engineering &amp; Technology Solutions
+1. Aerospace &amp; Defence
+1. Aircraft Systems &amp; Avionics Engineering
+2. Model-Based Systems Engineering (MBSE)
+3. Digital Engineering &amp; Digital Thread
+4. Mission-Critical Command &amp; Control Systems
+5. Predictive Fleet Readiness
+6. Autonomous Aerial Systems
+2. Appliances &amp; Consumer Goods
+1. Connected Product Engineering
+2. Smart Appliance Ecosystems
+3. Product Lifecycle Engineering
+4. Firmware &amp; Over-the-Air (OTA) Engineering
+5. Intelligent Product Experience
+6. Manufacturing &amp; Quality Intelligence
+3. Automotive &amp; Mobility
+1. Software-Defined Vehicle (SDV) Engineering
+2. ADAS &amp; Autonomous Driving Engineering
+3. Vehicle Electrification Engineering
+4. Connected Vehicle Ecosystems
+
+5. Digital Cockpit &amp; Human-Machine Interface Engineering
+6. Virtual Validation &amp; Vehicle Simulation
+7. Vehicle Lifecycle &amp; Engineering Data Platforms
+4. Banking &amp; Financial Services
+1. Core Banking Modernisation
+2. Enterprise Lending &amp; Credit Platforms
+3. Intelligent Financial Crime &amp; Fraud Systems
+4. Enterprise Payments Engineering
+5. Financial Data Platforms
+6. Digital Identity &amp; Trust Infrastructure
+7. AI-Driven Financial Operations
+5. Communications &amp; Telecom
+1. 5G &amp; Advanced Network Engineering
+2. Telecom Cloud Transformation
+3. Autonomous Network Operations
+4. Network Digital Twins
+5. OSS/BSS Transformation
+6. Telecom Cybersecurity &amp; Resilience
+6. Construction &amp; Infrastructure
+1. Digital Engineering &amp; BIM Integration
+2. Infrastructure Digital Twins
+3. Smart Infrastructure Operations
+4. Capital Project Intelligence
+5. Connected Asset Lifecycle Management
+6. Reality Capture &amp; Spatial Engineering
+7. Education &amp; EdTech
+1. Enterprise Learning Ecosystems
+2. AI-Powered Adaptive Learning
+
+3. Workforce Skills Intelligence
+4. Immersive Training &amp; Simulation
+5. Enterprise Assessment &amp; Credential Infrastructure
+6. Learning Data &amp; Intelligence Platforms
+8. Energy &amp; Utilities
+1. Smart Grid &amp; Grid Modernisation
+2. Renewable Energy Systems Engineering
+3. Battery Energy Storage Systems (BESS)
+4. Energy Digital Twins
+5. Predictive Asset Performance
+6. Energy Trading &amp; Forecasting Intelligence
+7. Industrial Energy Management
+9. Healthcare &amp; Life Sciences
+1. Medical Device Product Engineering
+2. Digital Health Platform Engineering
+3. Clinical Data &amp; Research Intelligence
+4. Pharmaceutical Manufacturing Intelligence
+5. Laboratory &amp; Diagnostics Systems Engineering
+6. Healthcare AI &amp; Clinical Workflow Intelligence
+7. Healthcare Cybersecurity &amp; Data Governance
+10. Insurance
+1. Insurance Core Platform Modernisation
+2. Intelligent Claims Transformation
+3. Advanced Underwriting &amp; Risk Intelligence
+4. Insurance Fraud &amp; Anomaly Intelligence
+5. Actuarial &amp; Enterprise Data Platforms
+6. Digital Insurance Ecosystems
+11. Industrial &amp; Manufacturing
+
+1. Smart Factory Transformation
+2. Manufacturing Execution &amp; Operations Intelligence
+3. Industrial Digital Twins
+4. Industrial AI &amp; Computer Vision
+5. OT/IT Convergence &amp; Industrial Connectivity
+6. Autonomous &amp; Robotic Manufacturing
+7. Asset Performance &amp; Reliability Engineering
+8. Industrial Cybersecurity
+12. Logistics &amp; Supply Chain
+1. Digital Supply Chain Transformation
+2. Intelligent Logistics Control Towers
+3. Smart Warehouse &amp; Intralogistics Engineering
+4. Fleet &amp; Transportation Intelligence
+5. Port &amp; Intermodal Operations Engineering
+6. Supply Chain Digital Twins
+7. Supplier &amp; Procurement Intelligence
+13. Media &amp; Entertainment
+1. Next-Generation Media Platforms
+2. Media Supply Chain Automation
+3. Cloud-Native Broadcast Engineering
+4. AI-Driven Content Intelligence
+5. Immersive Media &amp; Virtual Production
+6. Media Quality &amp; Experience Engineering
+14. Mining, Oil &amp; Gas
+1. Digital Oilfield Engineering
+2. Mining Automation &amp; Autonomous Operations
+3. Industrial Asset Digital Twins
+4. Predictive Reliability &amp; Maintenance Engineering
+
+5. Industrial Process Intelligence
+6. Remote Operations &amp; Control Systems
+7. Industrial OT Cybersecurity
+15. Rail &amp; Transportation
+1. Rail Systems &amp; Signalling Engineering
+2. Railway Safety &amp; Train Protection Systems
+3. Digital Railway &amp; Infrastructure Twins
+4. Rolling Stock Engineering
+5. Predictive Railway Asset Maintenance
+6. Rail Operations Intelligence
+7. Autonomous Inspection &amp; Monitoring
+16. Retail &amp; E-commerce
+1. Enterprise Commerce Platform Engineering
+2. Retail Enterprise Architecture Transformation
+3. Intelligent Retail Operations
+4. Retail AI &amp; Customer Intelligence
+5. Computer Vision &amp; Smart Store Engineering
+6. Retail Supply Chain Intelligence
+7. Customer Data &amp; Loyalty Platforms
+17. Semiconductor &amp; Electronics
+1. Silicon &amp; Semiconductor Engineering
+2. Embedded Product &amp; Electronics Engineering
+3. Electronic Design &amp; Verification Automation
+4. Semiconductor Manufacturing Intelligence
+5. Industrial Test &amp; Validation Systems
+6. Edge AI &amp; Intelligent Devices
+7. Product Lifecycle &amp; Engineering Data Management
+18. Agriculture &amp; Food
+
+1. Precision Agriculture Engineering
+2. Autonomous Agricultural Machinery
+3. Digital Agriculture Ecosystems
+4. Food Manufacturing Transformation
+5. Food Safety &amp; Traceability Infrastructure
+6. Agricultural &amp; Food Supply Chain Intelligence
+7. AI-Driven Crop &amp; Production Intelligence
+CODEAXES — Cross-Industry Enterprise Engineering Practices
+These are the common engineering practices that support delivery across multiple
+industries.
+1. Product &amp; Systems Engineering
+2. Digital Engineering &amp; Simulation
+3. AI &amp; Autonomous Intelligence
+4. Connected Products &amp; IoT
+5. Intelligent Manufacturing &amp; Operations
+6. Enterprise Platforms &amp; Transformation
+7. Cloud, Data &amp; Infrastructure Engineering
+8. Verification, Validation &amp; Quality Engineering
+9. Cybersecurity &amp; Operational Resilience
+10. Experience &amp; Human-Centred Engineering
+
+CODEAXES — Complete Technology Stack
+1. Programming Languages &amp; Core Technologies
+ Python
+ Java
+ JavaScript
+ TypeScript
+ C
+ C++
+ C#
+ Go
+ Rust
+ PHP
+ Kotlin
+ Swift
+ SQL
+ R
+ MATLAB
+2. Frontend &amp; Web Technologies
+ React.js
+ Next.js
+ Angular
+ Vue.js
+ Nuxt.js
+ HTML5
+ CSS3
+ Tailwind CSS
+ Bootstrap
+ WebGL
+
+ Three.js
+ WebAssembly
+3. Backend &amp; Application Frameworks
+ Node.js
+ Express.js
+ NestJS
+ Django
+ FastAPI
+ Flask
+ Spring Boot
+ ASP.NET Core
+ Laravel
+ Ruby on Rails
+ Fastify
+ GraphQL
+4. Mobile Application Technologies
+ Android Development
+ iOS Development
+ Flutter
+ React Native
+ Kotlin Multiplatform
+ SwiftUI
+ Jetpack Compose
+ .NET MAUI
+ Progressive Web Applications (PWA)
+5. Artificial Intelligence &amp; Machine Learning
+ TensorFlow
+ PyTorch
+
+ Scikit-learn
+ Keras
+ XGBoost
+ OpenCV
+ Hugging Face
+ ONNX
+ MLflow
+ Apache Spark MLlib
+ NVIDIA CUDA
+ NVIDIA TensorRT
+6. Generative AI, LLM &amp; Agentic AI
+ OpenAI Models &amp; APIs
+ Anthropic Claude
+ Google Gemini
+ Meta Llama
+ Mistral AI
+ Hugging Face Transformers
+ LangChain
+ LangGraph
+ LlamaIndex
+ Microsoft Semantic Kernel
+ AutoGen
+ CrewAI
+ Retrieval-Augmented Generation (RAG)
+ Vector Databases
+ Model Fine-Tuning
+ AI Agents &amp; Multi-Agent Systems
+ MCP (Model Context Protocol)
+
+7. Data Engineering &amp; Analytics
+ Apache Spark
+ Apache Kafka
+ Apache Airflow
+ Apache Flink
+ dbt
+ Databricks
+ Snowflake
+ Google BigQuery
+ Amazon Redshift
+ Azure Synapse Analytics
+ Microsoft Fabric
+ Elasticsearch
+ Power BI
+ Tableau
+ Looker
+ Grafana
+ Metabase
+8. Databases &amp; Data Storage
+Relational Databases
+ PostgreSQL
+ MySQL
+ Microsoft SQL Server
+ Oracle Database
+ MariaDB
+NoSQL Databases
+ MongoDB
+ Apache Cassandra
+
+ Amazon DynamoDB
+ Couchbase
+ Firebase Firestore
+Caching &amp; Search
+ Redis
+ Elasticsearch
+ OpenSearch
+ Apache Solr
+Vector Databases
+ Pinecone
+ Weaviate
+ Milvus
+ Qdrant
+ Chroma
+ pgvector
+9. Cloud Computing &amp; Infrastructure
+Cloud Platforms
+ Amazon Web Services (AWS)
+ Microsoft Azure
+ Google Cloud Platform (GCP)
+ Oracle Cloud Infrastructure (OCI)
+ IBM Cloud
+Cloud Architecture &amp; Infrastructure
+ Cloud-Native Architecture
+ Hybrid Cloud
+ Multi-Cloud Architecture
+ Serverless Computing
+ Microservices Architecture
+
+ Containerised Applications
+ Edge Computing
+ High Availability &amp; Disaster Recovery
+10. DevOps &amp; Platform Engineering
+ Docker
+ Kubernetes
+ Helm
+ Terraform
+ Ansible
+ Jenkins
+ GitHub Actions
+ GitLab CI/CD
+ Azure DevOps
+ Argo CD
+ Prometheus
+ Grafana
+ Istio
+ NGINX
+ HashiCorp Vault
+ Infrastructure as Code (IaC)
+ Site Reliability Engineering (SRE)
+11. API, Middleware &amp; Enterprise Integration
+ REST APIs
+ GraphQL
+ gRPC
+ WebSockets
+ Apache Kafka
+ RabbitMQ
+
+ Apache ActiveMQ
+ MuleSoft
+ Dell Boomi
+ Microsoft Power Platform
+ Microsoft BizTalk
+ Kong API Gateway
+ Apigee
+ NGINX API Gateway
+ Enterprise Service Bus (ESB)
+ Event-Driven Architecture
+12. Enterprise Platforms &amp; Business Systems
+ SAP
+ Oracle ERP
+ Microsoft Dynamics 365
+ Salesforce
+ ServiceNow
+ Odoo
+ ERPNext
+ Microsoft SharePoint
+ Microsoft Power Platform
+ Workday
+ OpenText
+ PTC Windchill
+ Siemens Teamcenter
+13. Cybersecurity &amp; Digital Trust
+ Microsoft Sentinel
+ Splunk
+ IBM QRadar
+
+ CrowdStrike
+ Palo Alto Networks
+ Fortinet
+ Check Point
+ Wazuh
+ OWASP
+ Burp Suite
+ SonarQube
+ Snyk
+ HashiCorp Vault
+ Keycloak
+ Okta
+ Microsoft Entra ID
+ Identity &amp; Access Management (IAM)
+ Privileged Access Management (PAM)
+ Zero Trust Architecture
+ SIEM &amp; SOAR
+ DevSecOps
+14. Blockchain &amp; Distributed Ledger Technologies
+ Ethereum
+ Hyperledger Fabric
+ Solidity
+ Polygon
+ Solana
+ Web3.js
+ Ethers.js
+ Smart Contracts
+ Distributed Ledger Technology (DLT)
+
+ Decentralised Applications (dApps)
+ Tokenisation Infrastructure
+15. Internet of Things &amp; Industrial Connectivity
+ MQTT
+ OPC UA
+ Modbus
+ CAN Bus
+ CANopen
+ PROFINET
+ EtherCAT
+ BACnet
+ LoRaWAN
+ Zigbee
+ Bluetooth Low Energy (BLE)
+ Industrial Ethernet
+ AWS IoT
+ Azure IoT
+ ThingsBoard
+ Edge Computing Platforms
+16. Embedded Systems &amp; Firmware Engineering
+ Embedded C
+ Embedded C++
+ Embedded Linux
+ FreeRTOS
+ Zephyr RTOS
+ ARM Architecture
+ STM32
+ ESP32
+
+ Raspberry Pi
+ NVIDIA Jetson
+ FPGA
+ VHDL
+ Verilog
+ Device Drivers
+ Firmware Development
+ Hardware-Software Integration
+17. Robotics, Drones &amp; Autonomous Systems
+ ROS 2 (Robot Operating System)
+ NVIDIA Isaac
+ Gazebo
+ PX4 Autopilot
+ ArduPilot
+ MAVLink
+ OpenCV
+ SLAM
+ Sensor Fusion
+ Computer Vision
+ Autonomous Navigation
+ Motion Planning
+ Robotic Process Automation (RPA)
+ Robotic Control Systems
+18. Digital Twins, Simulation &amp; Spatial Computing
+ NVIDIA Omniverse
+ Unity
+ Unreal Engine
+ MATLAB &amp; Simulink
+
+ Ansys
+ Siemens Simcenter
+ Dassault Systèmes 3DEXPERIENCE
+ PTC Creo
+ Autodesk
+ Blender
+ OpenUSD
+ WebXR
+ ARKit
+ ARCore
+ Virtual Reality (VR)
+ Augmented Reality (AR)
+ Mixed Reality (MR)
+ Digital Twin Platforms
+19. Automotive &amp; Mobility Engineering
+ AUTOSAR
+ Adaptive AUTOSAR
+ Automotive Ethernet
+ CAN / CAN FD
+ LIN Bus
+ UDS
+ SOME/IP
+ Vehicle-to-Everything (V2X)
+ Android Automotive OS
+ Automotive SPICE (ASPICE)
+ ISO 26262 Engineering
+ Hardware-in-the-Loop (HIL)
+ Software-in-the-Loop (SIL)
+
+ Vehicle Simulation &amp; Validation
+20. Semiconductor &amp; Electronics Engineering
+ SystemVerilog
+ Verilog
+ VHDL
+ FPGA Development
+ RTL Design &amp; Verification
+ UVM
+ EDA Toolchains
+ Cadence
+ Synopsys
+ Siemens EDA
+ Xilinx Vivado
+ Intel Quartus
+ PCB Design
+ Signal Integrity Analysis
+ Hardware Verification
+21. Testing, Validation &amp; Quality Engineering
+ Selenium
+ Playwright
+ Cypress
+ Appium
+ JUnit
+ TestNG
+ PyTest
+ Postman
+ Newman
+ JMeter
+
+ k6
+ Gatling
+ Robot Framework
+ Cucumber
+ SonarQube
+ BrowserStack
+ SIL/HIL Testing
+ Automated Regression Testing
+22. Product Design &amp; Engineering Tools
+ Figma
+ Adobe Creative Cloud
+ Sketch
+ Framer
+ Autodesk AutoCAD
+ Autodesk Revit
+ Autodesk Fusion
+ SolidWorks
+ CATIA
+ Siemens NX
+ PTC Creo
+ Blender
+ Rhino 3D
+ KeyShot
+ 3D Modelling &amp; Visualisation
+ CAD / CAM / CAE
+23. Quantum &amp; Advanced Computing
+ IBM Quantum
+ Qiskit
+
+ Google Cirq
+ PennyLane
+ NVIDIA CUDA
+ High-Performance Computing (HPC)
+ Parallel Computing
+ Distributed Computing
+ GPU Computing
+ Quantum Algorithm Development
+ Quantum Simulation
+24. Major Technology Ecosystems
+Cloud &amp; Infrastructure
+ AWS
+ Microsoft Azure
+ Google Cloud
+ Oracle Cloud
+ IBM Cloud
+AI &amp; Intelligent Systems
+ OpenAI
+ Anthropic
+ Google AI
+ NVIDIA
+ Hugging Face
+ Meta AI
+ Mistral AI
+Enterprise Platforms
+ SAP
+ Salesforce
+ ServiceNow
+
+ Microsoft Dynamics 365
+ Oracle
+Development &amp; Engineering Platforms
+ GitHub
+ GitLab
+ Atlassian
+ JetBrains
+ Docker
+ Kubernetes
+ HashiCorp

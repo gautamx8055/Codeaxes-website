@@ -96,7 +96,7 @@ const relatedServices = tech.relatedServices.map((slug) => getService(slug)).fil
           <li>
             <a href={withBase(`/services/${service.slug}`)}>
               <strong>{service.name}</strong>
-              <span>{service.tagline}</span>
+              <span>{service.summary}</span>
             </a>
           </li>
         ))

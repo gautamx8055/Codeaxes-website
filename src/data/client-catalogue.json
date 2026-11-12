@@ -1,0 +1,1074 @@
+{
+  "serviceGroups": [
+    {
+      "id": "ai-first",
+      "name": "AI First",
+      "services": [
+        {
+          "slug": "artificial-intelligence",
+          "name": "Artificial Intelligence"
+        },
+        {
+          "slug": "generative-ai-llm-engineering",
+          "name": "Generative AI & LLM Engineering"
+        },
+        {
+          "slug": "agentic-ai-ai-automation",
+          "name": "Agentic AI & AI Automation"
+        },
+        {
+          "slug": "data-transformation",
+          "name": "Data Transformation"
+        },
+        {
+          "slug": "data-analytics-intelligence",
+          "name": "Data Analytics & Intelligence"
+        }
+      ]
+    },
+    {
+      "id": "product-engineering",
+      "name": "Product Engineering",
+      "services": [
+        {
+          "slug": "software-engineering",
+          "name": "Software Engineering"
+        },
+        {
+          "slug": "web-application-development",
+          "name": "Web Application Development"
+        },
+        {
+          "slug": "mobile-application-development",
+          "name": "Mobile Application Development"
+        },
+        {
+          "slug": "saas-platform-engineering",
+          "name": "SaaS & Platform Engineering"
+        },
+        {
+          "slug": "api-development-system-integration",
+          "name": "API Development & System Integration"
+        },
+        {
+          "slug": "enterprise-product-development",
+          "name": "Enterprise Product Development"
+        }
+      ]
+    },
+    {
+      "id": "enterprise",
+      "name": "Enterprise",
+      "services": [
+        {
+          "slug": "enterprise-solutions",
+          "name": "Enterprise Solutions"
+        },
+        {
+          "slug": "erp-crm-solutions",
+          "name": "ERP & CRM Solutions"
+        },
+        {
+          "slug": "digital-transformation",
+          "name": "Digital Transformation"
+        },
+        {
+          "slug": "platform-modernisation",
+          "name": "Platform Modernisation"
+        },
+        {
+          "slug": "managed-engineering-services",
+          "name": "Managed Engineering Services"
+        }
+      ]
+    },
+    {
+      "id": "experience-design",
+      "name": "Experience Design",
+      "services": [
+        {
+          "slug": "ui-ux-design",
+          "name": "UI/UX Design"
+        },
+        {
+          "slug": "product-design",
+          "name": "Product Design"
+        },
+        {
+          "slug": "research-insights",
+          "name": "Research & Insights"
+        },
+        {
+          "slug": "service-design",
+          "name": "Service Design"
+        },
+        {
+          "slug": "3d-digital-experience",
+          "name": "3D & Digital Experience"
+        }
+      ]
+    },
+    {
+      "id": "digital-engineering",
+      "name": "Digital Engineering",
+      "services": [
+        {
+          "slug": "cloud-engineering",
+          "name": "Cloud Engineering"
+        },
+        {
+          "slug": "cybersecurity-digital-trust",
+          "name": "Cybersecurity & Digital Trust"
+        },
+        {
+          "slug": "devops-mlops",
+          "name": "DevOps & MLOps"
+        },
+        {
+          "slug": "quality-engineering",
+          "name": "Quality Engineering"
+        },
+        {
+          "slug": "digital-platforms-integration",
+          "name": "Digital Platforms & Integration"
+        }
+      ]
+    },
+    {
+      "id": "advanced-engineering",
+      "name": "Advanced Engineering",
+      "services": [
+        {
+          "slug": "industrial-iot-industry-4-0",
+          "name": "Industrial IoT & Industry 4.0"
+        },
+        {
+          "slug": "embedded-systems-firmware-engineering",
+          "name": "Embedded Systems & Firmware Engineering"
+        },
+        {
+          "slug": "industrial-automation-robotics",
+          "name": "Industrial Automation & Robotics"
+        },
+        {
+          "slug": "digital-twins-simulation",
+          "name": "Digital Twins & Simulation"
+        },
+        {
+          "slug": "drones-autonomous-systems",
+          "name": "Drones & Autonomous Systems"
+        }
+      ]
+    }
+  ],
+  "industries": [
+    {
+      "slug": "aerospace-defence",
+      "name": "Aerospace & Defence",
+      "solutions": [
+        "Aircraft Systems & Avionics Engineering",
+        "Model-Based Systems Engineering (MBSE)",
+        "Digital Engineering & Digital Thread",
+        "Mission-Critical Command & Control Systems",
+        "Predictive Fleet Readiness",
+        "Autonomous Aerial Systems"
+      ]
+    },
+    {
+      "slug": "appliances-consumer-goods",
+      "name": "Appliances & Consumer Goods",
+      "solutions": [
+        "Connected Product Engineering",
+        "Smart Appliance Ecosystems",
+        "Product Lifecycle Engineering",
+        "Firmware & Over-the-Air (OTA) Engineering",
+        "Intelligent Product Experience",
+        "Manufacturing & Quality Intelligence"
+      ]
+    },
+    {
+      "slug": "automotive-mobility",
+      "name": "Automotive & Mobility",
+      "solutions": [
+        "Software-Defined Vehicle (SDV) Engineering",
+        "ADAS & Autonomous Driving Engineering",
+        "Vehicle Electrification Engineering",
+        "Connected Vehicle Ecosystems",
+        "Digital Cockpit & Human-Machine Interface Engineering",
+        "Virtual Validation & Vehicle Simulation",
+        "Vehicle Lifecycle & Engineering Data Platforms"
+      ]
+    },
+    {
+      "slug": "banking-financial-services",
+      "name": "Banking & Financial Services",
+      "solutions": [
+        "Core Banking Modernisation",
+        "Enterprise Lending & Credit Platforms",
+        "Intelligent Financial Crime & Fraud Systems",
+        "Enterprise Payments Engineering",
+        "Financial Data Platforms",
+        "Digital Identity & Trust Infrastructure",
+        "AI-Driven Financial Operations"
+      ]
+    },
+    {
+      "slug": "communications-telecom",
+      "name": "Communications & Telecom",
+      "solutions": [
+        "5G & Advanced Network Engineering",
+        "Telecom Cloud Transformation",
+        "Autonomous Network Operations",
+        "Network Digital Twins",
+        "OSS/BSS Transformation",
+        "Telecom Cybersecurity & Resilience"
+      ]
+    },
+    {
+      "slug": "construction-infrastructure",
+      "name": "Construction & Infrastructure",
+      "solutions": [
+        "Digital Engineering & BIM Integration",
+        "Infrastructure Digital Twins",
+        "Smart Infrastructure Operations",
+        "Capital Project Intelligence",
+        "Connected Asset Lifecycle Management",
+        "Reality Capture & Spatial Engineering"
+      ]
+    },
+    {
+      "slug": "education-edtech",
+      "name": "Education & EdTech",
+      "solutions": [
+        "Enterprise Learning Ecosystems",
+        "AI-Powered Adaptive Learning",
+        "Workforce Skills Intelligence",
+        "Immersive Training & Simulation",
+        "Enterprise Assessment & Credential Infrastructure",
+        "Learning Data & Intelligence Platforms"
+      ]
+    },
+    {
+      "slug": "energy-utilities",
+      "name": "Energy & Utilities",
+      "solutions": [
+        "Smart Grid & Grid Modernisation",
+        "Renewable Energy Systems Engineering",
+        "Battery Energy Storage Systems (BESS)",
+        "Energy Digital Twins",
+        "Predictive Asset Performance",
+        "Energy Trading & Forecasting Intelligence",
+        "Industrial Energy Management"
+      ]
+    },
+    {
+      "slug": "healthcare-life-sciences",
+      "name": "Healthcare & Life Sciences",
+      "solutions": [
+        "Medical Device Product Engineering",
+        "Digital Health Platform Engineering",
+        "Clinical Data & Research Intelligence",
+        "Pharmaceutical Manufacturing Intelligence",
+        "Laboratory & Diagnostics Systems Engineering",
+        "Healthcare AI & Clinical Workflow Intelligence",
+        "Healthcare Cybersecurity & Data Governance"
+      ]
+    },
+    {
+      "slug": "insurance",
+      "name": "Insurance",
+      "solutions": [
+        "Insurance Core Platform Modernisation",
+        "Intelligent Claims Transformation",
+        "Advanced Underwriting & Risk Intelligence",
+        "Insurance Fraud & Anomaly Intelligence",
+        "Actuarial & Enterprise Data Platforms",
+        "Digital Insurance Ecosystems"
+      ]
+    },
+    {
+      "slug": "industrial-manufacturing",
+      "name": "Industrial & Manufacturing",
+      "solutions": [
+        "Smart Factory Transformation",
+        "Manufacturing Execution & Operations Intelligence",
+        "Industrial Digital Twins",
+        "Industrial AI & Computer Vision",
+        "OT/IT Convergence & Industrial Connectivity",
+        "Autonomous & Robotic Manufacturing",
+        "Asset Performance & Reliability Engineering",
+        "Industrial Cybersecurity"
+      ]
+    },
+    {
+      "slug": "logistics-supply-chain",
+      "name": "Logistics & Supply Chain",
+      "solutions": [
+        "Digital Supply Chain Transformation",
+        "Intelligent Logistics Control Towers",
+        "Smart Warehouse & Intralogistics Engineering",
+        "Fleet & Transportation Intelligence",
+        "Port & Intermodal Operations Engineering",
+        "Supply Chain Digital Twins",
+        "Supplier & Procurement Intelligence"
+      ]
+    },
+    {
+      "slug": "media-entertainment",
+      "name": "Media & Entertainment",
+      "solutions": [
+        "Next-Generation Media Platforms",
+        "Media Supply Chain Automation",
+        "Cloud-Native Broadcast Engineering",
+        "AI-Driven Content Intelligence",
+        "Immersive Media & Virtual Production",
+        "Media Quality & Experience Engineering"
+      ]
+    },
+    {
+      "slug": "mining-oil-gas",
+      "name": "Mining, Oil & Gas",
+      "solutions": [
+        "Digital Oilfield Engineering",
+        "Mining Automation & Autonomous Operations",
+        "Industrial Asset Digital Twins",
+        "Predictive Reliability & Maintenance Engineering",
+        "Industrial Process Intelligence",
+        "Remote Operations & Control Systems",
+        "Industrial OT Cybersecurity"
+      ]
+    },
+    {
+      "slug": "rail-transportation",
+      "name": "Rail & Transportation",
+      "solutions": [
+        "Rail Systems & Signalling Engineering",
+        "Railway Safety & Train Protection Systems",
+        "Digital Railway & Infrastructure Twins",
+        "Rolling Stock Engineering",
+        "Predictive Railway Asset Maintenance",
+        "Rail Operations Intelligence",
+        "Autonomous Inspection & Monitoring"
+      ]
+    },
+    {
+      "slug": "retail-e-commerce",
+      "name": "Retail & E-commerce",
+      "solutions": [
+        "Enterprise Commerce Platform Engineering",
+        "Retail Enterprise Architecture Transformation",
+        "Intelligent Retail Operations",
+        "Retail AI & Customer Intelligence",
+        "Computer Vision & Smart Store Engineering",
+        "Retail Supply Chain Intelligence",
+        "Customer Data & Loyalty Platforms"
+      ]
+    },
+    {
+      "slug": "semiconductor-electronics",
+      "name": "Semiconductor & Electronics",
+      "solutions": [
+        "Silicon & Semiconductor Engineering",
+        "Embedded Product & Electronics Engineering",
+        "Electronic Design & Verification Automation",
+        "Semiconductor Manufacturing Intelligence",
+        "Industrial Test & Validation Systems",
+        "Edge AI & Intelligent Devices",
+        "Product Lifecycle & Engineering Data Management"
+      ]
+    },
+    {
+      "slug": "agriculture-food",
+      "name": "Agriculture & Food",
+      "solutions": [
+        "Precision Agriculture Engineering",
+        "Autonomous Agricultural Machinery",
+        "Digital Agriculture Ecosystems",
+        "Food Manufacturing Transformation",
+        "Food Safety & Traceability Infrastructure",
+        "Agricultural & Food Supply Chain Intelligence",
+        "AI-Driven Crop & Production Intelligence"
+      ]
+    }
+  ],
+  "practices": [
+    "Product & Systems Engineering",
+    "Digital Engineering & Simulation",
+    "AI & Autonomous Intelligence",
+    "Connected Products & IoT",
+    "Intelligent Manufacturing & Operations",
+    "Enterprise Platforms & Transformation",
+    "Cloud, Data & Infrastructure Engineering",
+    "Verification, Validation & Quality Engineering",
+    "Cybersecurity & Operational Resilience",
+    "Experience & Human-Centred Engineering"
+  ],
+  "technologyCategories": [
+    {
+      "id": "programming-languages-core-technologies",
+      "name": "Programming Languages & Core Technologies",
+      "sections": [
+        {
+          "name": null,
+          "items": [
+            "Python",
+            "Java",
+            "JavaScript",
+            "TypeScript",
+            "C",
+            "C++",
+            "C#",
+            "Go",
+            "Rust",
+            "PHP",
+            "Kotlin",
+            "Swift",
+            "SQL",
+            "R",
+            "MATLAB"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "frontend-web-technologies",
+      "name": "Frontend & Web Technologies",
+      "sections": [
+        {
+          "name": null,
+          "items": [
+            "React.js",
+            "Next.js",
+            "Angular",
+            "Vue.js",
+            "Nuxt.js",
+            "HTML5",
+            "CSS3",
+            "Tailwind CSS",
+            "Bootstrap",
+            "WebGL",
+            "Three.js",
+            "WebAssembly"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "backend-application-frameworks",
+      "name": "Backend & Application Frameworks",
+      "sections": [
+        {
+          "name": null,
+          "items": [
+            "Node.js",
+            "Express.js",
+            "NestJS",
+            "Django",
+            "FastAPI",
+            "Flask",
+            "Spring Boot",
+            "ASP.NET Core",
+            "Laravel",
+            "Ruby on Rails",
+            "Fastify",
+            "GraphQL"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mobile-application-technologies",
+      "name": "Mobile Application Technologies",
+      "sections": [
+        {
+          "name": null,
+          "items": [
+            "Android Development",
+            "iOS Development",
+            "Flutter",
+            "React Native",
+            "Kotlin Multiplatform",
+            "SwiftUI",
+            "Jetpack Compose",
+            ".NET MAUI",
+            "Progressive Web Applications (PWA)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "artificial-intelligence-machine-learning",
+      "name": "Artificial Intelligence & Machine Learning",
+      "sections": [
+        {
+          "name": null,
+          "items": [
+            "TensorFlow",
+            "PyTorch",
+            "Scikit-learn",
+            "Keras",
+            "XGBoost",
+            "OpenCV",
+            "Hugging Face",
+            "ONNX",
+            "MLflow",
+            "Apache Spark MLlib",
+            "NVIDIA CUDA",
+            "NVIDIA TensorRT"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "generative-ai-llm-agentic-ai",
+      "name": "Generative AI, LLM & Agentic AI",
+      "sections": [
+        {
+          "name": null,
+          "items": [
+            "OpenAI Models & APIs",
+            "Anthropic Claude",
+            "Google Gemini",
+            "Meta Llama",
+            "Mistral AI",
+            "Hugging Face Transformers",
+            "LangChain",
+            "LangGraph",
+            "LlamaIndex",
+            "Microsoft Semantic Kernel",
+            "AutoGen",
+            "CrewAI",
+            "Retrieval-Augmented Generation (RAG)",
+            "Vector Databases",
+            "Model Fine-Tuning",
+            "AI Agents & Multi-Agent Systems",
+            "MCP (Model Context Protocol)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "data-engineering-analytics",
+      "name": "Data Engineering & Analytics",
+      "sections": [
+        {
+          "name": null,
+          "items": [
+            "Apache Spark",
+            "Apache Kafka",
+            "Apache Airflow",
+            "Apache Flink",
+            "dbt",
+            "Databricks",
+            "Snowflake",
+            "Google BigQuery",
+            "Amazon Redshift",
+            "Azure Synapse Analytics",
+            "Microsoft Fabric",
+            "Elasticsearch",
+            "Power BI",
+            "Tableau",
+            "Looker",
+            "Grafana",
+            "Metabase"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "databases-data-storage",
+      "name": "Databases & Data Storage",
+      "sections": [
+        {
+          "name": "Relational Databases",
+          "items": [
+            "PostgreSQL",
+            "MySQL",
+            "Microsoft SQL Server",
+            "Oracle Database",
+            "MariaDB"
+          ]
+        },
+        {
+          "name": "NoSQL Databases",
+          "items": [
+            "MongoDB",
+            "Apache Cassandra",
+            "Amazon DynamoDB",
+            "Couchbase",
+            "Firebase Firestore"
+          ]
+        },
+        {
+          "name": "Caching & Search",
+          "items": [
+            "Redis",
+            "Elasticsearch",
+            "OpenSearch",
+            "Apache Solr"
+          ]
+        },
+        {
+          "name": "Vector Databases",
+          "items": [
+            "Pinecone",
+            "Weaviate",
+            "Milvus",
+            "Qdrant",
+            "Chroma",
+            "pgvector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cloud-computing-infrastructure",
+      "name": "Cloud Computing & Infrastructure",
+      "sections": [
+        {
+          "name": "Cloud Platforms",
+          "items": [
+            "Amazon Web Services (AWS)",
+            "Microsoft Azure",
+            "Google Cloud Platform (GCP)",
+            "Oracle Cloud Infrastructure (OCI)",
+            "IBM Cloud"
+          ]
+        },
+        {
+          "name": "Cloud Architecture & Infrastructure",
+          "items": [
+            "Cloud-Native Architecture",
+            "Hybrid Cloud",
+            "Multi-Cloud Architecture",
+            "Serverless Computing",
+            "Microservices Architecture",
+            "Containerised Applications",
+            "Edge Computing",
+            "High Availability & Disaster Recovery"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "devops-platform-engineering",
+      "name": "DevOps & Platform Engineering",
+      "sections": [
+        {
+          "name": null,
+          "items": [
+            "Docker",
+            "Kubernetes",
+            "Helm",
+            "Terraform",
+            "Ansible",
+            "Jenkins",
+            "GitHub Actions",
+            "GitLab CI/CD",
+            "Azure DevOps",
+            "Argo CD",
+            "Prometheus",
+            "Grafana",
+            "Istio",
+            "NGINX",
+            "HashiCorp Vault",
+            "Infrastructure as Code (IaC)",
+            "Site Reliability Engineering (SRE)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "api-middleware-enterprise-integration",
+      "name": "API, Middleware & Enterprise Integration",
+      "sections": [
+        {
+          "name": null,
+          "items": [
+            "REST APIs",
+            "GraphQL",
+            "gRPC",
+            "WebSockets",
+            "Apache Kafka",
+            "RabbitMQ",
+            "Apache ActiveMQ",
+            "MuleSoft",
+            "Dell Boomi",
+            "Microsoft Power Platform",
+            "Microsoft BizTalk",
+            "Kong API Gateway",
+            "Apigee",
+            "NGINX API Gateway",
+            "Enterprise Service Bus (ESB)",
+            "Event-Driven Architecture"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "enterprise-platforms-business-systems",
+      "name": "Enterprise Platforms & Business Systems",
+      "sections": [
+        {
+          "name": null,
+          "items": [
+            "SAP",
+            "Oracle ERP",
+            "Microsoft Dynamics 365",
+            "Salesforce",
+            "ServiceNow",
+            "Odoo",
+            "ERPNext",
+            "Microsoft SharePoint",
+            "Microsoft Power Platform",
+            "Workday",
+            "OpenText",
+            "PTC Windchill",
+            "Siemens Teamcenter"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cybersecurity-digital-trust",
+      "name": "Cybersecurity & Digital Trust",
+      "sections": [
+        {
+          "name": null,
+          "items": [
+            "Microsoft Sentinel",
+            "Splunk",
+            "IBM QRadar",
+            "CrowdStrike",
+            "Palo Alto Networks",
+            "Fortinet",
+            "Check Point",
+            "Wazuh",
+            "OWASP",
+            "Burp Suite",
+            "SonarQube",
+            "Snyk",
+            "HashiCorp Vault",
+            "Keycloak",
+            "Okta",
+            "Microsoft Entra ID",
+            "Identity & Access Management (IAM)",
+            "Privileged Access Management (PAM)",
+            "Zero Trust Architecture",
+            "SIEM & SOAR",
+            "DevSecOps"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "blockchain-distributed-ledger-technologies",
+      "name": "Blockchain & Distributed Ledger Technologies",
+      "sections": [
+        {
+          "name": null,
+          "items": [
+            "Ethereum",
+            "Hyperledger Fabric",
+            "Solidity",
+            "Polygon",
+            "Solana",
+            "Web3.js",
+            "Ethers.js",
+            "Smart Contracts",
+            "Distributed Ledger Technology (DLT)",
+            "Decentralised Applications (dApps)",
+            "Tokenisation Infrastructure"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "internet-of-things-industrial-connectivity",
+      "name": "Internet of Things & Industrial Connectivity",
+      "sections": [
+        {
+          "name": null,
+          "items": [
+            "MQTT",
+            "OPC UA",
+            "Modbus",
+            "CAN Bus",
+            "CANopen",
+            "PROFINET",
+            "EtherCAT",
+            "BACnet",
+            "LoRaWAN",
+            "Zigbee",
+            "Bluetooth Low Energy (BLE)",
+            "Industrial Ethernet",
+            "AWS IoT",
+            "Azure IoT",
+            "ThingsBoard",
+            "Edge Computing Platforms"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "embedded-systems-firmware-engineering",
+      "name": "Embedded Systems & Firmware Engineering",
+      "sections": [
+        {
+          "name": null,
+          "items": [
+            "Embedded C",
+            "Embedded C++",
+            "Embedded Linux",
+            "FreeRTOS",
+            "Zephyr RTOS",
+            "ARM Architecture",
+            "STM32",
+            "ESP32",
+            "Raspberry Pi",
+            "NVIDIA Jetson",
+            "FPGA",
+            "VHDL",
+            "Verilog",
+            "Device Drivers",
+            "Firmware Development",
+            "Hardware-Software Integration"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "robotics-drones-autonomous-systems",
+      "name": "Robotics, Drones & Autonomous Systems",
+      "sections": [
+        {
+          "name": null,
+          "items": [
+            "ROS 2 (Robot Operating System)",
+            "NVIDIA Isaac",
+            "Gazebo",
+            "PX4 Autopilot",
+            "ArduPilot",
+            "MAVLink",
+            "OpenCV",
+            "SLAM",
+            "Sensor Fusion",
+            "Computer Vision",
+            "Autonomous Navigation",
+            "Motion Planning",
+            "Robotic Process Automation (RPA)",
+            "Robotic Control Systems"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "digital-twins-simulation-spatial-computing",
+      "name": "Digital Twins, Simulation & Spatial Computing",
+      "sections": [
+        {
+          "name": null,
+          "items": [
+            "NVIDIA Omniverse",
+            "Unity",
+            "Unreal Engine",
+            "MATLAB & Simulink",
+            "Ansys",
+            "Siemens Simcenter",
+            "Dassault Systèmes 3DEXPERIENCE",
+            "PTC Creo",
+            "Autodesk",
+            "Blender",
+            "OpenUSD",
+            "WebXR",
+            "ARKit",
+            "ARCore",
+            "Virtual Reality (VR)",
+            "Augmented Reality (AR)",
+            "Mixed Reality (MR)",
+            "Digital Twin Platforms"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "automotive-mobility-engineering",
+      "name": "Automotive & Mobility Engineering",
+      "sections": [
+        {
+          "name": null,
+          "items": [
+            "AUTOSAR",
+            "Adaptive AUTOSAR",
+            "Automotive Ethernet",
+            "CAN / CAN FD",
+            "LIN Bus",
+            "UDS",
+            "SOME/IP",
+            "Vehicle-to-Everything (V2X)",
+            "Android Automotive OS",
+            "Automotive SPICE (ASPICE)",
+            "ISO 26262 Engineering",
+            "Hardware-in-the-Loop (HIL)",
+            "Software-in-the-Loop (SIL)",
+            "Vehicle Simulation & Validation"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "semiconductor-electronics-engineering",
+      "name": "Semiconductor & Electronics Engineering",
+      "sections": [
+        {
+          "name": null,
+          "items": [
+            "SystemVerilog",
+            "Verilog",
+            "VHDL",
+            "FPGA Development",
+            "RTL Design & Verification",
+            "UVM",
+            "EDA Toolchains",
+            "Cadence",
+            "Synopsys",
+            "Siemens EDA",
+            "Xilinx Vivado",
+            "Intel Quartus",
+            "PCB Design",
+            "Signal Integrity Analysis",
+            "Hardware Verification"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "testing-validation-quality-engineering",
+      "name": "Testing, Validation & Quality Engineering",
+      "sections": [
+        {
+          "name": null,
+          "items": [
+            "Selenium",
+            "Playwright",
+            "Cypress",
+            "Appium",
+            "JUnit",
+            "TestNG",
+            "PyTest",
+            "Postman",
+            "Newman",
+            "JMeter",
+            "k6",
+            "Gatling",
+            "Robot Framework",
+            "Cucumber",
+            "SonarQube",
+            "BrowserStack",
+            "SIL/HIL Testing",
+            "Automated Regression Testing"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "product-design-engineering-tools",
+      "name": "Product Design & Engineering Tools",
+      "sections": [
+        {
+          "name": null,
+          "items": [
+            "Figma",
+            "Adobe Creative Cloud",
+            "Sketch",
+            "Framer",
+            "Autodesk AutoCAD",
+            "Autodesk Revit",
+            "Autodesk Fusion",
+            "SolidWorks",
+            "CATIA",
+            "Siemens NX",
+            "PTC Creo",
+            "Blender",
+            "Rhino 3D",
+            "KeyShot",
+            "3D Modelling & Visualisation",
+            "CAD / CAM / CAE"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "quantum-advanced-computing",
+      "name": "Quantum & Advanced Computing",
+      "sections": [
+        {
+          "name": null,
+          "items": [
+            "IBM Quantum",
+            "Qiskit",
+            "Google Cirq",
+            "PennyLane",
+            "NVIDIA CUDA",
+            "High-Performance Computing (HPC)",
+            "Parallel Computing",
+            "Distributed Computing",
+            "GPU Computing",
+            "Quantum Algorithm Development",
+            "Quantum Simulation"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "major-technology-ecosystems",
+      "name": "Major Technology Ecosystems",
+      "sections": [
+        {
+          "name": "Cloud & Infrastructure",
+          "items": [
+            "AWS",
+            "Microsoft Azure",
+            "Google Cloud",
+            "Oracle Cloud",
+            "IBM Cloud"
+          ]
+        },
+        {
+          "name": "AI & Intelligent Systems",
+          "items": [
+            "OpenAI",
+            "Anthropic",
+            "Google AI",
+            "NVIDIA",
+            "Hugging Face",
+            "Meta AI",
+            "Mistral AI"
+          ]
+        },
+        {
+          "name": "Enterprise Platforms",
+          "items": [
+            "SAP",
+            "Salesforce",
+            "ServiceNow",
+            "Microsoft Dynamics 365",
+            "Oracle"
+          ]
+        },
+        {
+          "name": "Development & Engineering Platforms",
+          "items": [
+            "GitHub",
+            "GitLab",
+            "Atlassian",
+            "JetBrains",
+            "Docker",
+            "Kubernetes",
+            "HashiCorp"
+          ]
+        }
+      ]
+    }
+  ]
+}

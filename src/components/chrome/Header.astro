@@ -41,12 +41,12 @@ const currentHref = primaryNav
               <div
                 class:list={[
                   'nav-sub absolute left-0 top-full z-10 pt-3',
-                  (item.children?.length ?? 0) > 7 ? 'w-[min(44rem,calc(100vw-2rem))]' : 'w-[min(22rem,calc(100vw-2rem))]',
+                  (item.children?.length ?? 0) > 5 ? 'w-[min(44rem,calc(100vw-2rem))]' : 'w-[min(22rem,calc(100vw-2rem))]',
                 ]}
                 data-submenu
               >
-                <div class="nav-sub-panel rounded-2xl border border-line bg-ink p-3 shadow-glow">
-                  <ul class:list={['grid gap-1', (item.children?.length ?? 0) > 7 && 'sm:grid-cols-2']}>
+                <div class="nav-sub-panel max-h-[70dvh] overflow-y-auto rounded-2xl border border-line bg-ink p-3 shadow-glow">
+                  <ul class:list={['grid gap-1', (item.children?.length ?? 0) > 5 && 'sm:grid-cols-2']}>
                     {item.children.map((child) => (
                       <li>
                         <a href={withBase(child.href)} class="block rounded-xl px-3 py-2 hover:bg-slate">
@@ -213,12 +213,24 @@ const currentHref = primaryNav
   syncOffset();
   window.addEventListener('resize', syncOffset);
 
-  toggle?.addEventListener('click', () => {
-    const open = panel?.classList.toggle('hidden') === false;
-    toggle.setAttribute('aria-expanded', String(open));
+  const setMobileNav = (open: boolean) => {
+    panel?.classList.toggle('hidden', !open);
+    toggle?.setAttribute('aria-expanded', String(open));
+    const label = toggle?.querySelector('.sr-only');
+    if (label) label.textContent = open ? 'Close menu' : 'Open menu';
     header?.classList.toggle('is-menu-open', open);
     document.body.style.overflow = open ? 'hidden' : '';
     document.dispatchEvent(new Event('codeaxes:header-show'));
+  };
+
+  toggle?.addEventListener('click', () => {
+    setMobileNav(toggle.getAttribute('aria-expanded') !== 'true');
+  });
+
+  panel?.addEventListener('click', (event) => {
+    // Group links can target the current page. Close before the browser follows
+    // the fragment so the destination is visible and scrolling is restored.
+    if (event.target instanceof Element && event.target.closest('a')) setMobileNav(false);
   });
 
   document.querySelectorAll<HTMLElement>('[data-mobile-group]').forEach((group) => {
@@ -264,11 +276,7 @@ const currentHref = primaryNav
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {
       setOpenNav(undefined);
-      panel?.classList.add('hidden');
-      toggle?.setAttribute('aria-expanded', 'false');
-      header?.classList.remove('is-menu-open');
-      document.body.style.overflow = '';
-      document.dispatchEvent(new Event('codeaxes:header-show'));
+      setMobileNav(false);
       const active = document.activeElement;
       if (active instanceof HTMLElement && active.closest('[data-nav-item]')) active.blur();
     }

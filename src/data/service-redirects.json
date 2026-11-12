@@ -1,0 +1,15 @@
+{
+  "ai-automation": "agentic-ai-ai-automation",
+  "mobile-apps": "mobile-application-development",
+  "saas-development": "saas-platform-engineering",
+  "paas-development": "saas-platform-engineering",
+  "qa-testing": "quality-engineering",
+  "custom-development": "software-engineering",
+  "product-development": "software-engineering",
+  "blockchain": null,
+  "project-data": "data-transformation",
+  "game-development": null,
+  "cloud-computing": "cloud-engineering",
+  "2d-animations": null,
+  "devops": "devops-mlops"
+}
