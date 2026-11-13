@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import node from '@astrojs/node';
 import netlify from '@astrojs/netlify';
+import vercel from '@astrojs/vercel';
 import tailwindcss from '@tailwindcss/vite';
 import serviceRedirects from './src/data/service-redirects.json' with { type: 'json' };
 
@@ -12,6 +13,8 @@ import serviceRedirects from './src/data/service-redirects.json' with { type: 'j
 // The GitHub Pages preview overrides these with SITE_URL and BASE_PATH (see .github/workflows/deploy.yml).
 const siteUrl = (process.env.SITE_URL || 'https://www.codeaxes.com').replace(/\/$/, '');
 const basePath = process.env.BASE_PATH || '/';
+const isVercel = process.env.VERCEL === '1';
+const isNetlify = !isVercel && process.env.NETLIFY === 'true';
 
 // The Node adapter normally keeps redirects in its server manifest. GitHub
 // Pages publishes only dist/client, so its sub-path preview also needs HTML
@@ -34,10 +37,13 @@ export default defineConfig({
     `/services/${oldSlug}`,
     { status: 301, destination: `${basePath === '/' ? '' : basePath.replace(/\/$/, '')}/services${target ? `/${target}` : ''}` },
   ])),
-  // Netlify sets NETLIFY=true during its builds; everywhere else (own server, local) uses the Node adapter.
-  adapter: process.env.NETLIFY ? netlify() : node({ mode: 'standalone' }),
+  // Use the host's deployment format; a standalone Node build puts pages in
+  // dist/client, which Vercel cannot publish correctly as a dist/ static site.
+  adapter: isVercel
+    ? vercel({ includeFiles: ['./data/jobs.json'] })
+    : isNetlify ? netlify() : node({ mode: 'standalone' }),
   integrations: [
-    ...(basePath !== '/' && !process.env.NETLIFY ? [staticPreviewRedirects] : []),
+    ...(basePath !== '/' && !isNetlify && !isVercel ? [staticPreviewRedirects] : []),
     sitemap({
       customPages: [`${siteUrl}${basePath === '/' ? '' : basePath.replace(/\/$/, '')}/careers`],
     }),

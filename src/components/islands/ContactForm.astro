@@ -1,8 +1,12 @@
 ---
 import { serviceGroups, getServicesByGroup } from '../../data/services';
+import { FORMSPREE_ENDPOINT } from '../../lib/formspree';
 ---
 
-<form class="grid gap-5" data-contact-form novalidate>
+<form class="grid gap-5" data-contact-form action={FORMSPREE_ENDPOINT} method="POST">
+  <input type="hidden" name="brand" value="Codeaxes" />
+  <input type="hidden" name="form_type" value="Project enquiry" />
+  <input type="hidden" name="subject" value="Codeaxes project enquiry" />
   <div class="grid gap-5 md:grid-cols-2">
     <div>
       <label class="mb-2 block text-sm text-paper" for="name">Name</label>
@@ -67,7 +71,7 @@ import { serviceGroups, getServicesByGroup } from '../../data/services';
     <p class="mt-1 hidden text-sm text-danger" data-error-for="details"></p>
   </div>
   <p class="text-sm text-mist">We use this enquiry to prepare a discovery conversation. Do not send secrets or personal health information.</p>
-  <input class="sr-only" tabindex="-1" autocomplete="off" name="company_url" aria-hidden="true" />
+  <input class="hidden" tabindex="-1" autocomplete="off" name="_gotcha" aria-hidden="true" />
   <button type="submit" class="btn-sheen inline-flex h-11 cursor-pointer items-center justify-center rounded-xl px-5 text-[15px] font-medium text-white">
     Send enquiry
   </button>
@@ -75,8 +79,24 @@ import { serviceGroups, getServicesByGroup } from '../../data/services';
 </form>
 
 <script>
+  import { submitFormspree } from '../../lib/formspree';
+
   const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
-  const status = document.querySelector('[data-form-status]');
+  const status = form?.querySelector<HTMLElement>('[data-form-status]');
+  if (form) form.noValidate = true;
+
+  const showErrors = (errors: Record<string, string>) => {
+    form?.querySelectorAll<HTMLElement>('[data-error-for]').forEach((node) => {
+      const field = node.getAttribute('data-error-for') ?? '';
+      const message = errors[field];
+      node.textContent = message ?? '';
+      node.classList.toggle('hidden', !message);
+      const input = form.querySelector<HTMLElement>(`[name="${field}"]`);
+      input?.setAttribute('aria-invalid', String(Boolean(message)));
+      if (input && !node.id) node.id = `contact-error-${field}`;
+      input?.setAttribute('aria-describedby', node.id);
+    });
+  };
 
   const validate = (data: FormData) => {
     const errors: Record<string, string> = {};
@@ -103,39 +123,18 @@ import { serviceGroups, getServicesByGroup } from '../../data/services';
     event.preventDefault();
     const data = new FormData(form);
     const errors = validate(data);
-    form.querySelectorAll('[data-error-for]').forEach((node) => {
-      const field = node.getAttribute('data-error-for') ?? '';
-      const message = errors[field];
-      node.textContent = message ?? '';
-      node.classList.toggle('hidden', !message);
-    });
+    showErrors(errors);
     if (Object.keys(errors).length) {
       status && (status.textContent = 'Fix the highlighted fields and send again.');
+      form.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
       return;
     }
-    status && (status.textContent = 'Sending…');
-    try {
-      const response = await fetch(`${import.meta.env.BASE_URL.replace(/\/?$/, '/')}api/contact`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(Object.fromEntries(data.entries())),
-      });
-      const payload = (await response.json().catch(() => ({}))) as { error?: string; errors?: Record<string, string> };
-      if (!response.ok) {
-        const serverErrors = payload.errors ?? {};
-        form.querySelectorAll('[data-error-for]').forEach((node) => {
-          const field = node.getAttribute('data-error-for') ?? '';
-          const message = serverErrors[field];
-          node.textContent = message ?? '';
-          node.classList.toggle('hidden', !message);
-        });
-        status && (status.textContent = payload.error || 'The enquiry could not be saved. Email hello@codeaxes.com.');
-        return;
-      }
-      form.reset();
-      status && (status.textContent = 'Received. We will reply with a discovery slot. If you need us sooner, email hello@codeaxes.com.');
-    } catch {
-      status && (status.textContent = 'The form endpoint is unavailable in this environment. Email hello@codeaxes.com with the same details.');
-    }
+    if (!status) return;
+    await submitFormspree(form, data, {
+      status,
+      successMessage: 'Received. We will reply with a discovery slot. If you need us sooner, email hello@codeaxes.com.',
+      fallbackEmail: 'hello@codeaxes.com',
+      onFieldErrors: showErrors,
+    });
   });
 </script>

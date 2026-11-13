@@ -12,12 +12,15 @@
     "check": "astro check",
     "verify:catalogue": "python3 scripts/verify-client-catalogue.py && node scripts/verify-catalogue-behavior.mjs",
     "verify:header": "node scripts/verify-header-behavior.mjs",
+    "verify:forms": "node scripts/verify-formspree.mjs",
+    "verify:vercel": "node scripts/verify-vercel-build.mjs",
     "astro": "astro"
   },
   "dependencies": {
     "@astrojs/netlify": "^8.2.9",
     "@astrojs/node": "^11.1.6",
     "@astrojs/sitemap": "^3.7.4",
+    "@astrojs/vercel": "^11.0.22",
     "@fontsource-variable/figtree": "^5.3.0",
     "@fontsource-variable/manrope": "^5.3.0",
     "@fontsource-variable/outfit": "^5.3.0",

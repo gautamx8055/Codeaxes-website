@@ -2,14 +2,20 @@
 import { contact } from "../content/contact";
 import { services } from "../content/services";
 import { site } from "../content/site";
+import { FORMSPREE_ENDPOINT } from "../../lib/formspree";
 ---
 
 <form
   id="enquiry"
   class="theme-ivory bg-ivory p-6 text-ink sm:p-10 lg:p-12"
-  novalidate
+  action={FORMSPREE_ENDPOINT}
+  method="POST"
   data-enquiry-to={site.email}
 >
+  <input type="hidden" name="brand" value="Kuroaxe" />
+  <input type="hidden" name="form_type" value="Project enquiry" />
+  <input type="hidden" name="subject" value="Kuroaxe project enquiry" />
+  <input class="hidden" tabindex="-1" autocomplete="off" name="_gotcha" aria-hidden="true" />
   <div class="grid gap-8 sm:grid-cols-2">
     <div class="sm:col-span-1">
       <label for="name" class="kicker-ink">Name</label>
@@ -113,18 +119,23 @@ import { site } from "../content/site";
 </style>
 
 <script>
+  import { submitFormspree } from "../../lib/formspree";
+
   const form = document.getElementById("enquiry");
   const status = document.getElementById("form-status");
   if (!(form instanceof HTMLFormElement) || !status) {
     // no-op
   } else {
+    form.noValidate = true;
     const setError = (name: string, message: string) => {
       const field =
         form.querySelector<HTMLElement>(`[name="${name}"]`) ??
         form.querySelector<HTMLElement>(`#${name}`);
       const error = form.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
-      if (field) field.setAttribute("aria-invalid", message ? "true" : "false");
+      form.querySelectorAll<HTMLElement>(`[name="${name}"]`).forEach((input) => input.setAttribute("aria-invalid", String(Boolean(message))));
       if (error) {
+        error.id ||= `enquiry-error-${name}`;
+        field?.setAttribute("aria-describedby", error.id);
         error.hidden = !message;
         error.textContent = message;
       }
@@ -132,7 +143,7 @@ import { site } from "../content/site";
 
     const emailOk = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
-    form.addEventListener("submit", (event) => {
+    form.addEventListener("submit", async (event) => {
       event.preventDefault();
       const data = new FormData(form);
       let firstInvalid: HTMLElement | null = null;
@@ -175,23 +186,14 @@ import { site } from "../content/site";
         return;
       }
 
-      const recipient = form.dataset.enquiryTo ?? "studio@kuroaxe.com";
-      const body = [
-        `Name: ${name}`,
-        `Work email: ${email}`,
-        `Company: ${company}`,
-        phone ? `Phone: ${phone}` : "",
-        `Services: ${selected.join(", ")}`,
-        `Budget: ${budget}`,
-        `Timeline: ${timeline}`,
-        "",
-        details,
-      ]
-        .filter((line) => line !== "")
-        .join("\n");
-      const mailto = `mailto:${recipient}?subject=${encodeURIComponent(`Enquiry: ${company}`)}&body=${encodeURIComponent(body)}`;
-      status.textContent = `Opening your email client. If nothing appears, write to ${recipient}.`;
-      window.location.href = mailto;
+      await submitFormspree(form, data, {
+        status,
+        successMessage: "Thank you. Your enquiry has been received. A partner will reply within two business days.",
+        fallbackEmail: form.dataset.enquiryTo ?? "studio@kuroaxe.com",
+        onFieldErrors: (errors) => {
+          for (const [key] of checks) setError(key, errors[key] ?? "");
+        },
+      });
     });
   }
 </script>

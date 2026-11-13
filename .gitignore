@@ -28,3 +28,6 @@ data/inbox/*.json
 
 # Netlify build cache
 .netlify/
+
+# Vercel deployment artifacts and local project settings
+.vercel/

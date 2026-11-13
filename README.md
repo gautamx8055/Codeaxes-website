@@ -164,7 +164,13 @@ Dark graphite/navy base with electric blue, violet, and cyan. Display type is Ou
 
 ## Notes for production
 
+- Follow the [Vercel and Cloudflare setup checklist](docs/vercel-cloudflare-setup.md) for dashboard settings, domain records, and live Formspree delivery checks.
+- Vercel builds automatically select `@astrojs/vercel` when `VERCEL=1`, producing `.vercel/output` with static pages and serverless routes. Netlify and local/Node builds retain their own adapters.
+- In Vercel, use the **Astro** framework preset, repository root as the Root Directory, and `npm run build`. Leave the Output Directory override disabled so the adapter's Build Output API is used. Do not publish the standalone Node `dist` folder or add a catch-all rewrite to `index.html`. `BASE_PATH` should be unset (or `/`) for a domain-root deployment; the `/Codeaxes-website` base is only for GitHub Pages.
+- To verify Vercel packaging locally, run `VERCEL=1 npm run build` followed by `npm run verify:vercel`. This checks both brands' pages and assets at the deployment root, redirects, API routing, and generated function startup. The generated `.vercel` folder is not committed.
+- The jobs JSON is included in Vercel functions for reads. Job changes that must survive deployments need a durable database/store; the existing local-file writer is intended for a persistent Node host.
 - Point `site` in `astro.config.mjs` at the real domain.
-- `POST /api/contact` and `POST /api/newsletter` validate and append submissions to `data/inbox/`. GitHub Pages only serves the static site, so those routes run on `astro dev` and the Node server.
+- Codeaxes and Kuroaxe enquiry forms, plus the Codeaxes product-notes signup, submit directly to Formspree (`https://formspree.io/f/mgakoyol`). Each submission includes its brand and form type. The shared endpoint and submission handling live in `src/lib/formspree.ts`. Native POST submission also works without JavaScript. This does not depend on a Node server, so it works on static hosting.
+- The legacy `POST /api/contact` and `POST /api/newsletter` routes still validate and append to `data/inbox/` when a Node server is running; the website forms use Formspree instead.
 - Swap placeholder clients, quotes, and case studies.
 - GitHub Pages serves the static site. Careers are built from `data/jobs.json` at deploy time. The jobs API still needs a Node host if you want live posting without a rebuild.
