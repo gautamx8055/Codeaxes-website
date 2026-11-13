@@ -1,7 +1,6 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { randomUUID, timingSafeEqual } from 'node:crypto';
-import { loadEnv } from 'vite';
 import type { Job, JobBrand, JobEmploymentType, JobStatus, JobWorkplace } from '../types';
 
 const EMPLOYMENT: JobEmploymentType[] = ['full-time', 'part-time', 'contract', 'internship'];
@@ -9,10 +8,16 @@ const WORKPLACE: JobWorkplace[] = ['remote', 'hybrid', 'onsite'];
 const STATUS: JobStatus[] = ['draft', 'open', 'closed'];
 const BRANDS: JobBrand[] = ['codeaxes', 'kuroaxe'];
 
-const loadedEnv = loadEnv(process.env.NODE_ENV ?? 'development', process.cwd(), '');
+// Build-time .env support without importing Vite into serverless functions.
+// Hosting-provider runtime values take precedence over build-time fallbacks.
+const buildEnv = {
+  JOBS_API_KEY: import.meta.env.JOBS_API_KEY,
+  JOBS_APP_ORIGIN: import.meta.env.JOBS_APP_ORIGIN,
+  JOBS_DATA_PATH: import.meta.env.JOBS_DATA_PATH,
+};
 
-function env(name: string) {
-  return (loadedEnv[name] ?? process.env[name] ?? '').trim();
+function env(name: keyof typeof buildEnv) {
+  return String(process.env[name] ?? buildEnv[name] ?? '').trim();
 }
 
 export const employmentLabels: Record<JobEmploymentType, string> = {

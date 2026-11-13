@@ -32,6 +32,7 @@ for (const [oldSlug, target] of Object.entries(redirects)) {
 }
 
 const functionDir = `${output}/functions/_render.func`;
+await assert.rejects(access(`${functionDir}/node_modules/vite/package.json`), { code: 'ENOENT' }, 'Request handlers must not load the Vite build tool in production');
 const runtime = JSON.parse(await readFile(`${functionDir}/.vc-config.json`, 'utf8'));
 assert.match(runtime.runtime, /^nodejs(?:22|24)\.x$/);
 assert.deepEqual(JSON.parse(await readFile(`${functionDir}/data/jobs.json`, 'utf8')), JSON.parse(await readFile('data/jobs.json', 'utf8')), 'Public jobs data must be packaged with the function');
@@ -50,6 +51,9 @@ try {
   }));
   assert.equal(chat.status, 400);
   assert.ok((await chat.json()).error);
+  const contact = await app.fetch(new Request('https://example.com/api/contact'));
+  assert.ok([404, 405].includes(contact.status), 'Contact module must load even when the request method is unsupported');
+  await contact.body?.cancel();
 } finally {
   process.chdir(root);
 }

@@ -1,14 +1,7 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
-import { loadEnv } from 'vite';
 import { services } from '../data/services';
-
-const loadedEnv = loadEnv(process.env.NODE_ENV ?? 'development', process.cwd(), '');
-
-function env(name: string) {
-  return (loadedEnv[name] ?? process.env[name] ?? '').trim();
-}
 
 export type Enquiry = {
   id: string;
@@ -38,7 +31,7 @@ const hits = new Map<string, number[]>();
 let writeQueue: Promise<unknown> = Promise.resolve();
 
 function inboxDir() {
-  const custom = env('INBOX_DATA_DIR');
+  const custom = String(process.env.INBOX_DATA_DIR ?? import.meta.env.INBOX_DATA_DIR ?? '').trim();
   return custom.length > 0 ? custom : path.join(process.cwd(), 'data', 'inbox');
 }
 
