@@ -13,6 +13,11 @@ import serviceRedirects from './src/data/service-redirects.json' with { type: 'j
 // The GitHub Pages preview overrides these with SITE_URL and BASE_PATH (see .github/workflows/deploy.yml).
 const siteUrl = (process.env.SITE_URL || 'https://www.codeaxes.com').replace(/\/$/, '');
 const basePath = process.env.BASE_PATH || '/';
+const basePrefix = basePath === '/' ? '' : basePath.replace(/\/$/, '');
+const sitemapExcludedPaths = new Set([
+  `${basePrefix}/careers/role`,
+  `${basePrefix}/kuroaxe/404`,
+]);
 const isVercel = process.env.VERCEL === '1';
 const isNetlify = !isVercel && process.env.NETLIFY === 'true';
 
@@ -46,6 +51,7 @@ export default defineConfig({
     ...(basePath !== '/' && !isNetlify && !isVercel ? [staticPreviewRedirects] : []),
     sitemap({
       customPages: [`${siteUrl}${basePath === '/' ? '' : basePath.replace(/\/$/, '')}/careers`],
+      filter: (page) => !sitemapExcludedPaths.has(new URL(page).pathname.replace(/\/$/, '') || '/'),
     }),
   ],
   prefetch: {
